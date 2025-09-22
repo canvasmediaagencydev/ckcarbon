@@ -4,6 +4,7 @@ import AboutUsSection from "@/components/AboutUsSection";
 import VisionCommitmentSection from "@/components/VisionCommitmentSection";
 import OEMServiceSection from "@/components/OEMServiceSection";
 import ProductsSection from "@/components/ProductsSection";
+import TestimonialsSection from "@/components/TestimonialsSection";
 import ContactWidget from "@/components/ContactWidget";
 
 export default function Home() {
@@ -15,6 +16,7 @@ export default function Home() {
       <VisionCommitmentSection />
       <OEMServiceSection />
       <ProductsSection />
+      <TestimonialsSection />
       <ContactWidget />
     </div>
   );
