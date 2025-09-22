@@ -2,6 +2,7 @@ import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
 import AboutUsSection from "@/components/AboutUsSection";
 import VisionCommitmentSection from "@/components/VisionCommitmentSection";
+import OEMServiceSection from "@/components/OEMServiceSection";
 import ContactWidget from "@/components/ContactWidget";
 
 export default function Home() {
@@ -11,6 +12,7 @@ export default function Home() {
       <HeroSection />
       <AboutUsSection />
       <VisionCommitmentSection />
+      <OEMServiceSection />
       <ContactWidget />
     </div>
   );
