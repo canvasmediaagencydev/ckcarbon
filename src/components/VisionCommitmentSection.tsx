@@ -132,14 +132,36 @@ export default function VisionCommitmentSection() {
                 <motion.div
                   key={index}
                   className="relative"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                  transition={{
-                    duration: 0.6,
-                    delay: index * 0.2,
-                    ease: "easeOut"
+                  initial={{
+                    opacity: 0,
+                    scale: 0,
+                    y: 100,
+                    rotate: -180
                   }}
-                  whileHover={{ scale: 1.05 }}
+                  animate={isInView ? {
+                    opacity: 1,
+                    scale: 1,
+                    y: 0,
+                    rotate: 0
+                  } : {
+                    opacity: 0,
+                    scale: 0,
+                    y: 100,
+                    rotate: -180
+                  }}
+                  transition={{
+                    duration: 0.8,
+                    delay: index * 0.4,
+                    ease: "easeOut",
+                    type: "spring",
+                    stiffness: 100,
+                    damping: 12
+                  }}
+                  whileHover={{
+                    scale: 1.08,
+                    rotate: 5,
+                    transition: { duration: 0.3 }
+                  }}
                   style={{
                     marginLeft: index > 0 ? '-40px' : '0',
                     zIndex: commitments.length - index
@@ -149,15 +171,71 @@ export default function VisionCommitmentSection() {
                     {/* Circle Background Effect */}
                     <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent rounded-full" />
 
-                    {/* Number - Fixed position */}
-                    <div className="absolute top-16 left-0 right-0 text-center text-4xl font-bold text-green-400 z-10">
-                      {commitment.number}
-                    </div>
+                    {/* Pulse Effect */}
+                    <motion.div
+                      className="absolute inset-0 rounded-full border-2 border-green-400/30"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.5, 0.2, 0.5]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: index * 0.4 + 1
+                      }}
+                    />
 
-                    {/* Content - Fixed position */}
-                    <div className="absolute top-28 left-0 right-0 text-center text-white leading-snug z-10 text-sm px-6">
+                    {/* Number - Animated */}
+                    <motion.div
+                      className="absolute top-16 left-0 right-0 text-center text-4xl font-bold text-green-400 z-10"
+                      initial={{
+                        opacity: 0,
+                        scale: 0,
+                        rotate: -90
+                      }}
+                      animate={isInView ? {
+                        opacity: 1,
+                        scale: 1,
+                        rotate: 0
+                      } : {
+                        opacity: 0,
+                        scale: 0,
+                        rotate: -90
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        delay: index * 0.4 + 0.3,
+                        ease: "backOut",
+                        type: "spring",
+                        stiffness: 200
+                      }}
+                    >
+                      {commitment.number}
+                    </motion.div>
+
+                    {/* Content - Animated */}
+                    <motion.div
+                      className="absolute top-28 left-0 right-0 text-center text-white leading-snug z-10 text-sm px-6"
+                      initial={{
+                        opacity: 0,
+                        y: 20
+                      }}
+                      animate={isInView ? {
+                        opacity: 1,
+                        y: 0
+                      } : {
+                        opacity: 0,
+                        y: 20
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        delay: index * 0.4 + 0.6,
+                        ease: "easeOut"
+                      }}
+                    >
                       {commitment.title}
-                    </div>
+                    </motion.div>
 
                     {/* Hover Effect */}
                     <motion.div
@@ -176,22 +254,85 @@ export default function VisionCommitmentSection() {
                 <motion.div
                   key={index}
                   className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-green-400/30"
-                  initial={{ opacity: 0, scale: 0.8 }}
-                  animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 0.8 }}
-                  transition={{
-                    duration: 0.6,
-                    delay: index * 0.2,
-                    ease: "easeOut"
+                  initial={{
+                    opacity: 0,
+                    scale: 0,
+                    x: -100,
+                    rotate: -10
                   }}
-                  whileHover={{ scale: 1.02 }}
+                  animate={isInView ? {
+                    opacity: 1,
+                    scale: 1,
+                    x: 0,
+                    rotate: 0
+                  } : {
+                    opacity: 0,
+                    scale: 0,
+                    x: -100,
+                    rotate: -10
+                  }}
+                  transition={{
+                    duration: 0.7,
+                    delay: index * 0.3,
+                    ease: "easeOut",
+                    type: "spring",
+                    stiffness: 120,
+                    damping: 15
+                  }}
+                  whileHover={{
+                    scale: 1.05,
+                    rotate: 2,
+                    transition: { duration: 0.2 }
+                  }}
                 >
                   <div className="text-center">
-                    <div className="text-3xl font-bold text-green-400 mb-4">
+                    <motion.div
+                      className="text-3xl font-bold text-green-400 mb-4"
+                      initial={{
+                        opacity: 0,
+                        scale: 0,
+                        rotate: -180
+                      }}
+                      animate={isInView ? {
+                        opacity: 1,
+                        scale: 1,
+                        rotate: 0
+                      } : {
+                        opacity: 0,
+                        scale: 0,
+                        rotate: -180
+                      }}
+                      transition={{
+                        duration: 0.6,
+                        delay: index * 0.3 + 0.2,
+                        ease: "backOut",
+                        type: "spring",
+                        stiffness: 150
+                      }}
+                    >
                       {commitment.number}
-                    </div>
-                    <div className="text-white leading-relaxed">
+                    </motion.div>
+                    <motion.div
+                      className="text-white leading-relaxed"
+                      initial={{
+                        opacity: 0,
+                        y: 15
+                      }}
+                      animate={isInView ? {
+                        opacity: 1,
+                        y: 0
+                      } : {
+                        opacity: 0,
+                        y: 15
+                      }}
+                      transition={{
+                        duration: 0.5,
+                        delay: index * 0.3 + 0.4,
+                        ease: "easeOut"
+                      }}
+                    >
                       {commitment.title}
-                    </div>
+                    </motion.div>
                   </div>
                 </motion.div>
               ))}

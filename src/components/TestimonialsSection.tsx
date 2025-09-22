@@ -2,12 +2,12 @@
 
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState } from 'react';
-import { FaArrowLeft, FaArrowRight, FaStar } from 'react-icons/fa';
+import { FaArrowRight, FaStar } from 'react-icons/fa';
 
 export default function TestimonialsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [currentSlide, setCurrentSlide] = useState(0);
+  const [showAll, setShowAll] = useState(false);
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -45,16 +45,37 @@ export default function TestimonialsSection() {
       company: "Industrial Filtration Co.",
       rating: 5,
       image: "/image/testimonials/customer-3.jpg"
+    },
+    {
+      id: 4,
+      content: "CK Carbon consistently delivers high-quality activated carbon that meets our strict specifications. Their technical support team is exceptional and always ready to help.",
+      author: "Wanida Suksawat",
+      position: "Technical Manager",
+      company: "Clean Tech Solutions",
+      rating: 5,
+      image: "/image/testimonials/customer-4.jpg"
+    },
+    {
+      id: 5,
+      content: "Working with CK Carbon has been a game-changer for our water treatment facility. Their products have improved our efficiency while reducing operational costs significantly.",
+      author: "Akira Tanaka",
+      position: "Operations Director",
+      company: "Asian Water Systems",
+      rating: 5,
+      image: "/image/testimonials/customer-5.jpg"
+    },
+    {
+      id: 6,
+      content: "The quality of their activated carbon is unmatched in the industry. CK Carbon has been our trusted partner for sustainable water treatment solutions.",
+      author: "Maria Santos",
+      position: "Environmental Engineer",
+      company: "Eco Water Corp",
+      rating: 5,
+      image: "/image/testimonials/customer-6.jpg"
     }
   ];
 
-  const nextSlide = () => {
-    setCurrentSlide((prev) => (prev + 1) % testimonials.length);
-  };
-
-  const prevSlide = () => {
-    setCurrentSlide((prev) => (prev - 1 + testimonials.length) % testimonials.length);
-  };
+  const displayedTestimonials = showAll ? testimonials : testimonials.slice(0, 3);
 
   return (
     <motion.section
@@ -95,124 +116,84 @@ export default function TestimonialsSection() {
           </motion.p>
         </motion.div>
 
-        {/* Main Testimonial Showcase */}
+        {/* Testimonials Grid */}
         <motion.div
-          className="relative mb-16"
+          className="mb-16"
           variants={fadeInVariants}
         >
-          {/* Large Featured Testimonial */}
-          <motion.div
-            className="bg-white rounded-3xl p-12 shadow-2xl relative overflow-hidden max-w-4xl mx-auto"
-            key={currentSlide}
-            initial={{ opacity: 0, scale: 0.9, y: 50 }}
-            animate={{ opacity: 1, scale: 1, y: 0 }}
-            transition={{ duration: 0.8, ease: "easeOut" }}
-          >
-            {/* Background Pattern */}
-            <div className="absolute top-0 right-0 w-64 h-64 bg-gradient-to-br from-green-50 to-blue-50 rounded-full blur-3xl opacity-30" />
-
-            {/* Quote Marks */}
-            <div className="absolute top-8 left-8 text-6xl text-green-200 font-serif">"</div>
-            <div className="absolute bottom-8 right-8 text-6xl text-green-200 font-serif rotate-180">"</div>
-
-            {/* Content */}
-            <div className="relative z-10 text-center">
-              {/* Star Rating */}
-              <div className="flex justify-center space-x-1 mb-8">
-                {[...Array(testimonials[currentSlide].rating)].map((_, i) => (
-                  <motion.div
-                    key={i}
-                    initial={{ scale: 0, rotate: -180 }}
-                    animate={{ scale: 1, rotate: 0 }}
-                    transition={{ delay: i * 0.1, duration: 0.5 }}
-                  >
-                    <FaStar className="w-6 h-6 text-yellow-400" />
-                  </motion.div>
-                ))}
-              </div>
-
-              {/* Testimonial Text */}
-              <motion.p
-                className="text-2xl lg:text-3xl text-gray-700 leading-relaxed mb-12 font-light italic"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.3, duration: 0.8 }}
-              >
-                {testimonials[currentSlide].content}
-              </motion.p>
-
-              {/* Author Info */}
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {displayedTestimonials.map((testimonial, index) => (
               <motion.div
-                className="flex items-center justify-center space-x-6"
-                initial={{ opacity: 0, y: 20 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ delay: 0.5, duration: 0.8 }}
+                key={testimonial.id}
+                className="bg-white rounded-2xl p-8 shadow-lg relative overflow-hidden border border-gray-100 hover:shadow-xl transition-all duration-300"
+                initial={{ opacity: 0, y: 50 }}
+                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -5 }}
               >
-                {/* Avatar */}
-                <div className="relative">
-                  <div className="w-20 h-20 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center shadow-xl">
-                    <span className="text-white text-2xl font-bold">
-                      {testimonials[currentSlide].author.charAt(0)}
+                {/* Quote Mark */}
+                <div className="absolute top-6 right-6 text-3xl text-green-200 font-serif">"</div>
+
+                {/* Star Rating */}
+                <div className="flex space-x-1 mb-4">
+                  {[...Array(testimonial.rating)].map((_, i) => (
+                    <FaStar key={i} className="w-4 h-4 text-yellow-400" />
+                  ))}
+                </div>
+
+                {/* Testimonial Content */}
+                <p className="text-gray-700 mb-6 leading-relaxed text-sm italic">
+                  {testimonial.content}
+                </p>
+
+                {/* Author Info */}
+                <div className="flex items-center space-x-4">
+                  <div className="w-12 h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center">
+                    <span className="text-white font-bold text-sm">
+                      {testimonial.author.charAt(0)}
                     </span>
                   </div>
-                  <div className="absolute -bottom-2 -right-2 w-8 h-8 bg-blue-500 rounded-full flex items-center justify-center">
-                    <span className="text-white text-xs">✓</span>
+                  <div>
+                    <h4 className="font-bold text-gray-900 text-sm">
+                      {testimonial.author}
+                    </h4>
+                    <p className="text-green-600 font-medium text-xs">
+                      {testimonial.position}
+                    </p>
+                    <p className="text-gray-500 text-xs">
+                      {testimonial.company}
+                    </p>
                   </div>
                 </div>
-
-                {/* Author Details */}
-                <div className="text-left">
-                  <h4 className="text-xl font-bold text-gray-900">
-                    {testimonials[currentSlide].author}
-                  </h4>
-                  <p className="text-green-600 font-medium">
-                    {testimonials[currentSlide].position}
-                  </p>
-                  <p className="text-gray-500 text-sm">
-                    {testimonials[currentSlide].company}
-                  </p>
-                </div>
               </motion.div>
-            </div>
-          </motion.div>
-
-          {/* Navigation */}
-          <div className="flex justify-center items-center space-x-8 mt-12">
-            <motion.button
-              onClick={prevSlide}
-              className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-all hover:shadow-xl border-2 border-green-100"
-              whileHover={{ scale: 1.1, rotate: -5 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <FaArrowLeft className="w-5 h-5" />
-            </motion.button>
-
-            {/* Dots Indicator */}
-            <div className="flex space-x-3">
-              {testimonials.map((_, index) => (
-                <motion.button
-                  key={index}
-                  onClick={() => setCurrentSlide(index)}
-                  className={`w-4 h-4 rounded-full transition-all ${
-                    index === currentSlide
-                      ? 'bg-green-600 scale-125'
-                      : 'bg-gray-300 hover:bg-gray-400'
-                  }`}
-                  whileHover={{ scale: 1.2 }}
-                  whileTap={{ scale: 0.9 }}
-                />
-              ))}
-            </div>
-
-            <motion.button
-              onClick={nextSlide}
-              className="w-16 h-16 bg-white rounded-full shadow-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-all hover:shadow-xl border-2 border-green-100"
-              whileHover={{ scale: 1.1, rotate: 5 }}
-              whileTap={{ scale: 0.9 }}
-            >
-              <FaArrowRight className="w-5 h-5" />
-            </motion.button>
+            ))}
           </div>
+
+          {/* View More Button */}
+          {testimonials.length > 3 && (
+            <motion.div
+              className="text-center mt-12"
+              initial={{ opacity: 0, y: 20 }}
+              animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+              transition={{ duration: 0.6, delay: 0.5 }}
+            >
+              <motion.button
+                onClick={() => setShowAll(!showAll)}
+                className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+              >
+                {showAll ? 'View Less' : 'View More'}
+                <motion.div
+                  className="ml-2"
+                  animate={{ rotate: showAll ? 180 : 0 }}
+                  transition={{ duration: 0.3 }}
+                >
+                  <FaArrowRight className="w-4 h-4" />
+                </motion.div>
+              </motion.button>
+            </motion.div>
+          )}
         </motion.div>
 
         {/* Trust Indicators */}

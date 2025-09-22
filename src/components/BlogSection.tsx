@@ -1,13 +1,14 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState } from 'react';
 import Image from 'next/image';
 import { FaArrowRight, FaClock, FaUser } from 'react-icons/fa';
 
 export default function BlogSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [showAll, setShowAll] = useState(false);
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -45,8 +46,37 @@ export default function BlogSection() {
       author: "Niran T.",
       date: "08 Mar 2024",
       category: "Industry"
+    },
+    {
+      id: 4,
+      title: "Advanced Filtration Techniques",
+      excerpt: "Deep dive into the latest filtration methods and how activated carbon plays a crucial role in modern water treatment systems.",
+      image: "/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg",
+      author: "Dr. Wanida",
+      date: "05 Mar 2024",
+      category: "Technology"
+    },
+    {
+      id: 5,
+      title: "Environmental Impact of Carbon Filters",
+      excerpt: "Understanding how proper carbon filtration systems contribute to environmental protection and sustainability goals.",
+      image: "/image/blog/7e79429c236b192dd6e6f2a778f9deeb5a070773.jpg",
+      author: "Akira T.",
+      date: "02 Mar 2024",
+      category: "Environment"
+    },
+    {
+      id: 6,
+      title: "Quality Control in Carbon Manufacturing",
+      excerpt: "Behind the scenes look at our rigorous quality control processes that ensure every batch meets international standards.",
+      image: "/image/blog/8611762b17e5240e4d4ec414f8c251ba80b1821d.jpg",
+      author: "Maria S.",
+      date: "28 Feb 2024",
+      category: "Quality"
     }
   ];
+
+  const displayedBlogPosts = showAll ? blogPosts : blogPosts.slice(0, 3);
 
   return (
     <motion.section
@@ -80,7 +110,7 @@ export default function BlogSection() {
             variants={fadeInVariants}
           >
             <div className="space-y-8">
-              {blogPosts.map((post, index) => (
+              {displayedBlogPosts.map((post, index) => (
                 <motion.article
                   key={post.id}
                   className="group flex gap-6 items-center bg-white hover:bg-gray-50 rounded-2xl p-6 transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 hover:shadow-lg"
@@ -150,6 +180,32 @@ export default function BlogSection() {
                   </div>
                 </motion.article>
               ))}
+
+              {/* View More Button */}
+              {blogPosts.length > 3 && (
+                <motion.div
+                  className="text-center mt-8"
+                  initial={{ opacity: 0, y: 20 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                  transition={{ duration: 0.6, delay: 0.4 }}
+                >
+                  <motion.button
+                    onClick={() => setShowAll(!showAll)}
+                    className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
+                    whileHover={{ scale: 1.05 }}
+                    whileTap={{ scale: 0.95 }}
+                  >
+                    {showAll ? 'View Less' : 'View More'}
+                    <motion.div
+                      className="ml-2"
+                      animate={{ rotate: showAll ? 180 : 0 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <FaArrowRight className="w-4 h-4" />
+                    </motion.div>
+                  </motion.button>
+                </motion.div>
+              )}
             </div>
           </motion.div>
         </div>
