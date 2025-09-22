@@ -59,7 +59,7 @@ export default function Navbar() {
             <div className="ml-10 flex items-baseline space-x-8">
               <motion.a
                 href="#about"
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`px-3 py-2 text-lg font-semibold transition-colors ${
                   isScrolled
                     ? 'text-gray-700 hover:text-green-600'
                     : 'text-white hover:text-green-200'
@@ -71,7 +71,7 @@ export default function Navbar() {
               </motion.a>
               <motion.a
                 href="#oem"
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`px-3 py-2 text-lg font-semibold transition-colors ${
                   isScrolled
                     ? 'text-gray-700 hover:text-green-600'
                     : 'text-white hover:text-green-200'
@@ -83,7 +83,7 @@ export default function Navbar() {
               </motion.a>
               <motion.a
                 href="#products"
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`px-3 py-2 text-lg font-semibold transition-colors ${
                   isScrolled
                     ? 'text-gray-700 hover:text-green-600'
                     : 'text-white hover:text-green-200'
@@ -95,7 +95,7 @@ export default function Navbar() {
               </motion.a>
               <motion.a
                 href="#testimonials"
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`px-3 py-2 text-lg font-semibold transition-colors ${
                   isScrolled
                     ? 'text-gray-700 hover:text-green-600'
                     : 'text-white hover:text-green-200'
@@ -107,7 +107,7 @@ export default function Navbar() {
               </motion.a>
               <motion.a
                 href="#blog"
-                className={`px-3 py-2 text-sm font-medium transition-colors ${
+                className={`px-3 py-2 text-lg font-semibold transition-colors ${
                   isScrolled
                     ? 'text-gray-700 hover:text-green-600'
                     : 'text-white hover:text-green-200'

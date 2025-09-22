@@ -1,5 +1,6 @@
 import Navbar from "@/components/Navbar";
 import HeroSection from "@/components/HeroSection";
+import AboutUsSection from "@/components/AboutUsSection";
 import ContactWidget from "@/components/ContactWidget";
 
 export default function Home() {
@@ -7,6 +8,7 @@ export default function Home() {
     <div className="min-h-screen">
       <Navbar/>
       <HeroSection />
+      <AboutUsSection />
       <ContactWidget />
     </div>
   );
