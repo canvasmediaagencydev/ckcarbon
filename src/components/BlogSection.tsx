@@ -1,14 +1,17 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
 import { FaArrowRight, FaClock, FaUser } from 'react-icons/fa';
+import { BlogService, Blog } from '@/lib/blog';
 
 export default function BlogSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [showAll, setShowAll] = useState(false);
+  const [blogPosts, setBlogPosts] = useState<Blog[]>([]);
+  const [loading, setLoading] = useState(true);
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -19,64 +22,67 @@ export default function BlogSection() {
     }
   };
 
-  const blogPosts = [
+  // Fallback blog posts if no data from CMS
+  const fallbackBlogPosts = [
     {
-      id: 1,
+      id: '1',
       title: "The Future of Water Purification",
       excerpt: "Exploring innovative carbon filtration technologies that are revolutionizing water treatment across industries.",
-      image: "/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg",
-      author: "Dr. Somchai",
-      date: "15 Mar 2024",
-      category: "Technology"
+      featured_image: "/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg",
+      created_at: "2024-03-15T00:00:00Z",
+      categories: [{ id: '1', name: "Technology", slug: "technology", created_at: "" }]
     },
     {
-      id: 2,
+      id: '2',
       title: "Sustainable Carbon Production",
       excerpt: "How we transform coconut shells into premium activated carbon while maintaining environmental responsibility.",
-      image: "/image/blog/7e79429c236b192dd6e6f2a778f9deeb5a070773.jpg",
-      author: "Preecha K.",
-      date: "12 Mar 2024",
-      category: "Environment"
+      featured_image: "/image/blog/7e79429c236b192dd6e6f2a778f9deeb5a070773.jpg",
+      created_at: "2024-03-12T00:00:00Z",
+      categories: [{ id: '2', name: "Environment", slug: "environment", created_at: "" }]
     },
     {
-      id: 3,
+      id: '3',
       title: "Industrial Water Solutions",
       excerpt: "Case studies showing how our activated carbon improves industrial water treatment efficiency and cost-effectiveness.",
-      image: "/image/blog/8611762b17e5240e4d4ec414f8c251ba80b1821d.jpg",
-      author: "Niran T.",
-      date: "08 Mar 2024",
-      category: "Industry"
-    },
-    {
-      id: 4,
-      title: "Advanced Filtration Techniques",
-      excerpt: "Deep dive into the latest filtration methods and how activated carbon plays a crucial role in modern water treatment systems.",
-      image: "/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg",
-      author: "Dr. Wanida",
-      date: "05 Mar 2024",
-      category: "Technology"
-    },
-    {
-      id: 5,
-      title: "Environmental Impact of Carbon Filters",
-      excerpt: "Understanding how proper carbon filtration systems contribute to environmental protection and sustainability goals.",
-      image: "/image/blog/7e79429c236b192dd6e6f2a778f9deeb5a070773.jpg",
-      author: "Akira T.",
-      date: "02 Mar 2024",
-      category: "Environment"
-    },
-    {
-      id: 6,
-      title: "Quality Control in Carbon Manufacturing",
-      excerpt: "Behind the scenes look at our rigorous quality control processes that ensure every batch meets international standards.",
-      image: "/image/blog/8611762b17e5240e4d4ec414f8c251ba80b1821d.jpg",
-      author: "Maria S.",
-      date: "28 Feb 2024",
-      category: "Quality"
+      featured_image: "/image/blog/8611762b17e5240e4d4ec414f8c251ba80b1821d.jpg",
+      created_at: "2024-03-08T00:00:00Z",
+      categories: [{ id: '3', name: "Industry", slug: "industry", created_at: "" }]
     }
   ];
 
+  useEffect(() => {
+    fetchBlogs();
+  }, []);
+
+  const fetchBlogs = async () => {
+    try {
+      setLoading(true);
+      const publishedBlogs = await BlogService.getAllBlogs('published');
+
+      if (publishedBlogs.length > 0) {
+        setBlogPosts(publishedBlogs);
+      } else {
+        // Use fallback data if no published blogs
+        setBlogPosts(fallbackBlogPosts as Blog[]);
+      }
+    } catch (error) {
+      console.error('Error fetching blogs:', error);
+      // Use fallback data on error
+      setBlogPosts(fallbackBlogPosts as Blog[]);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   const displayedBlogPosts = showAll ? blogPosts : blogPosts.slice(0, 3);
+
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString('en-US', {
+      day: '2-digit',
+      month: 'short',
+      year: 'numeric'
+    });
+  };
 
   return (
     <motion.section
@@ -110,101 +116,112 @@ export default function BlogSection() {
             variants={fadeInVariants}
           >
             <div className="space-y-8">
-              {displayedBlogPosts.map((post, index) => (
-                <motion.article
-                  key={post.id}
-                  className="group flex gap-6 items-center bg-white hover:bg-gray-50 rounded-2xl p-6 transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 hover:shadow-lg"
-                  initial={{ opacity: 0, x: 50 }}
-                  animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-                  transition={{
-                    duration: 0.6,
-                    delay: index * 0.2,
-                    ease: "easeOut"
-                  }}
-                  whileHover={{ x: 10 }}
-                >
-                  {/* Blog Image */}
-                  <motion.div
-                    className="relative w-48 h-36 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0"
-                    whileHover={{ scale: 1.05 }}
-                    transition={{ duration: 0.3 }}
-                  >
-                    <Image
-                      src={post.image}
-                      alt={post.title}
-                      fill
-                      className="object-cover group-hover:scale-110 transition-transform duration-500"
-                      sizes="192px"
-                    />
-
-                    {/* Category Badge */}
-                    <div className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded-lg text-xs font-semibold">
-                      {post.category}
-                    </div>
-                  </motion.div>
-
-                  {/* Blog Content */}
-                  <div className="flex-1 space-y-3">
-                    <motion.h3
-                      className="text-xl font-bold text-green-600 group-hover:text-green-700 transition-colors"
-                      whileHover={{ x: 5 }}
+              {loading ? (
+                <div className="text-center py-12">
+                  <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-green-600 mx-auto"></div>
+                  <p className="text-gray-500 mt-2">Loading blog posts...</p>
+                </div>
+              ) : (
+                <>
+                  {displayedBlogPosts.map((post, index) => (
+                    <motion.article
+                      key={post.id}
+                      className="group flex gap-6 items-center bg-white hover:bg-gray-50 rounded-2xl p-6 transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 hover:shadow-lg"
+                      initial={{ opacity: 0, x: 50 }}
+                      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+                      transition={{
+                        duration: 0.6,
+                        delay: index * 0.2,
+                        ease: "easeOut"
+                      }}
+                      whileHover={{ x: 10 }}
                     >
-                      {post.title}
-                    </motion.h3>
+                      {/* Blog Image */}
+                      <motion.div
+                        className="relative w-48 h-36 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0"
+                        whileHover={{ scale: 1.05 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <Image
+                          src={post.featured_image || "/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg"}
+                          alt={post.title}
+                          fill
+                          className="object-cover group-hover:scale-110 transition-transform duration-500"
+                          sizes="192px"
+                        />
 
-                    <p className="text-gray-600 leading-relaxed text-sm">
-                      {post.excerpt}
-                    </p>
+                        {/* Category Badge */}
+                        {post.categories && post.categories.length > 0 && (
+                          <div className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded-lg text-xs font-semibold">
+                            {post.categories[0].name}
+                          </div>
+                        )}
+                      </motion.div>
 
-                    {/* Meta Info */}
-                    <div className="flex items-center space-x-4 text-xs text-gray-500">
-                      <div className="flex items-center space-x-1">
-                        <FaUser className="w-3 h-3" />
-                        <span>{post.author}</span>
+                      {/* Blog Content */}
+                      <div className="flex-1 space-y-3">
+                        <motion.h3
+                          className="text-xl font-bold text-green-600 group-hover:text-green-700 transition-colors"
+                          whileHover={{ x: 5 }}
+                        >
+                          {post.title}
+                        </motion.h3>
+
+                        <p className="text-gray-600 leading-relaxed text-sm">
+                          {post.excerpt || "No excerpt available."}
+                        </p>
+
+                        {/* Meta Info */}
+                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                          <div className="flex items-center space-x-1">
+                            <FaUser className="w-3 h-3" />
+                            <span>CKCarbon Team</span>
+                          </div>
+                          <div className="flex items-center space-x-1">
+                            <FaClock className="w-3 h-3" />
+                            <span>{formatDate(post.created_at)}</span>
+                          </div>
+                        </div>
+
+                        {/* Read More Button */}
+                        <motion.button
+                          className="inline-flex items-center px-4 py-2 border border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-all duration-300 text-sm font-medium group-hover:scale-105"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          Read More
+                          <FaArrowRight className="ml-2 w-3 h-3" />
+                        </motion.button>
                       </div>
-                      <div className="flex items-center space-x-1">
-                        <FaClock className="w-3 h-3" />
-                        <span>{post.date}</span>
-                      </div>
-                    </div>
+                    </motion.article>
+                  ))}
 
-                    {/* Read More Button */}
-                    <motion.button
-                      className="inline-flex items-center px-4 py-2 border border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-all duration-300 text-sm font-medium group-hover:scale-105"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      See All
-                      <FaArrowRight className="ml-2 w-3 h-3" />
-                    </motion.button>
-                  </div>
-                </motion.article>
-              ))}
-
-              {/* View More Button */}
-              {blogPosts.length > 3 && (
-                <motion.div
-                  className="text-center mt-8"
-                  initial={{ opacity: 0, y: 20 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
-                  transition={{ duration: 0.6, delay: 0.4 }}
-                >
-                  <motion.button
-                    onClick={() => setShowAll(!showAll)}
-                    className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.95 }}
-                  >
-                    {showAll ? 'View Less' : 'View More'}
+                  {/* View More Button */}
+                  {blogPosts.length > 3 && (
                     <motion.div
-                      className="ml-2"
-                      animate={{ rotate: showAll ? 180 : 0 }}
-                      transition={{ duration: 0.3 }}
+                      className="text-center mt-8"
+                      initial={{ opacity: 0, y: 20 }}
+                      animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
+                      transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                      <FaArrowRight className="w-4 h-4" />
+                      <motion.button
+                        onClick={() => setShowAll(!showAll)}
+                        className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
+                        whileHover={{ scale: 1.05 }}
+                        whileTap={{ scale: 0.95 }}
+                      >
+                        {showAll ? 'View Less' : 'View More'}
+                        <motion.div
+                          className="ml-2"
+                          animate={{ rotate: showAll ? 180 : 0 }}
+                          transition={{ duration: 0.3 }}
+                        >
+                          <FaArrowRight className="w-4 h-4" />
+                        </motion.div>
+                      </motion.button>
                     </motion.div>
-                  </motion.button>
-                </motion.div>
+                  )}
+                </>
               )}
             </div>
           </motion.div>
