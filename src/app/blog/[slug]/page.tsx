@@ -1,41 +1,76 @@
-"use client";
-
-import { useState, useEffect } from 'react';
-import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
-import Head from 'next/head';
-import { FaClock, FaUser, FaArrowLeft, FaShare, FaTwitter, FaFacebook, FaLinkedin, FaTag } from 'react-icons/fa';
+import { Metadata } from 'next';
+import { FaClock, FaUser, FaArrowLeft, FaTag } from 'react-icons/fa';
 import { BlogService, Blog } from '@/lib/blog';
 import Navbar from '@/components/Navbar';
+import ShareButtons from '@/components/ShareButtons';
 
-export default function BlogPostPage() {
-  const params = useParams();
-  const [blog, setBlog] = useState<Blog | null>(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState<string | null>(null);
+type Props = {
+  params: { slug: string }
+}
 
-  const slug = params.slug as string;
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  try {
+    const blog = await BlogService.getBlogBySlug(params.slug);
 
-  useEffect(() => {
-    if (slug) {
-      fetchBlog();
+    if (!blog) {
+      return {
+        title: 'Blog Post Not Found | CK Carbon',
+        description: 'The blog post you are looking for could not be found.'
+      };
     }
-  }, [slug]);
 
-  const fetchBlog = async () => {
-    try {
-      setLoading(true);
-      setError(null);
-      const blogData = await BlogService.getBlogBySlug(slug);
-      setBlog(blogData);
-    } catch (err) {
-      console.error('Error fetching blog:', err);
-      setError('Blog post not found');
-    } finally {
-      setLoading(false);
+    const baseUrl = 'https://ckcarbon.vercel.app';
+    const url = `${baseUrl}/blog/${params.slug}`;
+
+    return {
+      title: `${blog.title} | CK Carbon`,
+      description: blog.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.',
+      openGraph: {
+        title: blog.title,
+        description: blog.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.',
+        url: url,
+        siteName: 'CK Carbon',
+        images: [
+          {
+            url: blog.featured_image || '/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg',
+            width: 1200,
+            height: 630,
+            alt: blog.title,
+          },
+        ],
+        type: 'article',
+      },
+      twitter: {
+        card: 'summary_large_image',
+        title: blog.title,
+        description: blog.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.',
+        images: [blog.featured_image || '/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg'],
+      },
+    };
+  } catch (error) {
+    return {
+      title: 'CK Carbon Blog',
+      description: 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.'
+    };
+  }
+}
+
+export default async function BlogPostPage({ params }: Props) {
+  let blog: Blog | null = null;
+  let loading = false;
+  let error: string | null = null;
+
+  try {
+    blog = await BlogService.getBlogBySlug(params.slug);
+    if (!blog) {
+      error = 'Blog post not found';
     }
-  };
+  } catch (err) {
+    console.error('Error fetching blog:', err);
+    error = 'Blog post not found';
+  }
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -45,20 +80,8 @@ export default function BlogPostPage() {
     });
   };
 
-  const shareUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const shareUrl = `https://ckcarbon.vercel.app/blog/${params.slug}`;
   const shareTitle = blog?.title || '';
-
-  const shareOnTwitter = () => {
-    window.open(`https://twitter.com/intent/tweet?url=${encodeURIComponent(shareUrl)}&text=${encodeURIComponent(shareTitle)}`, '_blank');
-  };
-
-  const shareOnFacebook = () => {
-    window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(shareUrl)}`, '_blank');
-  };
-
-  const shareOnLinkedIn = () => {
-    window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(shareUrl)}`, '_blank');
-  };
 
   // Extract text from TipTap content
   const getContentText = (content: any): string => {
@@ -118,29 +141,6 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Head>
-        <title>{blog?.title ? `${blog.title} | CK Carbon` : 'CK Carbon Blog'}</title>
-        <meta name="description" content={blog?.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.'} />
-
-        {/* Open Graph Tags */}
-        <meta property="og:title" content={blog?.title || 'CK Carbon Blog'} />
-        <meta property="og:description" content={blog?.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.'} />
-        <meta property="og:image" content={blog?.featured_image || '/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg'} />
-        <meta property="og:url" content={shareUrl} />
-        <meta property="og:type" content="article" />
-        <meta property="og:site_name" content="CK Carbon" />
-
-        {/* Twitter Card Tags */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content={blog?.title || 'CK Carbon Blog'} />
-        <meta name="twitter:description" content={blog?.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.'} />
-        <meta name="twitter:image" content={blog?.featured_image || '/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg'} />
-
-        {/* Article specific tags */}
-        {blog?.published_at && <meta property="article:published_time" content={blog.published_at} />}
-        {blog?.categories && blog.categories.length > 0 && <meta property="article:section" content={blog.categories[0].name} />}
-        <meta property="article:author" content="CKCarbon Team" />
-      </Head>
       <Navbar />
 
       {/* Hero Section */}
@@ -303,37 +303,7 @@ export default function BlogPostPage() {
             <aside className="lg:w-80">
               <div className="space-y-8">
                 {/* Share Section */}
-                <div className="bg-white rounded-3xl shadow-xl p-8 border border-gray-100">
-                  <h3 className="text-xl font-bold text-gray-900 mb-6 flex items-center">
-                    <div className="w-8 h-8 bg-green-100 rounded-full flex items-center justify-center mr-3">
-                      <FaShare className="w-4 h-4 text-green-600" />
-                    </div>
-                    Share Article
-                  </h3>
-                  <div className="space-y-3">
-                    <button
-                      onClick={shareOnTwitter}
-                      className="flex items-center w-full px-6 py-4 bg-blue-500 text-white rounded-2xl hover:bg-blue-600 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                    >
-                      <FaTwitter className="mr-4 w-5 h-5" />
-                      <span className="font-semibold">Share on Twitter</span>
-                    </button>
-                    <button
-                      onClick={shareOnFacebook}
-                      className="flex items-center w-full px-6 py-4 bg-blue-600 text-white rounded-2xl hover:bg-blue-700 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                    >
-                      <FaFacebook className="mr-4 w-5 h-5" />
-                      <span className="font-semibold">Share on Facebook</span>
-                    </button>
-                    <button
-                      onClick={shareOnLinkedIn}
-                      className="flex items-center w-full px-6 py-4 bg-blue-800 text-white rounded-2xl hover:bg-blue-900 transition-all duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1"
-                    >
-                      <FaLinkedin className="mr-4 w-5 h-5" />
-                      <span className="font-semibold">Share on LinkedIn</span>
-                    </button>
-                  </div>
-                </div>
+                <ShareButtons url={shareUrl} title={shareTitle} />
 
                 {/* Company Info CTA */}
                 <div className="bg-gradient-to-br from-green-600 to-green-700 text-white rounded-3xl p-8 shadow-xl">
