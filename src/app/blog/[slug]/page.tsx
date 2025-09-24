@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react';
 import { useParams } from 'next/navigation';
 import Image from 'next/image';
 import Link from 'next/link';
+import Head from 'next/head';
 import { FaClock, FaUser, FaArrowLeft, FaShare, FaTwitter, FaFacebook, FaLinkedin, FaTag } from 'react-icons/fa';
 import { BlogService, Blog } from '@/lib/blog';
 import Navbar from '@/components/Navbar';
@@ -117,6 +118,29 @@ export default function BlogPostPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
+      <Head>
+        <title>{blog?.title ? `${blog.title} | CK Carbon` : 'CK Carbon Blog'}</title>
+        <meta name="description" content={blog?.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.'} />
+
+        {/* Open Graph Tags */}
+        <meta property="og:title" content={blog?.title || 'CK Carbon Blog'} />
+        <meta property="og:description" content={blog?.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.'} />
+        <meta property="og:image" content={blog?.featured_image || '/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg'} />
+        <meta property="og:url" content={shareUrl} />
+        <meta property="og:type" content="article" />
+        <meta property="og:site_name" content="CK Carbon" />
+
+        {/* Twitter Card Tags */}
+        <meta name="twitter:card" content="summary_large_image" />
+        <meta name="twitter:title" content={blog?.title || 'CK Carbon Blog'} />
+        <meta name="twitter:description" content={blog?.excerpt || 'Discover insights in sustainable carbon production and water treatment technology from CK Carbon.'} />
+        <meta name="twitter:image" content={blog?.featured_image || '/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg'} />
+
+        {/* Article specific tags */}
+        {blog?.published_at && <meta property="article:published_time" content={blog.published_at} />}
+        {blog?.categories && blog.categories.length > 0 && <meta property="article:section" content={blog.categories[0].name} />}
+        <meta property="article:author" content="CKCarbon Team" />
+      </Head>
       <Navbar />
 
       {/* Hero Section */}
