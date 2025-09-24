@@ -3,6 +3,7 @@
 import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
 import Image from 'next/image';
+import Link from 'next/link';
 import { FaArrowRight, FaClock, FaUser } from 'react-icons/fa';
 import { BlogService, Blog } from '@/lib/blog';
 
@@ -124,18 +125,18 @@ export default function BlogSection() {
               ) : (
                 <>
                   {displayedBlogPosts.map((post, index) => (
-                    <motion.article
-                      key={post.id}
-                      className="group flex gap-6 items-center bg-white hover:bg-gray-50 rounded-2xl p-6 transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 hover:shadow-lg"
-                      initial={{ opacity: 0, x: 50 }}
-                      animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
-                      transition={{
-                        duration: 0.6,
-                        delay: index * 0.2,
-                        ease: "easeOut"
-                      }}
-                      whileHover={{ x: 10 }}
-                    >
+                    <Link key={post.id} href={`/blog/${post.slug}`}>
+                      <motion.article
+                        className="group flex gap-6 items-center bg-white hover:bg-gray-50 rounded-2xl p-6 transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 hover:shadow-lg"
+                        initial={{ opacity: 0, x: 50 }}
+                        animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
+                        transition={{
+                          duration: 0.6,
+                          delay: index * 0.2,
+                          ease: "easeOut"
+                        }}
+                        whileHover={{ x: 10 }}
+                      >
                       {/* Blog Image */}
                       <motion.div
                         className="relative w-48 h-36 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0"
@@ -194,6 +195,7 @@ export default function BlogSection() {
                         </motion.button>
                       </div>
                     </motion.article>
+                  </Link>
                   ))}
 
                   {/* View More Button */}
@@ -204,21 +206,34 @@ export default function BlogSection() {
                       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                      <motion.button
-                        onClick={() => setShowAll(!showAll)}
-                        className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
-                        whileHover={{ scale: 1.05 }}
-                        whileTap={{ scale: 0.95 }}
-                      >
-                        {showAll ? 'View Less' : 'View More'}
-                        <motion.div
-                          className="ml-2"
-                          animate={{ rotate: showAll ? 180 : 0 }}
-                          transition={{ duration: 0.3 }}
+                      {showAll ? (
+                        <motion.button
+                          onClick={() => setShowAll(false)}
+                          className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
                         >
-                          <FaArrowRight className="w-4 h-4" />
-                        </motion.div>
-                      </motion.button>
+                          View Less
+                          <motion.div
+                            className="ml-2"
+                            animate={{ rotate: 180 }}
+                            transition={{ duration: 0.3 }}
+                          >
+                            <FaArrowRight className="w-4 h-4" />
+                          </motion.div>
+                        </motion.button>
+                      ) : (
+                        <Link href="/blog">
+                          <motion.button
+                            className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            View All Posts
+                            <FaArrowRight className="ml-2 w-4 h-4" />
+                          </motion.button>
+                        </Link>
+                      )}
                     </motion.div>
                   )}
                 </>

@@ -14,79 +14,6 @@ export type Database = {
   }
   public: {
     Tables: {
-      blogs: {
-        Row: {
-          id: string
-          title: string
-          slug: string
-          excerpt: string | null
-          content: Json
-          featured_image: string | null
-          status: 'draft' | 'published' | 'archived'
-          published_at: string | null
-          created_at: string
-          updated_at: string
-          author_id: string | null
-          meta_title: string | null
-          meta_description: string | null
-          tags: string[]
-        }
-        Insert: {
-          id?: string
-          title: string
-          slug: string
-          excerpt?: string | null
-          content: Json
-          featured_image?: string | null
-          status?: 'draft' | 'published' | 'archived'
-          published_at?: string | null
-          created_at?: string
-          updated_at?: string
-          author_id?: string | null
-          meta_title?: string | null
-          meta_description?: string | null
-          tags?: string[]
-        }
-        Update: {
-          id?: string
-          title?: string
-          slug?: string
-          excerpt?: string | null
-          content?: Json
-          featured_image?: string | null
-          status?: 'draft' | 'published' | 'archived'
-          published_at?: string | null
-          created_at?: string
-          updated_at?: string
-          author_id?: string | null
-          meta_title?: string | null
-          meta_description?: string | null
-          tags?: string[]
-        }
-      }
-      categories: {
-        Row: {
-          id: string
-          name: string
-          slug: string
-          description: string | null
-          created_at: string
-        }
-        Insert: {
-          id?: string
-          name: string
-          slug: string
-          description?: string | null
-          created_at?: string
-        }
-        Update: {
-          id?: string
-          name?: string
-          slug?: string
-          description?: string | null
-          created_at?: string
-        }
-      }
       blog_categories: {
         Row: {
           blog_id: string
@@ -100,6 +27,97 @@ export type Database = {
           blog_id?: string
           category_id?: string
         }
+        Relationships: [
+          {
+            foreignKeyName: "blog_categories_blog_id_fkey"
+            columns: ["blog_id"]
+            isOneToOne: false
+            referencedRelation: "blogs"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "blog_categories_category_id_fkey"
+            columns: ["category_id"]
+            isOneToOne: false
+            referencedRelation: "categories"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      blogs: {
+        Row: {
+          author_id: string | null
+          content: Json
+          created_at: string | null
+          excerpt: string | null
+          featured_image: string | null
+          id: string
+          meta_description: string | null
+          meta_title: string | null
+          published_at: string | null
+          slug: string
+          status: string | null
+          tags: string[] | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          author_id?: string | null
+          content: Json
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug: string
+          status?: string | null
+          tags?: string[] | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          author_id?: string | null
+          content?: Json
+          created_at?: string | null
+          excerpt?: string | null
+          featured_image?: string | null
+          id?: string
+          meta_description?: string | null
+          meta_title?: string | null
+          published_at?: string | null
+          slug?: string
+          status?: string | null
+          tags?: string[] | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      categories: {
+        Row: {
+          created_at: string | null
+          description: string | null
+          id: string
+          name: string
+          slug: string
+        }
+        Insert: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name: string
+          slug: string
+        }
+        Update: {
+          created_at?: string | null
+          description?: string | null
+          id?: string
+          name?: string
+          slug?: string
+        }
+        Relationships: []
       }
     }
     Views: {

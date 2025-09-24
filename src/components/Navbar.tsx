@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
@@ -105,18 +106,19 @@ export default function Navbar() {
               >
                 Customer Testimonials
               </motion.a>
-              <motion.a
-                href="#blog"
-                className={`px-3 py-2 text-lg font-semibold transition-colors ${
-                  isScrolled
-                    ? 'text-gray-700 hover:text-green-600'
-                    : 'text-white hover:text-green-200'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Blog
-              </motion.a>
+              <Link href="/blog">
+                <motion.div
+                  className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
+                    isScrolled
+                      ? 'text-gray-700 hover:text-green-600'
+                      : 'text-white hover:text-green-200'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Blog
+                </motion.div>
+              </Link>
             </div>
           </motion.div>
 
@@ -214,17 +216,18 @@ export default function Navbar() {
                 >
                   Customer Testimonials
                 </motion.a>
-                <motion.a
-                  href="#blog"
-                  className="text-gray-700 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.5 }}
-                  whileHover={{ x: 10 }}
-                >
-                  Blog
-                </motion.a>
+                <Link href="/blog">
+                  <motion.div
+                    className="text-gray-700 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
+                    onClick={() => setIsMenuOpen(false)}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.5 }}
+                    whileHover={{ x: 10 }}
+                  >
+                    Blog
+                  </motion.div>
+                </Link>
               </div>
             </motion.div>
           )}
