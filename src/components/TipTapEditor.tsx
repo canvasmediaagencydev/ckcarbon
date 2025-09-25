@@ -7,7 +7,9 @@ import Link from '@tiptap/extension-link'
 import TextAlign from '@tiptap/extension-text-align'
 import Placeholder from '@tiptap/extension-placeholder'
 import CharacterCount from '@tiptap/extension-character-count'
-import { useCallback, useEffect } from 'react'
+import Underline from '@tiptap/extension-underline'
+import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table'
+import { useCallback, useEffect, useState } from 'react'
 import {
   FaBold,
   FaItalic,
@@ -23,7 +25,9 @@ import {
   FaAlignCenter,
   FaAlignRight,
   FaUndo,
-  FaRedo
+  FaRedo,
+  FaTable,
+  FaTimes
 } from 'react-icons/fa'
 
 interface TipTapEditorProps {
@@ -39,18 +43,44 @@ export default function TipTapEditor({
   placeholder = 'Start writing your blog post...',
   editable = true
 }: TipTapEditorProps) {
+  const [showImageDialog, setShowImageDialog] = useState(false)
+  const [showLinkDialog, setShowLinkDialog] = useState(false)
+  const [imageUrl, setImageUrl] = useState('')
+  const [linkUrl, setLinkUrl] = useState('')
+  const [linkText, setLinkText] = useState('')
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({
+        bulletList: {
+          HTMLAttributes: {
+            class: 'tiptap-bullet-list',
+          },
+        },
+        orderedList: {
+          HTMLAttributes: {
+            class: 'tiptap-ordered-list',
+          },
+        },
+        listItem: {
+          HTMLAttributes: {
+            class: 'tiptap-list-item',
+          },
+        },
+      }),
+      Underline,
       Image.configure({
         HTMLAttributes: {
-          class: 'max-w-full h-auto rounded-lg',
+          class: 'max-w-full h-auto rounded-lg my-4',
         },
+        allowBase64: true,
       }),
       Link.configure({
         openOnClick: false,
+        autolink: true,
         HTMLAttributes: {
-          class: 'text-blue-600 hover:text-blue-800 underline',
+          class: 'text-blue-600 hover:text-blue-800 underline cursor-pointer',
+          rel: 'noopener noreferrer',
+          target: '_blank',
         },
       }),
       TextAlign.configure({
@@ -58,47 +88,96 @@ export default function TipTapEditor({
       }),
       Placeholder.configure({
         placeholder,
+        showOnlyWhenEditable: true,
       }),
       CharacterCount,
+      Table.configure({
+        resizable: true,
+      }),
+      TableRow,
+      TableHeader,
+      TableCell,
     ],
-    content,
+    content: content || '',
     editable,
+    autofocus: false,
     immediatelyRender: false,
+    parseOptions: {
+      preserveWhitespace: 'full',
+    },
     onUpdate: ({ editor }) => {
-      onChange(editor.getJSON())
+      const json = editor.getJSON()
+      onChange(json)
+    },
+    onCreate: ({ editor }) => {
+      if (content) {
+        editor.commands.setContent(content, { emitUpdate: false })
+      }
     },
   })
 
-  // Update editor content when prop changes
+  // Update editor content when prop changes (with debouncing to prevent conflicts)
   useEffect(() => {
-    if (editor && content !== editor.getJSON()) {
-      editor.commands.setContent(content || '')
+    if (editor && content) {
+      const currentContent = editor.getJSON()
+      const isContentDifferent = JSON.stringify(currentContent) !== JSON.stringify(content)
+
+      if (isContentDifferent && !editor.isFocused) {
+        editor.commands.setContent(content, { emitUpdate: false })
+      }
     }
   }, [editor, content])
 
-  const addImage = useCallback(() => {
-    const url = window.prompt('Enter image URL:')
+  const handleAddImage = useCallback(() => {
+    setShowImageDialog(true)
+  }, [])
 
-    if (url && editor) {
-      editor.chain().focus().setImage({ src: url }).run()
+  const handleImageSubmit = () => {
+    if (imageUrl.trim() && editor) {
+      editor.chain().focus().setImage({ src: imageUrl.trim() }).run()
+      setImageUrl('')
+      setShowImageDialog(false)
     }
-  }, [editor])
+  }
 
-  const setLink = useCallback(() => {
+  const handleAddLink = useCallback(() => {
+    const { from, to } = editor?.state.selection || { from: 0, to: 0 }
+    const text = editor?.state.doc.textBetween(from, to, '')
+    setLinkText(text || '')
+
     const previousUrl = editor?.getAttributes('link').href
-    const url = window.prompt('Enter URL:', previousUrl)
-
-    if (url === null) {
-      return
-    }
-
-    if (url === '') {
-      editor?.chain().focus().extendMarkRange('link').unsetLink().run()
-      return
-    }
-
-    editor?.chain().focus().extendMarkRange('link').setLink({ href: url }).run()
+    setLinkUrl(previousUrl || '')
+    setShowLinkDialog(true)
   }, [editor])
+
+  const handleLinkSubmit = () => {
+    if (!editor) return
+
+    if (linkUrl === '') {
+      editor.chain().focus().extendMarkRange('link').unsetLink().run()
+      setShowLinkDialog(false)
+      return
+    }
+
+    if (linkUrl.trim()) {
+      // If we have selected text, just add link to selection
+      if (editor.state.selection.from !== editor.state.selection.to) {
+        editor.chain().focus().extendMarkRange('link').setLink({ href: linkUrl.trim() }).run()
+      } else {
+        // If no text selected, insert link with text
+        const text = linkText.trim() || linkUrl.trim()
+        editor.chain().focus().insertContent(`<a href="${linkUrl.trim()}">${text}</a>`).run()
+      }
+    }
+
+    setLinkUrl('')
+    setLinkText('')
+    setShowLinkDialog(false)
+  }
+
+  const handleAddTable = () => {
+    editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+  }
 
   if (!editor) {
     return (
@@ -133,6 +212,16 @@ export default function TipTapEditor({
             type="button"
           >
             <FaItalic size={14} />
+          </button>
+
+          <button
+            onClick={() => editor.chain().focus().toggleUnderline().run()}
+            className={`p-2 rounded hover:bg-gray-200 ${
+              editor.isActive('underline') ? 'bg-gray-300' : ''
+            }`}
+            type="button"
+          >
+            <FaUnderline size={14} />
           </button>
 
           <button
@@ -258,21 +347,32 @@ export default function TipTapEditor({
 
           {/* Media */}
           <button
-            onClick={setLink}
+            onClick={handleAddLink}
             className={`p-2 rounded hover:bg-gray-200 ${
               editor.isActive('link') ? 'bg-gray-300' : ''
             }`}
             type="button"
+            title="Add Link"
           >
             <FaLink size={14} />
           </button>
 
           <button
-            onClick={addImage}
+            onClick={handleAddImage}
             className="p-2 rounded hover:bg-gray-200"
             type="button"
+            title="Add Image"
           >
             <FaImage size={14} />
+          </button>
+
+          <button
+            onClick={handleAddTable}
+            className="p-2 rounded hover:bg-gray-200"
+            type="button"
+            title="Insert Table"
+          >
+            <FaTable size={14} />
           </button>
 
           <div className="w-px h-6 bg-gray-300 mx-1" />
@@ -307,7 +407,86 @@ export default function TipTapEditor({
 
       {editable && editor.storage.characterCount && (
         <div className="px-4 py-2 text-sm text-gray-500 border-t border-gray-200 bg-gray-50">
-          {editor.storage.characterCount.characters()} characters
+          <span>{editor.storage.characterCount.characters()} characters</span>
+        </div>
+      )}
+
+      {/* Image Dialog */}
+      {showImageDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 max-w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Add Image</h3>
+            <input
+              type="url"
+              placeholder="Enter image URL..."
+              value={imageUrl}
+              onChange={(e) => setImageUrl(e.target.value)}
+              className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 mb-4"
+              onKeyPress={(e) => e.key === 'Enter' && handleImageSubmit()}
+            />
+            <div className="flex space-x-3 justify-end">
+              <button
+                onClick={() => {
+                  setImageUrl('')
+                  setShowImageDialog(false)
+                }}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleImageSubmit}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                disabled={!imageUrl.trim()}
+              >
+                Add Image
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Link Dialog */}
+      {showLinkDialog && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-96 max-w-full mx-4">
+            <h3 className="text-lg font-semibold mb-4">Add Link</h3>
+            <div className="space-y-3">
+              <input
+                type="text"
+                placeholder="Link text (optional)..."
+                value={linkText}
+                onChange={(e) => setLinkText(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+              />
+              <input
+                type="url"
+                placeholder="Enter URL..."
+                value={linkUrl}
+                onChange={(e) => setLinkUrl(e.target.value)}
+                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                onKeyPress={(e) => e.key === 'Enter' && handleLinkSubmit()}
+              />
+            </div>
+            <div className="flex space-x-3 justify-end mt-4">
+              <button
+                onClick={() => {
+                  setLinkUrl('')
+                  setLinkText('')
+                  setShowLinkDialog(false)
+                }}
+                className="px-4 py-2 text-gray-600 hover:text-gray-800"
+              >
+                Cancel
+              </button>
+              <button
+                onClick={handleLinkSubmit}
+                className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+              >
+                Add Link
+              </button>
+            </div>
+          </div>
         </div>
       )}
     </div>
