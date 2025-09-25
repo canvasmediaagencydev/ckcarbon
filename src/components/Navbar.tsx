@@ -171,10 +171,10 @@ export default function Navbar() {
               exit={{ opacity: 0, height: 0 }}
               transition={{ duration: 0.3 }}
             >
-              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white/80 rounded-2xl backdrop-blur-md border-t">
+              <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white rounded-2xl">
                 <motion.a
                   href="#about"
-                  className="text-white hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
+                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -185,7 +185,7 @@ export default function Navbar() {
                 </motion.a>
                 <motion.a
                   href="#oem"
-                  className="text-white hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
+                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -196,7 +196,7 @@ export default function Navbar() {
                 </motion.a>
                 <motion.a
                   href="#products"
-                  className="text-white hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
+                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -207,7 +207,7 @@ export default function Navbar() {
                 </motion.a>
                 <motion.a
                   href="#testimonials"
-                  className="text-white hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
+                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
                   onClick={() => setIsMenuOpen(false)}
                   initial={{ x: -20, opacity: 0 }}
                   animate={{ x: 0, opacity: 1 }}
@@ -218,7 +218,7 @@ export default function Navbar() {
                 </motion.a>
                 <Link href="/blog">
                   <motion.div
-                    className="text-white hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
+                    className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
                     onClick={() => setIsMenuOpen(false)}
                     initial={{ x: -20, opacity: 0 }}
                     animate={{ x: 0, opacity: 1 }}
