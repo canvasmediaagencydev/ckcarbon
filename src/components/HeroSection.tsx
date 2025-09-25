@@ -60,7 +60,7 @@ export default function HeroSection() {
               animate={isInView ? "visible" : "hidden"}
             >
               <motion.h1
-                className="text-4xl sm:text-5xl lg:text-6xl font-bold leading-tight"
+                className="text-4xl sm:text-5xl lg:text-6xl mt-9 md:mt-0 font-bold leading-tight"
                 initial={{ opacity: 0, y: -50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
                 transition={{ duration: 0.8, delay: 0.4 }}

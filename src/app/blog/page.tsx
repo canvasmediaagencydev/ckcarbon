@@ -104,37 +104,37 @@ export default function BlogPage() {
       {/* Hero Section */}
       <motion.section
         ref={ref}
-        className="relative pt-32 pb-24 bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white overflow-hidden"
+        className="relative pt-20 sm:pt-32 pb-16 sm:pb-24 bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white overflow-hidden"
         initial="hidden"
         animate={isInView ? "visible" : "hidden"}
       >
         {/* Background Pattern */}
         <div className="absolute inset-0 opacity-10">
-          <div className="absolute top-20 left-10 w-72 h-72 bg-white rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
-          <div className="absolute top-40 right-10 w-72 h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
-          <div className="absolute -bottom-32 left-20 w-72 h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
+          <div className="absolute top-10 sm:top-20 left-5 sm:left-10 w-32 h-32 sm:w-72 sm:h-72 bg-white rounded-full mix-blend-multiply filter blur-xl animate-pulse"></div>
+          <div className="absolute top-20 sm:top-40 right-5 sm:right-10 w-32 h-32 sm:w-72 sm:h-72 bg-green-200 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-1000"></div>
+          <div className="absolute -bottom-16 sm:-bottom-32 left-10 sm:left-20 w-32 h-32 sm:w-72 sm:h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
         </div>
 
         <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <motion.div
-              className="flex items-center justify-center mb-6"
+              className="flex items-center justify-center mb-4 sm:mb-6"
               variants={fadeInVariants}
             >
-              <div className="w-12 h-1 bg-green-400 rounded-full mr-4"></div>
-              <span className="text-green-200 text-lg font-medium tracking-wider uppercase">Insights & Innovation</span>
-              <div className="w-12 h-1 bg-green-400 rounded-full ml-4"></div>
+              <div className="w-8 sm:w-12 h-1 bg-green-400 rounded-full mr-3 sm:mr-4"></div>
+              <span className="text-green-200 text-sm sm:text-lg font-medium tracking-wider uppercase">Insights & Innovation</span>
+              <div className="w-8 sm:w-12 h-1 bg-green-400 rounded-full ml-3 sm:ml-4"></div>
             </motion.div>
 
             <motion.h1
-              className="text-5xl lg:text-7xl font-bold mb-6 leading-tight"
+              className="text-4xl sm:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight"
               variants={fadeInVariants}
             >
               Our Blog
             </motion.h1>
 
             <motion.p
-              className="text-xl lg:text-2xl text-green-100 mb-8 leading-relaxed max-w-3xl mx-auto"
+              className="text-lg sm:text-xl lg:text-2xl text-green-100 mb-6 sm:mb-8 leading-relaxed max-w-3xl mx-auto px-4"
               variants={fadeInVariants}
             >
               Discover the latest insights in water treatment technology, sustainable carbon production, and industry innovations that are shaping the future of environmental solutions.
@@ -142,20 +142,20 @@ export default function BlogPage() {
 
             {/* Stats */}
             <motion.div
-              className="grid grid-cols-1 md:grid-cols-3 gap-8 max-w-2xl mx-auto"
+              className="grid grid-cols-1 sm:grid-cols-3 gap-4 sm:gap-8 max-w-2xl mx-auto"
               variants={staggerContainer}
             >
               <motion.div className="text-center" variants={cardVariants}>
-                <div className="text-3xl font-bold text-green-200 mb-1">{blogPosts.length}</div>
-                <div className="text-green-100 text-sm uppercase tracking-wide">Articles</div>
+                <div className="text-2xl sm:text-3xl font-bold text-green-200 mb-1">{blogPosts.length}</div>
+                <div className="text-green-100 text-xs sm:text-sm uppercase tracking-wide">Articles</div>
               </motion.div>
               <motion.div className="text-center" variants={cardVariants}>
-                <div className="text-3xl font-bold text-green-200 mb-1">{categories.length}</div>
-                <div className="text-green-100 text-sm uppercase tracking-wide">Categories</div>
+                <div className="text-2xl sm:text-3xl font-bold text-green-200 mb-1">{categories.length}</div>
+                <div className="text-green-100 text-xs sm:text-sm uppercase tracking-wide">Categories</div>
               </motion.div>
               <motion.div className="text-center" variants={cardVariants}>
-                <div className="text-3xl font-bold text-green-200 mb-1">5+</div>
-                <div className="text-green-100 text-sm uppercase tracking-wide">Years Experience</div>
+                <div className="text-2xl sm:text-3xl font-bold text-green-200 mb-1">5+</div>
+                <div className="text-green-100 text-xs sm:text-sm uppercase tracking-wide">Years Experience</div>
               </motion.div>
             </motion.div>
           </div>
@@ -163,18 +163,18 @@ export default function BlogPage() {
       </motion.section>
 
       {/* Search and Filters Section */}
-      <section className="py-16 bg-white">
+      <section className="py-8 sm:py-16 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <motion.div
-            className="bg-gray-50 rounded-3xl p-8 shadow-lg"
+            className="bg-gray-50 rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-lg"
             initial={{ opacity: 0, y: 20 }}
             animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="flex flex-col lg:flex-row gap-6 items-center justify-between">
+            <div className="flex flex-col lg:flex-row gap-4 sm:gap-6 items-center justify-between">
               {/* Search Bar */}
-              <div className="relative flex-1 max-w-md">
-                <FaSearch className="absolute left-4 top-1/2 transform -translate-y-1/2 text-gray-400" />
+              <div className="relative flex-1 w-full lg:max-w-md">
+                <FaSearch className="absolute left-3 sm:left-4 top-1/2 transform -translate-y-1/2 text-gray-400 w-4 h-4 sm:w-5 sm:h-5" />
                 <input
                   type="text"
                   placeholder="Search articles..."
@@ -183,19 +183,19 @@ export default function BlogPage() {
                     setSearchTerm(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="w-full pl-12 pr-4 py-4 border-0 rounded-2xl bg-white shadow-md focus:ring-2 focus:ring-green-500 focus:shadow-lg outline-none transition-all text-lg"
+                  className="w-full pl-10 sm:pl-12 pr-3 sm:pr-4 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl bg-white shadow-md focus:ring-2 focus:ring-green-500 focus:shadow-lg outline-none transition-all text-base sm:text-lg"
                 />
               </div>
 
               {/* Category Filter */}
-              <div className="flex items-center gap-4">
+              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full lg:w-auto">
                 <select
                   value={selectedCategory}
                   onChange={(e) => {
                     setSelectedCategory(e.target.value);
                     setCurrentPage(1);
                   }}
-                  className="px-6 py-4 border-0 rounded-2xl bg-white shadow-md focus:ring-2 focus:ring-green-500 focus:shadow-lg outline-none transition-all text-lg"
+                  className="px-4 sm:px-6 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl bg-white shadow-md focus:ring-2 focus:ring-green-500 focus:shadow-lg outline-none transition-all text-base sm:text-lg"
                 >
                   <option value="">All Categories</option>
                   {categories.map(category => (
@@ -208,7 +208,7 @@ export default function BlogPage() {
                 {(searchTerm || selectedCategory) && (
                   <button
                     onClick={resetFilters}
-                    className="px-6 py-4 text-green-600 hover:text-white hover:bg-green-600 rounded-2xl border border-green-200 hover:border-green-600 transition-all duration-300 font-medium"
+                    className="px-4 sm:px-6 py-3 sm:py-4 text-green-600 hover:text-white hover:bg-green-600 rounded-xl sm:rounded-2xl border border-green-200 hover:border-green-600 transition-all duration-300 font-medium text-sm sm:text-base"
                   >
                     Clear Filters
                   </button>

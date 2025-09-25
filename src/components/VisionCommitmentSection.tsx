@@ -54,10 +54,10 @@ export default function VisionCommitmentSection() {
           variants={fadeInVariants}
         >
           <motion.h2
-            className="text-3xl lg:text-4xl font-bold text-white mb-12"
+            className="text-2xl lg:text-4xl font-bold text-white mb-12"
             variants={fadeInVariants}
           >
-            Vision <span className="text-gray-400 mx-4">|</span> <span className="text-green-400">วิสัยทัศน์</span>
+            Vision <span className="text-gray-400 md:mx-4 mx-2">|</span> <span className="text-green-400">วิสัยทัศน์</span>
           </motion.h2>
 
           {/* Quote Card */}
@@ -118,10 +118,10 @@ export default function VisionCommitmentSection() {
           variants={fadeInVariants}
         >
           <motion.h2
-            className="text-3xl lg:text-4xl font-bold text-white mb-16"
+            className="text-2xl lg:text-4xl font-bold text-white mb-16"
             variants={fadeInVariants}
           >
-            Commitment <span className="text-gray-400 mx-4">|</span> <span className="text-green-400">ความมุ่งมั่น</span>
+            Commitment <span className="text-gray-400 md:mx-4 mx-2">|</span> <span className="text-green-400">ความมุ่งมั่น</span>
           </motion.h2>
 
           {/* Commitment Circles */}

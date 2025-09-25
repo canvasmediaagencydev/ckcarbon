@@ -28,7 +28,7 @@ export default function AboutUsSection() {
       <div className="absolute inset-0">
         {/* Palm Leaves */}
         <div
-          className="absolute -top-100 right-0 w-300 h-300 bg-contain bg-no-repeat opacity-20"
+          className="absolute -top-100 right-0 w-300 h-300 bg-contain bg-no-repeat md:opacity-20 opacity-10"
           style={{
             backgroundImage: "url('/image/palm-leaves-white-background.svg')",
             backgroundPosition: 'top right'

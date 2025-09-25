@@ -97,15 +97,15 @@ export default function BlogSection() {
       <div className="absolute top-0 left-0 w-full h-px bg-gray-300"></div>
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="flex items-start gap-16">
+        <div className="flex flex-col lg:flex-row lg:items-start gap-8 lg:gap-16">
           {/* Left Side - Blog Title */}
           <motion.div
-            className="flex-shrink-0"
+            className="flex-shrink-0 text-center lg:text-left"
             variants={fadeInVariants}
           >
-            <div className="flex items-center space-x-4">
+            <div className="flex items-center justify-center lg:justify-start space-x-4">
               <div className="w-6 h-6 bg-green-600 rounded-full"></div>
-              <h2 className="text-6xl font-bold text-gray-900">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-gray-900">
                 Blog
               </h2>
             </div>
@@ -127,7 +127,7 @@ export default function BlogSection() {
                   {displayedBlogPosts.map((post, index) => (
                     <Link key={post.id} href={`/blog/${post.slug}`}>
                       <motion.article
-                        className="group flex gap-6 items-center bg-white hover:bg-gray-50 rounded-2xl p-6 transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 hover:shadow-lg"
+                        className="group flex flex-col sm:flex-row gap-4 sm:gap-6 items-start sm:items-center bg-white hover:bg-gray-50 rounded-2xl p-4 sm:p-6 transition-all duration-300 cursor-pointer border border-gray-100 hover:border-green-200 hover:shadow-lg"
                         initial={{ opacity: 0, x: 50 }}
                         animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 50 }}
                         transition={{
@@ -139,7 +139,7 @@ export default function BlogSection() {
                       >
                       {/* Blog Image */}
                       <motion.div
-                        className="relative w-48 h-36 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0"
+                        className="relative w-full sm:w-48 h-48 sm:h-36 rounded-xl overflow-hidden bg-gray-100 flex-shrink-0"
                         whileHover={{ scale: 1.05 }}
                         transition={{ duration: 0.3 }}
                       >
@@ -148,7 +148,7 @@ export default function BlogSection() {
                           alt={post.title}
                           fill
                           className="object-cover group-hover:scale-110 transition-transform duration-500"
-                          sizes="192px"
+                          sizes="(max-width: 640px) 100vw, 192px"
                         />
 
                         {/* Category Badge */}
@@ -160,20 +160,20 @@ export default function BlogSection() {
                       </motion.div>
 
                       {/* Blog Content */}
-                      <div className="flex-1 space-y-3">
+                      <div className="flex-1 space-y-3 w-full sm:w-auto">
                         <motion.h3
-                          className="text-xl font-bold text-green-600 group-hover:text-green-700 transition-colors"
+                          className="text-lg sm:text-xl font-bold text-green-600 group-hover:text-green-700 transition-colors"
                           whileHover={{ x: 5 }}
                         >
                           {post.title}
                         </motion.h3>
 
-                        <p className="text-gray-600 leading-relaxed text-sm">
+                        <p className="text-gray-600 leading-relaxed text-sm sm:text-base line-clamp-3">
                           {post.excerpt || "No excerpt available."}
                         </p>
 
                         {/* Meta Info */}
-                        <div className="flex items-center space-x-4 text-xs text-gray-500">
+                        <div className="flex flex-wrap items-center gap-2 sm:gap-4 text-xs text-gray-500">
                           <div className="flex items-center space-x-1">
                             <FaUser className="w-3 h-3" />
                             <span>CKCarbon Team</span>
@@ -186,7 +186,7 @@ export default function BlogSection() {
 
                         {/* Read More Button */}
                         <motion.button
-                          className="inline-flex items-center px-4 py-2 border border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-all duration-300 text-sm font-medium group-hover:scale-105"
+                          className="inline-flex items-center px-3 py-2 sm:px-4 border border-green-600 text-green-600 rounded-full hover:bg-green-600 hover:text-white transition-all duration-300 text-xs sm:text-sm font-medium group-hover:scale-105"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >

@@ -83,73 +83,117 @@ export default function OEMServiceSection() {
           className="relative max-w-6xl mx-auto"
           variants={fadeInVariants}
         >
-          {/* Navigation Arrows */}
-          <motion.button
-            onClick={prevSlide}
-            className="absolute left-0 top-1/2 transform -translate-y-1/2 -translate-x-6 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-all hover:shadow-xl"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FaArrowLeft className="w-4 h-4" />
-          </motion.button>
-
-          <motion.button
-            onClick={nextSlide}
-            className="absolute right-0 top-1/2 transform -translate-y-1/2 translate-x-6 z-10 w-12 h-12 bg-white rounded-full shadow-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-all hover:shadow-xl"
-            whileHover={{ scale: 1.1 }}
-            whileTap={{ scale: 0.9 }}
-          >
-            <FaArrowRight className="w-4 h-4" />
-          </motion.button>
-
-          {/* Services Cards Container */}
-          <div className="overflow-hidden rounded-3xl bg-white shadow-lg">
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-0">
-              {services.map((service, index) => (
-                <motion.div
-                  key={index}
-                  className="bg-gray-50 p-8 text-center border-r border-gray-200 last:border-r-0 hover:bg-white transition-colors group"
-                  initial={{ opacity: 0, y: 50 }}
-                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
-                  transition={{
-                    duration: 0.6,
-                    delay: index * 0.1,
-                    ease: "easeOut"
-                  }}
-                  whileHover={{ y: -5 }}
-                >
-                  {/* Icon Container */}
+          {/* Desktop View - Show all cards in grid */}
+          <div className="hidden lg:block">
+            <div className="overflow-hidden rounded-3xl bg-white shadow-lg">
+              <div className="grid grid-cols-5 gap-0">
+                {services.map((service, index) => (
                   <motion.div
-                    className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:shadow-md transition-shadow"
-                    whileHover={{ rotate: 15, scale: 1.1 }}
-                    transition={{ duration: 0.3 }}
+                    key={index}
+                    className="bg-gray-50 p-6 text-center border-r border-gray-200 last:border-r-0 hover:bg-white transition-colors group"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }}
+                    whileHover={{ y: -5 }}
                   >
-                    {service.icon}
-                  </motion.div>
+                    {/* Icon Container */}
+                    <motion.div
+                      className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:shadow-md transition-shadow"
+                      whileHover={{ rotate: 15, scale: 1.1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      <FaBox className="w-6 h-6 text-green-600" />
+                    </motion.div>
 
-                  {/* Service Info */}
-                  <div>
-                    <h3 className="text-sm font-semibold text-gray-900 leading-tight">
-                      {service.title}
-                    </h3>
-                  </div>
-                </motion.div>
-              ))}
+                    {/* Service Info */}
+                    <div>
+                      <h3 className="text-xs font-semibold text-gray-900 leading-tight">
+                        {service.title}
+                      </h3>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Dots Indicator */}
-          <div className="flex justify-center mt-8 space-x-2">
-            {services.map((_, index) => (
-              <motion.button
-                key={index}
-                onClick={() => setCurrentSlide(index)}
-                className={`w-2 h-2 rounded-full transition-colors ${index === currentSlide ? 'bg-green-600' : 'bg-gray-300'
+          {/* Mobile/Tablet Carousel View */}
+          <div className="lg:hidden relative">
+            {/* Navigation Arrows */}
+            <motion.button
+              onClick={prevSlide}
+              className="absolute left-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-all"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <FaArrowLeft className="w-3 h-3" />
+            </motion.button>
+
+            <motion.button
+              onClick={nextSlide}
+              className="absolute right-4 top-1/2 transform -translate-y-1/2 z-10 w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-green-600 hover:bg-green-50 transition-all"
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.9 }}
+            >
+              <FaArrowRight className="w-3 h-3" />
+            </motion.button>
+
+            {/* Services Cards Container */}
+            <div className="overflow-hidden rounded-3xl bg-white shadow-lg mx-8">
+              <div
+                className="flex transition-transform duration-300 ease-in-out"
+                style={{ transform: `translateX(-${currentSlide * 100}%)` }}
+              >
+                {services.map((service, index) => (
+                  <motion.div
+                    key={index}
+                    className="w-full flex-shrink-0 bg-gray-50 p-8 text-center hover:bg-white transition-colors group"
+                    initial={{ opacity: 0, y: 50 }}
+                    animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
+                    transition={{
+                      duration: 0.6,
+                      delay: index * 0.1,
+                      ease: "easeOut"
+                    }}
+                  >
+                    {/* Icon Container */}
+                    <motion.div
+                      className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:shadow-md transition-shadow"
+                      whileHover={{ rotate: 15, scale: 1.1 }}
+                      transition={{ duration: 0.3 }}
+                    >
+                      {service.icon}
+                    </motion.div>
+
+                    {/* Service Info */}
+                    <div>
+                      <h3 className="text-base font-semibold text-gray-900 leading-tight">
+                        {service.title}
+                      </h3>
+                    </div>
+                  </motion.div>
+                ))}
+              </div>
+            </div>
+
+            {/* Dots Indicator for Mobile */}
+            <div className="flex justify-center mt-6 space-x-2">
+              {services.map((_, index) => (
+                <motion.button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`w-2 h-2 rounded-full transition-colors ${
+                    index === currentSlide ? 'bg-green-600' : 'bg-gray-300'
                   }`}
-                whileHover={{ scale: 1.2 }}
-                whileTap={{ scale: 0.9 }}
-              />
-            ))}
+                  whileHover={{ scale: 1.2 }}
+                  whileTap={{ scale: 0.9 }}
+                />
+              ))}
+            </div>
           </div>
         </motion.div>
 
