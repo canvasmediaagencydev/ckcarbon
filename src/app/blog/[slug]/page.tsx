@@ -154,7 +154,7 @@ export default async function BlogPostPage({ params }: Props) {
 
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           {/* Back Button */}
-          <div className="mb-6 sm:mb-8">
+          <div className="mb-6 mt-10 sm:mb-8">
             <Link
               href="/blog"
               className="inline-flex items-center text-green-100 hover:text-white transition-all duration-300 group"

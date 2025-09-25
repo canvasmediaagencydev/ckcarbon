@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
+import Footer from "../components/Footer.tsx"
 
 export const metadata: Metadata = {
   title: "CKCarbon",
@@ -20,6 +21,7 @@ export default function RootLayout({
       </head>
       <body className="noto-sans-thai">
         {children}
+      <Footer />
       </body>
     </html>
   );

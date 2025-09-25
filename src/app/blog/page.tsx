@@ -115,7 +115,7 @@ export default function BlogPage() {
           <div className="absolute -bottom-16 sm:-bottom-32 left-10 sm:left-20 w-32 h-32 sm:w-72 sm:h-72 bg-green-300 rounded-full mix-blend-multiply filter blur-xl animate-pulse delay-2000"></div>
         </div>
 
-        <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="relative z-10 max-w-7xl mx-auto px-4 md:pt-0 pt-20 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             <motion.div
               className="flex items-center justify-center mb-4 sm:mb-6"
