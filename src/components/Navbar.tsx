@@ -41,7 +41,10 @@ export default function Navbar() {
             <div className="flex-shrink-0">
               <div className={`text-2xl font-bold transition-colors duration-300 ${
                 isScrolled ? 'text-green-600' : 'text-white'
-              }`}>
+              }`}
+              //clickcing go to home page 
+              onClick={() => window.location.href = "/"}
+              >
                 LOGO
                 <br />
                 <span className={`transition-colors duration-300 ${
