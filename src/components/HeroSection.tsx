@@ -45,22 +45,22 @@ export default function HeroSection() {
 
       <div className="absolute inset-0 bg-black/20" />
 
-      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-32">
-        <div className="grid lg:grid-cols-2 gap-12 items-center min-h-[80vh]">
+      <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 sm:py-16 lg:py-32">
+        <div className="grid lg:grid-cols-2 gap-8 lg:gap-12 items-center min-h-[80vh]">
           <motion.div
-            className="text-white space-y-8"
+            className="text-white space-y-6 sm:space-y-8"
             initial={{ opacity: 0, x: -100 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: -100 }}
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <motion.div
-              className="space-y-4"
+              className="space-y-3 sm:space-y-4"
               variants={itemVariants}
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
             >
               <motion.h1
-                className="text-4xl sm:text-5xl lg:text-6xl mt-9 md:mt-0 font-bold leading-tight"
+                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-16 sm:mt-12 md:mt-0 font-bold leading-tight"
                 initial={{ opacity: 0, y: -50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
                 transition={{ duration: 0.8, delay: 0.4 }}
@@ -72,7 +72,7 @@ export default function HeroSection() {
             </motion.div>
 
             <motion.p
-              className="text-lg sm:text-xl text-green-100 max-w-2xl leading-relaxed"
+              className="text-base sm:text-lg md:text-xl text-green-100 max-w-2xl leading-relaxed"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.8, delay: 0.6 }}
@@ -84,20 +84,20 @@ export default function HeroSection() {
             </motion.p>
 
             <motion.div
-              className="flex flex-col sm:flex-row gap-4 pt-4"
+              className="flex flex-col sm:flex-row gap-3 sm:gap-4 pt-2 sm:pt-4"
               initial={{ opacity: 0, y: 30 }}
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.8, delay: 0.8 }}
             >
               <motion.button
-                className="bg-white text-green-700 font-semibold px-8 py-3 rounded-full hover:bg-green-50 transition-colors shadow-lg"
+                className="bg-white text-green-700 font-semibold px-6 sm:px-8 py-3 rounded-full hover:bg-green-50 transition-colors shadow-lg text-sm sm:text-base"
                 whileHover={{ scale: 1.05, boxShadow: "0 10px 25px rgba(0,0,0,0.2)" }}
                 whileTap={{ scale: 0.95 }}
               >
                 Get Started
               </motion.button>
               <motion.button
-                className="border-2 border-white text-white font-semibold px-8 py-3 rounded-full hover:bg-white hover:text-green-700 transition-colors"
+                className="border-2 border-white text-white font-semibold px-6 sm:px-8 py-3 rounded-full hover:bg-white hover:text-green-700 transition-colors text-sm sm:text-base"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
@@ -107,14 +107,14 @@ export default function HeroSection() {
           </motion.div>
 
           <motion.div
-            className="relative lg:ml-8"
+            className="relative lg:ml-8 mt-8 lg:mt-0"
             initial={{ opacity: 0, x: 100 }}
             animate={isInView ? { opacity: 1, x: 0 } : { opacity: 0, x: 100 }}
             transition={{ duration: 0.8, delay: 0.4 }}
           >
             <div className="relative">
               <motion.div
-                className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 rounded-2xl transform rotate-0 scale-105 opacity-20"
+                className="absolute inset-0 bg-gradient-to-r from-green-400 to-green-600 rounded-xl sm:rounded-2xl transform rotate-0 scale-105 opacity-20"
                 animate={{
                   rotate: [6, 8, 6],
                   scale: [1.05, 1.08, 1.05]
@@ -127,63 +127,63 @@ export default function HeroSection() {
               />
 
               <motion.div
-                className="relative bg-white/10 backdrop-blur-sm rounded-2xl p-8 border border-white/20"
+                className="relative bg-white/10 backdrop-blur-sm rounded-xl sm:rounded-2xl p-6 sm:p-8 border border-white/20"
                 variants={containerVariants}
                 initial="hidden"
                 animate={isInView ? "visible" : "hidden"}
               >
-                <div className="space-y-6">
+                <div className="space-y-4 sm:space-y-6">
                   <motion.div
-                    className="flex items-center space-x-4"
+                    className="flex items-center space-x-3 sm:space-x-4"
                     variants={itemVariants}
                     whileHover={{ x: 10 }}
                   >
                     <motion.div
-                      className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center"
+                      className="w-10 h-10 sm:w-12 sm:h-12 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0"
                       whileHover={{ scale: 1.1, rotate: 360 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <FaCheckCircle className="w-6 h-6 text-green-800" />
+                      <FaCheckCircle className="w-5 h-5 sm:w-6 sm:h-6 text-green-800" />
                     </motion.div>
                     <div>
-                      <h3 className="text-white font-semibold">Carbon Tracking</h3>
-                      <p className="text-green-100 text-sm">Monitor your carbon footprint</p>
+                      <h3 className="text-white font-semibold text-sm sm:text-base">Carbon Tracking</h3>
+                      <p className="text-green-100 text-xs sm:text-sm">Monitor your carbon footprint</p>
                     </div>
                   </motion.div>
 
                   <motion.div
-                    className="flex items-center space-x-4"
+                    className="flex items-center space-x-3 sm:space-x-4"
                     variants={itemVariants}
                     whileHover={{ x: 10 }}
                   >
                     <motion.div
-                      className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center"
+                      className="w-10 h-10 sm:w-12 sm:h-12 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0"
                       whileHover={{ scale: 1.1, rotate: 360 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <FaChartBar className="w-6 h-6 text-green-800" />
+                      <FaChartBar className="w-5 h-5 sm:w-6 sm:h-6 text-green-800" />
                     </motion.div>
                     <div>
-                      <h3 className="text-white font-semibold">Smart Analytics</h3>
-                      <p className="text-green-100 text-sm">Data-driven insights</p>
+                      <h3 className="text-white font-semibold text-sm sm:text-base">Smart Analytics</h3>
+                      <p className="text-green-100 text-xs sm:text-sm">Data-driven insights</p>
                     </div>
                   </motion.div>
 
                   <motion.div
-                    className="flex items-center space-x-4"
+                    className="flex items-center space-x-3 sm:space-x-4"
                     variants={itemVariants}
                     whileHover={{ x: 10 }}
                   >
                     <motion.div
-                      className="w-12 h-12 bg-green-400 rounded-full flex items-center justify-center"
+                      className="w-10 h-10 sm:w-12 sm:h-12 bg-green-400 rounded-full flex items-center justify-center flex-shrink-0"
                       whileHover={{ scale: 1.1, rotate: 360 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <FaLeaf className="w-6 h-6 text-green-800" />
+                      <FaLeaf className="w-5 h-5 sm:w-6 sm:h-6 text-green-800" />
                     </motion.div>
                     <div>
-                      <h3 className="text-white font-semibold">Eco Solutions</h3>
-                      <p className="text-green-100 text-sm">Sustainable recommendations</p>
+                      <h3 className="text-white font-semibold text-sm sm:text-base">Eco Solutions</h3>
+                      <p className="text-green-100 text-xs sm:text-sm">Sustainable recommendations</p>
                     </div>
                   </motion.div>
                 </div>
@@ -194,7 +194,7 @@ export default function HeroSection() {
       </div>
 
       <motion.div
-        className="absolute bottom-20 left-1/2 transform -translate-x-1/2"
+        className="absolute bottom-12 sm:bottom-20 left-1/2 transform -translate-x-1/2"
         animate={{
           y: [0, -10, 0]
         }}
@@ -208,7 +208,7 @@ export default function HeroSection() {
           whileHover={{ scale: 1.2 }}
           whileTap={{ scale: 0.9 }}
         >
-          <FaChevronDown className="w-6 h-6 text-white" />
+          <FaChevronDown className="w-5 h-5 sm:w-6 sm:h-6 text-white" />
         </motion.div>
       </motion.div>
     </motion.section>

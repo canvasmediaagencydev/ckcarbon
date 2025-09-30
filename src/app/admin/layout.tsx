@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FaBlog, FaList, FaPlus, FaTags } from 'react-icons/fa'
+import { FaBlog, FaList, FaPlus, FaTags, FaFlask } from 'react-icons/fa'
 
 export default function AdminLayout({
   children,
@@ -58,6 +58,15 @@ export default function AdminLayout({
                 >
                   <FaTags size={18} />
                   <span>Categories</span>
+                </Link>
+              </li>
+              <li className="border-t border-gray-200 pt-2 mt-2">
+                <Link
+                  href="/admin/test"
+                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"
+                >
+                  <FaFlask size={18} />
+                  <span>Supabase Test</span>
                 </Link>
               </li>
             </ul>

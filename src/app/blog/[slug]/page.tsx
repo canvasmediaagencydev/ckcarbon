@@ -7,12 +7,13 @@ import Navbar from '@/components/Navbar';
 import ShareButtons from '@/components/ShareButtons';
 
 type Props = {
-  params: { slug: string }
+  params: Promise<{ slug: string }>
 }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
-    const blog = await BlogService.getBlogBySlug(params.slug);
+    const { slug } = await params
+    const blog = await BlogService.getBlogBySlug(slug);
 
     if (!blog) {
       return {
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     const baseUrl = 'https://ckcarbon.vercel.app';
-    const url = `${baseUrl}/blog/${params.slug}`;
+    const url = `${baseUrl}/blog/${slug}`;
 
     return {
       title: `${blog.title} | CK Carbon`,
@@ -58,12 +59,13 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export default async function BlogPostPage({ params }: Props) {
+  const { slug } = await params
   let blog: Blog | null = null;
   let loading = false;
   let error: string | null = null;
 
   try {
-    blog = await BlogService.getBlogBySlug(params.slug);
+    blog = await BlogService.getBlogBySlug(slug);
     if (!blog) {
       error = 'Blog post not found';
     }
@@ -80,7 +82,7 @@ export default async function BlogPostPage({ params }: Props) {
     });
   };
 
-  const shareUrl = `https://ckcarbon.vercel.app/blog/${params.slug}`;
+  const shareUrl = `https://ckcarbon.vercel.app/blog/${slug}`;
   const shareTitle = blog?.title || '';
 
   // Extract text from TipTap content

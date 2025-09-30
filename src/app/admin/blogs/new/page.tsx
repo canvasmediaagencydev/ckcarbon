@@ -4,12 +4,16 @@ import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
 import { BlogService, CategoryService, Category } from '@/lib/blog'
 import TipTapEditor from '@/components/TipTapEditor'
-import { FaSave, FaEye } from 'react-icons/fa'
+import { LocalImage, LocalDraftManager } from '@/lib/local-draft'
+import { StorageService } from '@/lib/storage'
+import { FaSave, FaEye, FaImages } from 'react-icons/fa'
 
 export default function NewBlogPage() {
   const router = useRouter()
   const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
+  const [localImages, setLocalImages] = useState<LocalImage[]>([])
+  const [uploadingImages, setUploadingImages] = useState(false)
   const [formData, setFormData] = useState({
     title: '',
     slug: '',
@@ -68,6 +72,33 @@ export default function NewBlogPage() {
     }))
   }
 
+  // Upload local images to Supabase and get URL mapping
+  const uploadLocalImages = async (blogId: string): Promise<Record<string, string>> => {
+    if (localImages.length === 0) return {}
+
+    setUploadingImages(true)
+    const imageUrlMap: Record<string, string> = {}
+
+    try {
+      // Upload all images concurrently
+      const uploadPromises = localImages.map(async (image) => {
+        const result = await StorageService.uploadImage(image.file, blogId)
+        if (result.success && result.url) {
+          imageUrlMap[image.placeholder] = result.url
+        }
+        return result
+      })
+
+      await Promise.all(uploadPromises)
+      return imageUrlMap
+    } catch (error) {
+      console.error('Error uploading images:', error)
+      throw error
+    } finally {
+      setUploadingImages(false)
+    }
+  }
+
   const handleSubmit = async (status: 'draft' | 'published') => {
     if (!formData.title || !formData.content) {
       alert('Please fill in the title and content')
@@ -76,15 +107,39 @@ export default function NewBlogPage() {
 
     try {
       setLoading(true)
-      await BlogService.createBlog({
+
+      // Step 1: Create blog post
+      const blog = await BlogService.createBlog({
         ...formData,
         status
       })
 
+      // Step 2: Upload local images if any
+      let finalContent: any = formData.content
+      if (localImages.length > 0) {
+        const imageUrlMap = await uploadLocalImages(blog.id)
+
+        // Step 3: Replace placeholders in content with real URLs
+        const draftManager = LocalDraftManager.getInstance()
+        finalContent = draftManager.replacePlaceholdersInContent(formData.content, imageUrlMap, localImages)
+
+        // Step 4: Update blog with final content
+        await BlogService.updateBlog(blog.id, {
+          content: finalContent
+        })
+      }
+
+      // Cleanup local images
+      localImages.forEach(image => {
+        if (image.preview) {
+          LocalDraftManager.revokePreviewUrl(image.preview)
+        }
+      })
+
       router.push('/admin/blogs')
     } catch (error) {
-      console.error('Error creating blog:', error)
-      alert('Error creating blog post')
+      console.error('Error saving blog:', error)
+      alert('Error saving blog post')
     } finally {
       setLoading(false)
     }
@@ -98,22 +153,28 @@ export default function NewBlogPage() {
           <h1 className="text-3xl font-bold text-gray-900">New Blog Post</h1>
           <p className="text-gray-600 mt-2">Create a new blog post</p>
         </div>
-        <div className="flex space-x-3">
+        <div className="flex items-center space-x-3">
+          {localImages.length > 0 && (
+            <span className="flex items-center text-sm text-gray-600">
+              <FaImages size={14} className="mr-1" />
+              {localImages.length} local image{localImages.length > 1 ? 's' : ''}
+            </span>
+          )}
           <button
             onClick={() => handleSubmit('draft')}
-            disabled={loading}
+            disabled={loading || uploadingImages}
             className="flex items-center space-x-2 bg-gray-600 text-white px-4 py-2 rounded-lg hover:bg-gray-700 disabled:opacity-50"
           >
             <FaSave size={16} />
-            <span>Save Draft</span>
+            <span>{uploadingImages ? 'Uploading...' : 'Save Draft'}</span>
           </button>
           <button
             onClick={() => handleSubmit('published')}
-            disabled={loading}
+            disabled={loading || uploadingImages}
             className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
           >
             <FaEye size={16} />
-            <span>Publish</span>
+            <span>{uploadingImages ? 'Uploading...' : 'Publish'}</span>
           </button>
         </div>
       </div>
@@ -176,6 +237,8 @@ export default function NewBlogPage() {
             <TipTapEditor
               content={formData.content}
               onChange={(content) => setFormData(prev => ({ ...prev, content }))}
+              mode="local"
+              onLocalImagesChange={setLocalImages}
             />
           </div>
         </div>

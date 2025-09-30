@@ -27,12 +27,17 @@ export default function BlogsListPage() {
   }
 
   const handleDelete = async (id: string) => {
-    if (confirm('Are you sure you want to delete this blog post?')) {
+    if (confirm('Are you sure you want to delete this blog post?\n\nThis will also delete all associated images and cannot be undone.')) {
       try {
+        setLoading(true)
         await BlogService.deleteBlog(id)
-        fetchBlogs()
+        await fetchBlogs() // Refresh the list
+        alert('Blog post and associated images deleted successfully')
       } catch (error) {
         console.error('Error deleting blog:', error)
+        alert('Failed to delete blog post. Please try again.')
+      } finally {
+        setLoading(false)
       }
     }
   }

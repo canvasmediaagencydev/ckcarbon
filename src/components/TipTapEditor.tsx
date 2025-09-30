@@ -10,6 +10,9 @@ import CharacterCount from '@tiptap/extension-character-count'
 import Underline from '@tiptap/extension-underline'
 import { Table, TableRow, TableHeader, TableCell } from '@tiptap/extension-table'
 import { useCallback, useEffect, useState } from 'react'
+import ImageUploader from './ImageUploader'
+import { LocalImage, LocalDraftManager } from '@/lib/local-draft'
+import { LocalImageGallery } from './LocalImagePreview'
 import {
   FaBold,
   FaItalic,
@@ -35,19 +38,31 @@ interface TipTapEditorProps {
   onChange: (content: any) => void
   placeholder?: string
   editable?: boolean
+  blogId?: string // เพิ่ม blogId สำหรับการอัพโหลดรูป
+  onImageUploadRequested?: () => Promise<string | null> // callback สำหรับสร้าง blog ID เมื่อต้องการอัพโหลดรูป
+  mode?: 'local' | 'upload' // local = preview mode, upload = immediate upload
+  onLocalImagesChange?: (images: LocalImage[]) => void // callback สำหรับ local images
 }
 
 export default function TipTapEditor({
   content,
   onChange,
   placeholder = 'Start writing your blog post...',
-  editable = true
+  editable = true,
+  blogId,
+  onImageUploadRequested,
+  mode = 'local',
+  onLocalImagesChange
 }: TipTapEditorProps) {
+  const [showImageUploader, setShowImageUploader] = useState(false)
   const [showImageDialog, setShowImageDialog] = useState(false)
   const [showLinkDialog, setShowLinkDialog] = useState(false)
   const [imageUrl, setImageUrl] = useState('')
   const [linkUrl, setLinkUrl] = useState('')
   const [linkText, setLinkText] = useState('')
+  const [currentBlogId, setCurrentBlogId] = useState<string | null>(blogId || null)
+  const [localImages, setLocalImages] = useState<LocalImage[]>([])
+  const [showImageGallery, setShowImageGallery] = useState(false)
   const editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -128,9 +143,25 @@ export default function TipTapEditor({
     }
   }, [editor, content])
 
-  const handleAddImage = useCallback(() => {
-    setShowImageDialog(true)
-  }, [])
+  const handleAddImage = useCallback(async () => {
+    if (mode === 'local') {
+      // Local mode: use preview
+      setShowImageUploader(true)
+    } else {
+      // Upload mode: behave like before
+      if (currentBlogId) {
+        setShowImageUploader(true)
+      } else if (onImageUploadRequested) {
+        const newBlogId = await onImageUploadRequested()
+        if (newBlogId) {
+          setCurrentBlogId(newBlogId)
+          setShowImageUploader(true)
+        }
+      } else {
+        setShowImageDialog(true)
+      }
+    }
+  }, [mode, currentBlogId, onImageUploadRequested])
 
   const handleImageSubmit = () => {
     if (imageUrl.trim() && editor) {
@@ -177,6 +208,36 @@ export default function TipTapEditor({
 
   const handleAddTable = () => {
     editor?.chain().focus().insertTable({ rows: 3, cols: 3, withHeaderRow: true }).run()
+  }
+
+  const handleImageUploaded = (url: string) => {
+    if (editor) {
+      editor.chain().focus().setImage({ src: url }).run()
+    }
+  }
+
+  const handleLocalImageSelected = (image: LocalImage) => {
+    if (editor) {
+      // Add image to local images list
+      const updatedImages = [...localImages, image]
+      setLocalImages(updatedImages)
+      onLocalImagesChange?.(updatedImages)
+
+      // Insert the actual blob URL in the editor for preview
+      editor.chain().focus().setImage({
+        src: image.preview
+      }).run()
+    }
+  }
+
+  const handleRemoveLocalImage = (imageId: string) => {
+    const updatedImages = localImages.filter(img => img.id !== imageId)
+    setLocalImages(updatedImages)
+    onLocalImagesChange?.(updatedImages)
+
+    // Find and remove corresponding image from editor content
+    // This would require traversing the editor's JSON structure
+    // For now, we'll leave the placeholder in content
   }
 
   if (!editor) {
@@ -375,6 +436,20 @@ export default function TipTapEditor({
             <FaTable size={14} />
           </button>
 
+          {mode === 'local' && localImages.length > 0 && (
+            <button
+              onClick={() => setShowImageGallery(true)}
+              className="p-2 rounded hover:bg-gray-200 relative"
+              type="button"
+              title="View Local Images"
+            >
+              <FaImage size={14} />
+              <span className="absolute -top-1 -right-1 bg-blue-500 text-white text-xs rounded-full w-4 h-4 flex items-center justify-center">
+                {localImages.length}
+              </span>
+            </button>
+          )}
+
           <div className="w-px h-6 bg-gray-300 mx-1" />
 
           {/* History */}
@@ -484,6 +559,50 @@ export default function TipTapEditor({
                 className="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
               >
                 Add Link
+              </button>
+            </div>
+          </div>
+        </div>
+      )}
+
+      {/* Image Uploader */}
+      {showImageUploader && (
+        <ImageUploader
+          blogId={mode === 'upload' ? (currentBlogId || undefined) : undefined}
+          mode={mode === 'local' ? 'preview' : 'upload'}
+          title={mode === 'local' ? 'Select Image' : 'Upload Image'}
+          onImageUploaded={mode === 'upload' ? handleImageUploaded : undefined}
+          onImageSelected={mode === 'local' ? handleLocalImageSelected : undefined}
+          onClose={() => setShowImageUploader(false)}
+        />
+      )}
+
+      {/* Local Image Gallery */}
+      {showImageGallery && (
+        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
+          <div className="bg-white rounded-lg p-6 w-full max-w-4xl mx-4 max-h-[80vh] overflow-y-auto">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold">Local Images ({localImages.length})</h3>
+              <button
+                onClick={() => setShowImageGallery(false)}
+                className="text-gray-500 hover:text-gray-700"
+              >
+                <FaTimes size={16} />
+              </button>
+            </div>
+
+            <LocalImageGallery
+              images={localImages}
+              onRemoveImage={handleRemoveLocalImage}
+              showUploadButtons={false}
+            />
+
+            <div className="flex justify-end mt-6">
+              <button
+                onClick={() => setShowImageGallery(false)}
+                className="px-4 py-2 bg-gray-600 text-white rounded-lg hover:bg-gray-700"
+              >
+                Close
               </button>
             </div>
           </div>

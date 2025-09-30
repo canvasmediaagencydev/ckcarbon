@@ -1,4 +1,5 @@
 import { supabase } from './supabase'
+import { StorageService } from './storage'
 
 export type Blog = {
   id: string
@@ -224,13 +225,37 @@ export class BlogService {
   }
 
   static async deleteBlog(id: string) {
-    const { error } = await supabase
-      .from('blogs')
-      .delete()
-      .eq('id', id)
+    try {
+      // Delete all images in the blog folder from Storage first
+      console.log(`Deleting images for blog ${id}...`)
+      const storageResult = await StorageService.deleteBlogFolder(id)
 
-    if (error) throw error
-    return true
+      if (!storageResult.success) {
+        console.warn(`Failed to delete images for blog ${id}:`, storageResult.error)
+        // Continue with blog deletion even if image deletion fails
+        // to prevent orphaned database records
+      } else {
+        console.log(`Successfully deleted images for blog ${id}`)
+      }
+
+      // Delete the blog from database
+      console.log(`Deleting blog ${id} from database...`)
+      const { error } = await supabase
+        .from('blogs')
+        .delete()
+        .eq('id', id)
+
+      if (error) {
+        console.error(`Failed to delete blog ${id}:`, error)
+        throw error
+      }
+
+      console.log(`Successfully deleted blog ${id}`)
+      return true
+    } catch (error) {
+      console.error(`Error in deleteBlog for ${id}:`, error)
+      throw error
+    }
   }
 
   static generateSlug(title: string): string {

@@ -47,7 +47,7 @@ export default function ProductsSection() {
     <motion.section
       ref={ref}
       id="products"
-      className="relative py-20 lg:py-32 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden"
+      className="relative py-12 sm:py-16 lg:py-32 bg-gradient-to-br from-gray-50 via-white to-gray-50 overflow-hidden"
       initial="hidden"
       animate={isInView ? "visible" : "hidden"}
     >
@@ -62,22 +62,22 @@ export default function ProductsSection() {
       <div className="relative z-10 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
-          className="text-center mb-20"
+          className="text-center mb-12 sm:mb-16 lg:mb-20"
           variants={fadeInVariants}
         >
           <motion.div
-            className="inline-flex items-center space-x-4 mb-8"
+            className="inline-flex items-center space-x-2 sm:space-x-4 mb-6 sm:mb-8"
             variants={fadeInVariants}
           >
-            <div className="h-1 w-20 bg-gradient-to-r from-transparent to-green-500"></div>
-            <h2 className="text-4xl lg:text-5xl font-bold text-gray-900">
+            <div className="h-1 w-12 sm:w-20 bg-gradient-to-r from-transparent to-green-500"></div>
+            <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
               Our <span className="text-green-600">Products</span>
             </h2>
-            <div className="h-1 w-20 bg-gradient-to-l from-transparent to-green-500"></div>
+            <div className="h-1 w-12 sm:w-20 bg-gradient-to-l from-transparent to-green-500"></div>
           </motion.div>
 
           <motion.p
-            className="text-lg text-gray-600 max-w-2xl mx-auto"
+            className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4"
             variants={fadeInVariants}
           >
             Premium activated carbon solutions for water filtration and purification
@@ -89,11 +89,11 @@ export default function ProductsSection() {
           className="relative"
           variants={fadeInVariants}
         >
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
             {products.map((product, index) => (
               <motion.div
                 key={product.id}
-                className="group relative bg-white rounded-3xl p-8 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
+                className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 transition={{
@@ -108,7 +108,7 @@ export default function ProductsSection() {
 
                 {/* Product Image */}
                 <motion.div
-                  className="relative h-64 mb-8 rounded-2xl overflow-hidden bg-gray-50"
+                  className="relative h-48 sm:h-56 lg:h-64 mb-6 sm:mb-8 rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.4 }}
                 >
@@ -121,22 +121,22 @@ export default function ProductsSection() {
                   />
 
                   {/* Overlay Badge */}
-                  <div className="absolute top-4 right-4 bg-green-600 text-white px-3 py-1 rounded-full text-xs font-semibold">
+                  <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-green-600 text-white px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold">
                     Premium
                   </div>
                 </motion.div>
 
                 {/* Product Info */}
-                <div className="relative z-10 space-y-6">
+                <div className="relative z-10 space-y-4 sm:space-y-6">
                   <div className="text-center">
-                    <h3 className="text-xl font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors">
+                    <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors">
                       {product.name}
                     </h3>
 
                     {/* Price Badge */}
-                    <div className="inline-flex items-center bg-green-100 text-green-700 px-4 py-2 rounded-full text-sm font-medium">
+                    <div className="inline-flex items-center bg-green-100 text-green-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
                       <span>{product.description}</span>
-                      <svg className="w-4 h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
+                      <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
                         <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
                       </svg>
                     </div>
@@ -144,15 +144,15 @@ export default function ProductsSection() {
 
                   {/* Order Button */}
                   <motion.button
-                    className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-4 px-6 rounded-2xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center space-x-3 shadow-lg hover:shadow-xl"
+                    className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg hover:shadow-xl text-sm sm:text-base"
                     whileHover={{
                       scale: 1.02,
                       boxShadow: "0 20px 40px rgba(34, 197, 94, 0.4)"
                     }}
                     whileTap={{ scale: 0.98 }}
                   >
-                    <FaShoppingCart className="w-5 h-5" />
-                    <span className="text-lg">{product.buttonText}</span>
+                    <FaShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+                    <span className="text-base sm:text-lg">{product.buttonText}</span>
                     <motion.div
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}
