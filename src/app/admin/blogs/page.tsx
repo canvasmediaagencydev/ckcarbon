@@ -65,7 +65,7 @@ export default function BlogsListPage() {
         </div>
         <Link
           href="/admin/blogs/new"
-          className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
+          className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
         >
           <FaPlus size={16} />
           <span>New Blog Post</span>
@@ -80,7 +80,7 @@ export default function BlogsListPage() {
             onClick={() => setFilter(status)}
             className={`px-4 py-2 rounded-lg text-sm font-medium ${
               filter === status
-                ? 'bg-blue-600 text-white'
+                ? 'bg-green-600 text-white'
                 : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
             }`}
           >
@@ -101,7 +101,7 @@ export default function BlogsListPage() {
             <p className="text-gray-500">No blog posts found.</p>
             <Link
               href="/admin/blogs/new"
-              className="text-blue-600 hover:text-blue-800 mt-2 inline-block"
+              className="text-green-600 hover:text-green-800 mt-2 inline-block"
             >
               Create your first blog post
             </Link>
@@ -155,7 +155,7 @@ export default function BlogsListPage() {
                         {blog.categories?.map((category) => (
                           <span
                             key={category.id}
-                            className="inline-flex px-2 py-1 text-xs bg-blue-100 text-blue-800 rounded"
+                            className="inline-flex px-2 py-1 text-xs bg-green-100 text-green-800 rounded"
                           >
                             {category.name}
                           </span>
@@ -177,7 +177,7 @@ export default function BlogsListPage() {
                         )}
                         <Link
                           href={`/admin/blogs/${blog.id}/edit`}
-                          className="text-blue-600 hover:text-blue-900"
+                          className="text-green-600 hover:text-blue-900"
                           title="Edit"
                         >
                           <FaEdit size={16} />

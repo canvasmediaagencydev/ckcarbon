@@ -50,7 +50,7 @@ export default function SupabaseTestPage() {
           <button
             onClick={runTests}
             disabled={testing}
-            className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+            className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
           >
             {testing ? (
               <FaSpinner className="animate-spin" size={16} />
@@ -157,9 +157,9 @@ export default function SupabaseTestPage() {
         )}
       </div>
 
-      <div className="bg-blue-50 border border-blue-200 rounded-lg p-6">
-        <h3 className="font-medium text-blue-800 mb-3">Setup Instructions</h3>
-        <div className="text-sm text-blue-700 space-y-2">
+      <div className="bg-green-50 border border-blue-200 rounded-lg p-6">
+        <h3 className="font-medium text-green-800 mb-3">Setup Instructions</h3>
+        <div className="text-sm text-green-700 space-y-2">
           <p><strong>If tests fail:</strong></p>
           <ol className="list-decimal list-inside space-y-1 ml-2">
             <li>Check your <code>.env.local</code> file has correct Supabase credentials</li>

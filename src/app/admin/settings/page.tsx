@@ -122,25 +122,32 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div>
-        <h1 className="text-3xl font-bold text-gray-900">Site Settings</h1>
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+          Site Settings
+        </h1>
         <p className="text-gray-600 mt-2">Manage navbar logo and hero section content</p>
       </div>
 
       {/* Message Alert */}
       {message && (
-        <div className={`p-4 rounded-lg ${
-          message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        <div className={`p-4 rounded-xl shadow-lg border ${
+          message.type === 'success'
+            ? 'bg-green-50 text-green-800 border-green-200'
+            : 'bg-red-50 text-red-800 border-red-200'
         }`}>
           {message.text}
         </div>
       )}
 
       {/* Navbar Logo Settings */}
-      <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Navbar Logo</h2>
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+          <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
+          Navbar Logo
+        </h2>
 
         <div className="space-y-4">
           {/* Logo Type Selection */}
@@ -211,8 +218,11 @@ export default function SettingsPage() {
       </div>
 
       {/* Hero Section Settings */}
-      <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-4">Hero Section</h2>
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+          <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
+          Hero Section
+        </h2>
 
         <div className="space-y-4">
           {/* Logo Type Selection */}
@@ -297,14 +307,14 @@ export default function SettingsPage() {
       </div>
 
       {/* Save Button */}
-      <div className="flex justify-end">
+      <div className="flex justify-end sticky bottom-6">
         <button
           onClick={saveSettings}
           disabled={saving}
-          className="flex items-center space-x-2 bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
+          className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
         >
-          <FaSave />
-          <span>{saving ? 'Saving...' : 'Save Settings'}</span>
+          <FaSave className="text-lg" />
+          <span className="font-semibold">{saving ? 'Saving...' : 'Save Settings'}</span>
         </button>
       </div>
     </div>

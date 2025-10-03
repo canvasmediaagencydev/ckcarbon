@@ -17,8 +17,8 @@ export default function AdminDashboard() {
           className="bg-white p-6 rounded-lg shadow hover:shadow-md transition-shadow border border-gray-200"
         >
           <div className="flex items-center space-x-4">
-            <div className="bg-blue-100 p-3 rounded-lg">
-              <FaPlus className="text-blue-600" size={24} />
+            <div className="bg-green-100 p-3 rounded-lg">
+              <FaPlus className="text-green-600" size={24} />
             </div>
             <div>
               <h3 className="text-lg font-semibold text-gray-900">New Blog Post</h3>

@@ -130,7 +130,7 @@ export default function EditBlogPage() {
     return (
       <div className="text-center py-12">
         <p className="text-gray-500">Blog post not found</p>
-        <Link href="/admin/blogs" className="text-blue-600 hover:text-blue-800 mt-2 inline-block">
+        <Link href="/admin/blogs" className="text-green-600 hover:text-green-800 mt-2 inline-block">
           Back to blogs
         </Link>
       </div>
@@ -166,7 +166,7 @@ export default function EditBlogPage() {
             <button
               onClick={() => handleSubmit('published')}
               disabled={saving}
-              className="flex items-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 disabled:opacity-50"
+              className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 disabled:opacity-50"
             >
               <FaEye size={16} />
               <span>Publish</span>
@@ -190,7 +190,7 @@ export default function EditBlogPage() {
                   id="title"
                   value={formData.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="Enter blog title"
                 />
               </div>
@@ -204,7 +204,7 @@ export default function EditBlogPage() {
                   id="slug"
                   value={formData.slug}
                   onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="blog-post-slug"
                 />
               </div>
@@ -218,7 +218,7 @@ export default function EditBlogPage() {
                   value={formData.excerpt}
                   onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="Brief description of the blog post"
                 />
               </div>
@@ -231,7 +231,7 @@ export default function EditBlogPage() {
                   id="status"
                   value={formData.status}
                   onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                 >
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -278,7 +278,7 @@ export default function EditBlogPage() {
                     type="checkbox"
                     checked={formData.category_ids.includes(category.id)}
                     onChange={(e) => handleCategoryChange(category.id, e.target.checked)}
-                    className="rounded border-gray-300 text-blue-600 focus:ring-blue-500"
+                    className="rounded border-gray-300 text-green-600 focus:ring-green-500"
                   />
                   <span className="ml-2 text-sm text-gray-700">{category.name}</span>
                 </label>
@@ -296,13 +296,13 @@ export default function EditBlogPage() {
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="Add tag"
                 />
                 <button
                   type="button"
                   onClick={handleAddTag}
-                  className="px-3 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
+                  className="px-3 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700"
                 >
                   Add
                 </button>
@@ -340,7 +340,7 @@ export default function EditBlogPage() {
                   id="meta_title"
                   value={formData.meta_title}
                   onChange={(e) => setFormData(prev => ({ ...prev, meta_title: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="SEO title"
                 />
               </div>
@@ -353,7 +353,7 @@ export default function EditBlogPage() {
                   value={formData.meta_description}
                   onChange={(e) => setFormData(prev => ({ ...prev, meta_description: e.target.value }))}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
                   placeholder="SEO description"
                 />
               </div>

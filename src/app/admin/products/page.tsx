@@ -199,26 +199,30 @@ export default function ProductsPage() {
   }
 
   return (
-    <div className="space-y-8">
+    <div className="space-y-6">
       {/* Header */}
-      <div className="flex justify-between items-center">
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold text-gray-900">Products</h1>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+            Products
+          </h1>
           <p className="text-gray-600 mt-2">Manage product catalog</p>
         </div>
         <button
           onClick={startAdd}
-          className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700 transition-colors"
+          className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-6 py-3 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200"
         >
           <FaPlus />
-          <span>Add Product</span>
+          <span className="font-medium">Add Product</span>
         </button>
       </div>
 
       {/* Message Alert */}
       {message && (
-        <div className={`p-4 rounded-lg ${
-          message.type === 'success' ? 'bg-green-100 text-green-800' : 'bg-red-100 text-red-800'
+        <div className={`p-4 rounded-xl shadow-lg border ${
+          message.type === 'success'
+            ? 'bg-green-50 text-green-800 border-green-200'
+            : 'bg-red-50 text-red-800 border-red-200'
         }`}>
           {message.text}
         </div>
@@ -226,8 +230,9 @@ export default function ProductsPage() {
 
       {/* Add/Edit Form */}
       {(isAdding || editingId) && (
-        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
+          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+            <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
             {isAdding ? 'Add New Product' : 'Edit Product'}
           </h2>
 
@@ -310,9 +315,11 @@ export default function ProductsPage() {
       )}
 
       {/* Products Grid */}
-      <div className="bg-white rounded-lg shadow border border-gray-200">
-        <div className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Products List</h2>
+      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+          <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
+          Products List
+        </h2>
 
           {products.length === 0 ? (
             <p className="text-gray-500 text-center py-8">No products found. Add your first product!</p>
@@ -371,7 +378,7 @@ export default function ProductsPage() {
                     <div className="flex space-x-1">
                       <button
                         onClick={() => startEdit(product)}
-                        className="p-2 text-blue-600 hover:bg-blue-100 rounded"
+                        className="p-2 text-green-600 hover:bg-green-100 rounded"
                         title="Edit"
                       >
                         <FaEdit />
@@ -389,7 +396,6 @@ export default function ProductsPage() {
               ))}
             </div>
           )}
-        </div>
       </div>
     </div>
   )
