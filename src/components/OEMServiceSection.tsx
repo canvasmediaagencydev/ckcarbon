@@ -1,13 +1,45 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useRef, useState } from 'react';
-import { FaBox, FaArrowLeft, FaArrowRight, FaCogs, FaIndustry } from 'react-icons/fa';
+import { useRef, useState, useEffect } from 'react';
+import { FaArrowLeft, FaArrowRight } from 'react-icons/fa';
+import { supabase } from '@/lib/supabase';
+import Image from 'next/image';
+
+interface OEMService {
+  id: string
+  title: string
+  icon?: string
+  image_url: string
+  display_order: number
+}
 
 export default function OEMServiceSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [services, setServices] = useState<OEMService[]>([]);
+
+  useEffect(() => {
+    fetchServices();
+  }, []);
+
+  const fetchServices = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('oem_services')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) throw error;
+      if (data) {
+        setServices(data);
+      }
+    } catch (error) {
+      console.error('Error fetching OEM services:', error);
+    }
+  };
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -17,29 +49,6 @@ export default function OEMServiceSection() {
       transition: { duration: 0.8 }
     }
   };
-
-  const services = [
-    {
-      icon: <FaBox className="w-10 h-10 text-green-600" />,
-      title: "บจก. วิโมน เทรดดิ้ง"
-    },
-    {
-      icon: <FaCogs className="w-10 h-10 text-green-600" />,
-      title: "บจก. โซลู่ยู เทคโนโลยี"
-    },
-    {
-      icon: <FaBox className="w-10 h-10 text-green-600" />,
-      title: "บจก. วอเตอร์เฟิลเตอร์ เซรีไทย"
-    },
-    {
-      icon: <FaIndustry className="w-10 h-10 text-green-600" />,
-      title: "บจก. สยาม-เคซีเทค"
-    },
-    {
-      icon: <FaBox className="w-10 h-10 text-green-600" />,
-      title: "บจก. เวสโกร แมนูแฟคเจอริ่ง"
-    }
-  ];
 
   const nextSlide = () => {
     setCurrentSlide((prev) => (prev + 1) % services.length);
@@ -100,13 +109,20 @@ export default function OEMServiceSection() {
                     }}
                     whileHover={{ y: -5 }}
                   >
-                    {/* Icon Container */}
+                    {/* Image Container */}
                     <motion.div
-                      className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:shadow-md transition-shadow"
-                      whileHover={{ rotate: 15, scale: 1.1 }}
+                      className="w-12 h-12 bg-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-sm group-hover:shadow-md transition-shadow overflow-hidden"
+                      whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <FaBox className="w-6 h-6 text-green-600" />
+                      <div className="relative w-full h-full p-2">
+                        <Image
+                          src={service.image_url}
+                          alt={service.title}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                     </motion.div>
 
                     {/* Service Info */}
@@ -160,13 +176,20 @@ export default function OEMServiceSection() {
                       ease: "easeOut"
                     }}
                   >
-                    {/* Icon Container */}
+                    {/* Image Container */}
                     <motion.div
-                      className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:shadow-md transition-shadow"
-                      whileHover={{ rotate: 15, scale: 1.1 }}
+                      className="w-16 h-16 bg-white rounded-2xl flex items-center justify-center mx-auto mb-6 shadow-sm group-hover:shadow-md transition-shadow overflow-hidden"
+                      whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      {service.icon}
+                      <div className="relative w-full h-full p-2">
+                        <Image
+                          src={service.image_url}
+                          alt={service.title}
+                          fill
+                          className="object-contain"
+                        />
+                      </div>
                     </motion.div>
 
                     {/* Service Info */}

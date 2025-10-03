@@ -1,13 +1,45 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import Image from 'next/image';
+import { supabase } from '@/lib/supabase';
+
+interface Product {
+  id: string
+  name: string
+  description: string
+  image_url: string
+  button_text: string
+  display_order: number
+}
 
 export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [products, setProducts] = useState<Product[]>([]);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('products')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) throw error;
+      if (data) {
+        setProducts(data);
+      }
+    } catch (error) {
+      console.error('Error fetching products:', error);
+    }
+  };
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -17,30 +49,6 @@ export default function ProductsSection() {
       transition: { duration: 0.8 }
     }
   };
-
-  const products = [
-    {
-      id: 1,
-      name: "Activate carbon ID 900",
-      image: "/image/products/4a03710ab414fa64bbc2fc55b1eb492ac310335e.jpg",
-      description: "รายละเอียดสินค้า",
-      buttonText: "สั่งซื้อเลย!"
-    },
-    {
-      id: 2,
-      name: "Manganese Pyrolusite",
-      image: "/image/products/c6dc0261bda52f1ce1477d1b5021973e950a7bb4.jpg",
-      description: "รายละเอียดสินค้า",
-      buttonText: "สั่งซื้อเลย!"
-    },
-    {
-      id: 3,
-      name: "Magnanese Zeolite",
-      image: "/image/products/e8368ee26094b84d2f16e8ef47bcedba10f8bc36.jpg",
-      description: "รายละเอียดสินค้า",
-      buttonText: "สั่งซื้อเลย!"
-    }
-  ];
 
 
   return (
@@ -113,7 +121,7 @@ export default function ProductsSection() {
                   transition={{ duration: 0.4 }}
                 >
                   <Image
-                    src={product.image}
+                    src={product.image_url}
                     alt={product.name}
                     fill
                     className="object-cover group-hover:scale-110 transition-transform duration-500"
@@ -152,7 +160,7 @@ export default function ProductsSection() {
                     whileTap={{ scale: 0.98 }}
                   >
                     <FaShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="text-base sm:text-lg">{product.buttonText}</span>
+                    <span className="text-base sm:text-lg">{product.button_text}</span>
                     <motion.div
                       animate={{ x: [0, 5, 0] }}
                       transition={{ duration: 1.5, repeat: Infinity }}

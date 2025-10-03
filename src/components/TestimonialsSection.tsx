@@ -1,13 +1,49 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import Link from 'next/link';
 import { FaArrowRight, FaStar } from 'react-icons/fa';
+import { supabase } from '@/lib/supabase';
+
+interface Testimonial {
+  id: string
+  content: string
+  author_name: string
+  author_position: string
+  author_company: string
+  rating: number
+  image_url: string | null
+  display_order: number
+}
 
 export default function TestimonialsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [testimonials, setTestimonials] = useState<Testimonial[]>([]);
+  const [displayedTestimonials, setDisplayedTestimonials] = useState<Testimonial[]>([]);
+
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
+
+  const fetchTestimonials = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('testimonials')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order', { ascending: true });
+
+      if (error) throw error;
+      if (data) {
+        setTestimonials(data);
+        setDisplayedTestimonials(data.slice(0, 3));
+      }
+    } catch (error) {
+      console.error('Error fetching testimonials:', error);
+    }
+  };
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -17,65 +53,6 @@ export default function TestimonialsSection() {
       transition: { duration: 0.8 }
     }
   };
-
-  const testimonials = [
-    {
-      id: 1,
-      content: "CK Carbon's activated carbon has transformed our water purification process. The quality is exceptional and consistent, making it our go-to choice for industrial applications.",
-      author: "Somchai Phanichkul",
-      position: "Production Manager",
-      company: "AquaTech Solutions",
-      rating: 5,
-      image: "/image/testimonials/customer-1.jpg"
-    },
-    {
-      id: 2,
-      content: "Outstanding service and premium quality products. Their activated carbon solutions have significantly improved our filtration efficiency and reduced maintenance costs.",
-      author: "Preecha Wongsakul",
-      position: "Quality Control Director",
-      company: "Pure Water Industries",
-      rating: 5,
-      image: "/image/testimonials/customer-2.jpg"
-    },
-    {
-      id: 3,
-      content: "Reliable partnership with CK Carbon for over 3 years. Their commitment to quality and timely delivery makes them an invaluable supplier for our operations.",
-      author: "Niran Jitpakdee",
-      position: "Procurement Manager",
-      company: "Industrial Filtration Co.",
-      rating: 5,
-      image: "/image/testimonials/customer-3.jpg"
-    },
-    {
-      id: 4,
-      content: "CK Carbon consistently delivers high-quality activated carbon that meets our strict specifications. Their technical support team is exceptional and always ready to help.",
-      author: "Wanida Suksawat",
-      position: "Technical Manager",
-      company: "Clean Tech Solutions",
-      rating: 5,
-      image: "/image/testimonials/customer-4.jpg"
-    },
-    {
-      id: 5,
-      content: "Working with CK Carbon has been a game-changer for our water treatment facility. Their products have improved our efficiency while reducing operational costs significantly.",
-      author: "Akira Tanaka",
-      position: "Operations Director",
-      company: "Asian Water Systems",
-      rating: 5,
-      image: "/image/testimonials/customer-5.jpg"
-    },
-    {
-      id: 6,
-      content: "The quality of their activated carbon is unmatched in the industry. CK Carbon has been our trusted partner for sustainable water treatment solutions.",
-      author: "Maria Santos",
-      position: "Environmental Engineer",
-      company: "Eco Water Corp",
-      rating: 5,
-      image: "/image/testimonials/customer-6.jpg"
-    }
-  ];
-
-  const displayedTestimonials = testimonials.slice(0, 3);
 
   return (
     <motion.section
@@ -150,18 +127,18 @@ export default function TestimonialsSection() {
                 <div className="flex items-center space-x-3 sm:space-x-4">
                   <div className="w-10 h-10 sm:w-12 sm:h-12 bg-gradient-to-br from-green-400 to-green-600 rounded-full flex items-center justify-center flex-shrink-0">
                     <span className="text-white font-bold text-xs sm:text-sm">
-                      {testimonial.author.charAt(0)}
+                      {testimonial.author_name.charAt(0)}
                     </span>
                   </div>
                   <div>
                     <h4 className="font-bold text-gray-900 text-xs sm:text-sm">
-                      {testimonial.author}
+                      {testimonial.author_name}
                     </h4>
                     <p className="text-green-600 font-medium text-[10px] sm:text-xs">
-                      {testimonial.position}
+                      {testimonial.author_position}
                     </p>
                     <p className="text-gray-500 text-[10px] sm:text-xs">
-                      {testimonial.company}
+                      {testimonial.author_company}
                     </p>
                   </div>
                 </div>

@@ -2,11 +2,47 @@
 
 import { FaCheckCircle, FaChartBar, FaLeaf, FaChevronDown } from 'react-icons/fa';
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
+import Image from 'next/image';
+
+interface HeroSectionSettings {
+  logo_type: 'text' | 'image'
+  logo_text: string
+  logo_image_url: string | null
+  description: string
+}
 
 export default function HeroSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [heroSettings, setHeroSettings] = useState<HeroSectionSettings>({
+    logo_type: 'text',
+    logo_text: 'LOGO\nCK CARBON',
+    logo_image_url: null,
+    description: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit...'
+  });
+
+  useEffect(() => {
+    fetchHeroSettings();
+  }, []);
+
+  const fetchHeroSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('setting_value')
+        .eq('setting_key', 'hero_section')
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setHeroSettings(data.setting_value as HeroSectionSettings);
+      }
+    } catch (error) {
+      console.error('Error fetching hero settings:', error);
+    }
+  };
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -59,16 +95,35 @@ export default function HeroSection() {
               initial="hidden"
               animate={isInView ? "visible" : "hidden"}
             >
-              <motion.h1
-                className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-16 sm:mt-12 md:mt-0 font-bold leading-tight"
-                initial={{ opacity: 0, y: -50 }}
-                animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
-                transition={{ duration: 0.8, delay: 0.4 }}
-              >
-                LOGO
-                <br />
-                <span className="text-green-200">CK CARBON</span>
-              </motion.h1>
+              {heroSettings.logo_type === 'image' && heroSettings.logo_image_url ? (
+                <motion.div
+                  className="relative h-24 sm:h-32 md:h-40 w-full max-w-md mt-16 sm:mt-12 md:mt-0"
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                  <Image
+                    src={heroSettings.logo_image_url}
+                    alt="Hero Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </motion.div>
+              ) : (
+                <motion.h1
+                  className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl mt-16 sm:mt-12 md:mt-0 font-bold leading-tight"
+                  initial={{ opacity: 0, y: -50 }}
+                  animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: -50 }}
+                  transition={{ duration: 0.8, delay: 0.4 }}
+                >
+                  {heroSettings.logo_text.split('\n').map((line, i) => (
+                    <div key={i}>
+                      {i === 0 ? line : <span className="text-green-200">{line}</span>}
+                      {i < heroSettings.logo_text.split('\n').length - 1 && <br />}
+                    </div>
+                  ))}
+                </motion.h1>
+              )}
             </motion.div>
 
             <motion.p
@@ -77,10 +132,7 @@ export default function HeroSection() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 30 }}
               transition={{ duration: 0.8, delay: 0.6 }}
             >
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod
-              tempor incididunt ut labore et dolore magna aliqua. Quis ipsum
-              suspendisse ultrices gravida. Risus commodo viverra maecenas
-              accumsan lacus vel facilisis.
+              {heroSettings.description}
             </motion.p>
 
             <motion.div

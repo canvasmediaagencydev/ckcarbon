@@ -1,71 +1,6 @@
--- Blog CMS Database Schema
--- Run this in your Supabase SQL editor to create the necessary tables
-
--- Create blogs table
-CREATE TABLE IF NOT EXISTS blogs (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  title TEXT NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  excerpt TEXT,
-  content JSONB NOT NULL, -- Store TipTap content as JSON
-  featured_image TEXT,
-  status TEXT DEFAULT 'draft' CHECK (status IN ('draft', 'published', 'archived')),
-  published_at TIMESTAMP WITH TIME ZONE,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  updated_at TIMESTAMP WITH TIME ZONE DEFAULT NOW(),
-  author_id UUID, -- For future user management
-  meta_title TEXT,
-  meta_description TEXT,
-  tags TEXT[] DEFAULT '{}'
-);
-
--- Create categories table
-CREATE TABLE IF NOT EXISTS categories (
-  id UUID DEFAULT gen_random_uuid() PRIMARY KEY,
-  name TEXT UNIQUE NOT NULL,
-  slug TEXT UNIQUE NOT NULL,
-  description TEXT,
-  created_at TIMESTAMP WITH TIME ZONE DEFAULT NOW()
-);
-
--- Create junction table for blog-category relationship
-CREATE TABLE IF NOT EXISTS blog_categories (
-  blog_id UUID REFERENCES blogs(id) ON DELETE CASCADE,
-  category_id UUID REFERENCES categories(id) ON DELETE CASCADE,
-  PRIMARY KEY (blog_id, category_id)
-);
-
--- Create indexes for better performance
-CREATE INDEX IF NOT EXISTS idx_blogs_status ON blogs(status);
-CREATE INDEX IF NOT EXISTS idx_blogs_published_at ON blogs(published_at);
-CREATE INDEX IF NOT EXISTS idx_blogs_slug ON blogs(slug);
-CREATE INDEX IF NOT EXISTS idx_categories_slug ON categories(slug);
-
--- Create function to update updated_at timestamp
-CREATE OR REPLACE FUNCTION update_updated_at_column()
-RETURNS TRIGGER AS $$
-BEGIN
-    NEW.updated_at = NOW();
-    RETURN NEW;
-END;
-$$ LANGUAGE plpgsql;
-
--- Create trigger to automatically update updated_at
-CREATE TRIGGER update_blogs_updated_at
-    BEFORE UPDATE ON blogs
-    FOR EACH ROW
-    EXECUTE FUNCTION update_updated_at_column();
-
--- Insert some default categories
-INSERT INTO categories (name, slug, description) VALUES
-  ('Technology', 'technology', 'Posts about technology and innovation'),
-  ('Business', 'business', 'Business and industry insights'),
-  ('Sustainability', 'sustainability', 'Environmental and sustainability topics'),
-  ('News', 'news', 'Company news and updates')
-ON CONFLICT (slug) DO NOTHING;
-
 -- ============================================
--- CMS Tables for Homepage Content Management
+-- CMS Tables Migration for Homepage Content Management
+-- Run this AFTER the main schema.sql
 -- ============================================
 
 -- Site Settings Table (Navbar & Hero Section)
@@ -77,6 +12,7 @@ CREATE TABLE IF NOT EXISTS site_settings (
 );
 
 -- Create trigger for site_settings
+DROP TRIGGER IF EXISTS update_site_settings_updated_at ON site_settings;
 CREATE TRIGGER update_site_settings_updated_at
     BEFORE UPDATE ON site_settings
     FOR EACH ROW
@@ -106,6 +42,7 @@ CREATE TABLE IF NOT EXISTS about_us_content (
 );
 
 -- Create trigger for about_us_content
+DROP TRIGGER IF EXISTS update_about_us_content_updated_at ON about_us_content;
 CREATE TRIGGER update_about_us_content_updated_at
     BEFORE UPDATE ON about_us_content
     FOR EACH ROW
@@ -116,7 +53,8 @@ INSERT INTO about_us_content (content_en, content_th) VALUES
   (
     'has its roots in a family business that once thrived in the coconut industry. In 2004, our founder envisioned the potential of transforming coconut shells into high-quality activated carbon. From that vision, CK Carbon Partnership was officially established, specializing in the production and supply of premium water filtration media, trusted by both households and industries.',
     'เริ่มต้นจากรากฐานครอบครัวที่เคยทำธุรกิจเกี่ยวกับมะพร้าว คุณพ่อของเรามองเห็นคุณค่าและโอกาสในการต่อยอดจาก "กะลามะพร้าว" สู่การผลิตถ่านกัมมันต์ (Activated Carbon) ตั้งแต่ปี 2004 เป็นต้นมา ก่อนจะก่อตั้ง หจก. ซีเคคาร์บอน อย่างเป็นทางการ เพื่อดำเนินธุรกิจด้านการผลิตและจัดจำหน่ายสารกรองน้ำคุณภาพสูง ที่ตอบโจทย์ทั้งภาคครัวเรือนและอุตสาหกรรม'
-  );
+  )
+ON CONFLICT DO NOTHING;
 
 -- OEM Services Table
 CREATE TABLE IF NOT EXISTS oem_services (
@@ -130,6 +68,7 @@ CREATE TABLE IF NOT EXISTS oem_services (
 );
 
 -- Create trigger for oem_services
+DROP TRIGGER IF EXISTS update_oem_services_updated_at ON oem_services;
 CREATE TRIGGER update_oem_services_updated_at
     BEFORE UPDATE ON oem_services
     FOR EACH ROW
@@ -139,12 +78,15 @@ CREATE TRIGGER update_oem_services_updated_at
 CREATE INDEX IF NOT EXISTS idx_oem_services_order ON oem_services(display_order);
 
 -- Insert default OEM services
-INSERT INTO oem_services (title, icon, display_order) VALUES
+INSERT INTO oem_services (title, icon, display_order)
+SELECT * FROM (VALUES
   ('บจก. วิโมน เทรดดิ้ง', 'FaBox', 1),
   ('บจก. โซลู่ยู เทคโนโลยี', 'FaCogs', 2),
   ('บจก. วอเตอร์เฟิลเตอร์ เซรีไทย', 'FaBox', 3),
   ('บจก. สยาม-เคซีเทค', 'FaIndustry', 4),
-  ('บจก. เวสโกร แมนูแฟคเจอริ่ง', 'FaBox', 5);
+  ('บจก. เวสโกร แมนูแฟคเจอริ่ง', 'FaBox', 5)
+) AS v(title, icon, display_order)
+WHERE NOT EXISTS (SELECT 1 FROM oem_services);
 
 -- Products Table
 CREATE TABLE IF NOT EXISTS products (
@@ -160,6 +102,7 @@ CREATE TABLE IF NOT EXISTS products (
 );
 
 -- Create trigger for products
+DROP TRIGGER IF EXISTS update_products_updated_at ON products;
 CREATE TRIGGER update_products_updated_at
     BEFORE UPDATE ON products
     FOR EACH ROW
@@ -169,10 +112,13 @@ CREATE TRIGGER update_products_updated_at
 CREATE INDEX IF NOT EXISTS idx_products_order ON products(display_order);
 
 -- Insert default products
-INSERT INTO products (name, description, image_url, display_order) VALUES
+INSERT INTO products (name, description, image_url, display_order)
+SELECT * FROM (VALUES
   ('Activate carbon ID 900', 'รายละเอียดสินค้า', '/image/products/4a03710ab414fa64bbc2fc55b1eb492ac310335e.jpg', 1),
   ('Manganese Pyrolusite', 'รายละเอียดสินค้า', '/image/products/c6dc0261bda52f1ce1477d1b5021973e950a7bb4.jpg', 2),
-  ('Magnanese Zeolite', 'รายละเอียดสินค้า', '/image/products/e8368ee26094b84d2f16e8ef47bcedba10f8bc36.jpg', 3);
+  ('Magnanese Zeolite', 'รายละเอียดสินค้า', '/image/products/e8368ee26094b84d2f16e8ef47bcedba10f8bc36.jpg', 3)
+) AS v(name, description, image_url, display_order)
+WHERE NOT EXISTS (SELECT 1 FROM products);
 
 -- Testimonials Table
 CREATE TABLE IF NOT EXISTS testimonials (
@@ -190,6 +136,7 @@ CREATE TABLE IF NOT EXISTS testimonials (
 );
 
 -- Create trigger for testimonials
+DROP TRIGGER IF EXISTS update_testimonials_updated_at ON testimonials;
 CREATE TRIGGER update_testimonials_updated_at
     BEFORE UPDATE ON testimonials
     FOR EACH ROW
@@ -199,7 +146,8 @@ CREATE TRIGGER update_testimonials_updated_at
 CREATE INDEX IF NOT EXISTS idx_testimonials_order ON testimonials(display_order);
 
 -- Insert default testimonials
-INSERT INTO testimonials (content, author_name, author_position, author_company, rating, display_order) VALUES
+INSERT INTO testimonials (content, author_name, author_position, author_company, rating, display_order)
+SELECT * FROM (VALUES
   (
     'CK Carbon''s activated carbon has transformed our water purification process. The quality is exceptional and consistent, making it our go-to choice for industrial applications.',
     'Somchai Phanichkul',
@@ -247,4 +195,6 @@ INSERT INTO testimonials (content, author_name, author_position, author_company,
     'Eco Water Corp',
     5,
     6
-  );
+  )
+) AS v(content, author_name, author_position, author_company, rating, display_order)
+WHERE NOT EXISTS (SELECT 1 FROM testimonials);

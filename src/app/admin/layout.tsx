@@ -1,5 +1,5 @@
 import Link from 'next/link'
-import { FaBlog, FaList, FaPlus, FaTags, FaFlask } from 'react-icons/fa'
+import { FaBlog, FaList, FaPlus, FaTags, FaFlask, FaCog, FaInfoCircle, FaIndustry, FaBox, FaComments } from 'react-icons/fa'
 
 export default function AdminLayout({
   children,
@@ -42,6 +42,60 @@ export default function AdminLayout({
         <aside className="w-64 bg-white shadow-sm min-h-[calc(100vh-80px)]">
           <nav className="p-4">
             <ul className="space-y-2">
+              {/* Site Content Management */}
+              <li className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider">
+                Site Content
+              </li>
+              <li>
+                <Link
+                  href="/admin/settings"
+                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"
+                >
+                  <FaCog size={18} />
+                  <span>Settings</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/about-us"
+                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"
+                >
+                  <FaInfoCircle size={18} />
+                  <span>About Us</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/oem-services"
+                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"
+                >
+                  <FaIndustry size={18} />
+                  <span>OEM Services</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/products"
+                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"
+                >
+                  <FaBox size={18} />
+                  <span>Products</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/testimonials"
+                  className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"
+                >
+                  <FaComments size={18} />
+                  <span>Testimonials</span>
+                </Link>
+              </li>
+
+              {/* Blog Management */}
+              <li className="px-3 py-2 text-xs font-semibold text-gray-500 uppercase tracking-wider mt-4">
+                Blog
+              </li>
               <li>
                 <Link
                   href="/admin/blogs"
@@ -60,7 +114,9 @@ export default function AdminLayout({
                   <span>Categories</span>
                 </Link>
               </li>
-              <li className="border-t border-gray-200 pt-2 mt-2">
+
+              {/* Development */}
+              <li className="border-t border-gray-200 pt-2 mt-4">
                 <Link
                   href="/admin/test"
                   className="flex items-center space-x-3 text-gray-700 p-3 rounded-lg hover:bg-gray-100"

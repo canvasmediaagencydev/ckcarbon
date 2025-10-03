@@ -1,11 +1,36 @@
 "use client";
 
 import { motion, useInView } from 'framer-motion';
-import { useRef } from 'react';
+import { useRef, useState, useEffect } from 'react';
+import { supabase } from '@/lib/supabase';
 
 export default function AboutUsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
+  const [content, setContent] = useState({
+    content_en: '',
+    content_th: ''
+  });
+
+  useEffect(() => {
+    fetchContent();
+  }, []);
+
+  const fetchContent = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('about_us_content')
+        .select('content_en, content_th')
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setContent(data);
+      }
+    } catch (error) {
+      console.error('Error fetching about us content:', error);
+    }
+  };
 
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -64,7 +89,7 @@ export default function AboutUsSection() {
               variants={fadeInVariants}
             >
               <p className="text-sm sm:text-base">
-                has its roots in a family business that once thrived in the coconut industry. In 2004, our founder envisioned the potential of transforming coconut shells into high-quality activated carbon. From that vision, CK Carbon Partnership was officially established, specializing in the production and supply of premium water filtration media, trusted by both households and industries.
+                {content.content_en}
               </p>
             </motion.div>
 
@@ -77,23 +102,15 @@ export default function AboutUsSection() {
                 ธุรกิจของ <span className="text-green-600">CK <span className="text-gray-900">CARBON</span></span>
               </h3>
 
-              <div className="text-gray-700 leading-relaxed space-y-3 sm:space-y-4">
-                <p className="text-sm sm:text-base">
-                  เริ่มต้นจากรากฐานครอบครัวที่เคยทำธุรกิจเกี่ยวกับมะพร้าว คุณพ่อของเรามองเห็นคุณค่าและโอกาสในการต่อยอดจาก
-                </p>
-
-                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border-l-4 border-green-500">
-                  <p className="text-base sm:text-lg">
-                    <span className="font-semibold">"กะลามะพร้าว"</span>{" "}
-                    <span className="text-green-600 font-semibold">สู่การผลิตถ่านกัมมันต์</span>{" "}
-                    <span className="text-gray-600">(Activated Carbon)</span>
-                  </p>
-
-                  <p className="mt-3 sm:mt-4 text-gray-700 text-sm sm:text-base">
-                    ตั้งแต่ปี 2004 เป็นต้นมา ก่อนจะก่อตั้ง หจก. ซีเคคาร์บอน อย่างเป็นทางการ เพื่อดำเนินธุรกิจด้านการผลิตและจัดจำหน่ายสารกรองน้ำคุณภาพสูง ที่ตอบโจทย์ทั้งภาคครัวเรือนและอุตสาหกรรม
-                  </p>
+              {content.content_th && (
+                <div className="text-gray-700 leading-relaxed space-y-3 sm:space-y-4">
+                  <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border-l-4 border-green-500">
+                    <p className="text-sm sm:text-base">
+                      {content.content_th}
+                    </p>
+                  </div>
                 </div>
-              </div>
+              )}
             </motion.div>
 
             {/* Stats */}

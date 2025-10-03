@@ -4,10 +4,22 @@ import { useState, useEffect } from "react";
 import Image from "next/image";
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
+import { supabase } from "@/lib/supabase";
+
+interface NavbarLogoSettings {
+  type: 'text' | 'image'
+  text: string
+  image_url: string | null
+}
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
+  const [logoSettings, setLogoSettings] = useState<NavbarLogoSettings>({
+    type: 'text',
+    text: 'LOGO\nCK CARBON',
+    image_url: null
+  });
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,6 +29,27 @@ export default function Navbar() {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  useEffect(() => {
+    fetchLogoSettings();
+  }, []);
+
+  const fetchLogoSettings = async () => {
+    try {
+      const { data, error } = await supabase
+        .from('site_settings')
+        .select('setting_value')
+        .eq('setting_key', 'navbar_logo')
+        .single();
+
+      if (error) throw error;
+      if (data) {
+        setLogoSettings(data.setting_value as NavbarLogoSettings);
+      }
+    } catch (error) {
+      console.error('Error fetching navbar logo:', error);
+    }
+  };
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
@@ -38,19 +71,31 @@ export default function Navbar() {
             animate={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.6, delay: 0.2 }}
           >
-            <div className="flex-shrink-0">
-              <div className={`text-2xl font-bold transition-colors duration-300 ${
-                isScrolled ? 'text-green-600' : 'text-white'
-              }`}
-              //clickcing go to home page 
-              onClick={() => window.location.href = "/"}
-              >
-                LOGO
-                <br />
-                <span className={`transition-colors duration-300 ${
-                  isScrolled ? 'text-gray-700' : 'text-green-200'
-                }`}>CK CARBON</span>
-              </div>
+            <div className="flex-shrink-0 cursor-pointer" onClick={() => window.location.href = "/"}>
+              {logoSettings.type === 'image' && logoSettings.image_url ? (
+                <div className="relative h-16 w-32">
+                  <Image
+                    src={logoSettings.image_url}
+                    alt="Logo"
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+              ) : (
+                <div className={`text-2xl font-bold transition-colors duration-300 ${
+                  isScrolled ? 'text-green-600' : 'text-white'
+                }`}>
+                  {logoSettings.text.split('\n').map((line, i) => (
+                    <div key={i}>
+                      {i === 0 ? line : (
+                        <span className={`transition-colors duration-300 ${
+                          isScrolled ? 'text-gray-700' : 'text-green-200'
+                        }`}>{line}</span>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              )}
             </div>
           </motion.div>
 
