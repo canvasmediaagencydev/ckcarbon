@@ -7,10 +7,7 @@ import { supabase } from '@/lib/supabase';
 export default function AboutUsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [content, setContent] = useState({
-    content_en: '',
-    content_th: ''
-  });
+  const [content, setContent] = useState('');
 
   useEffect(() => {
     fetchContent();
@@ -20,12 +17,12 @@ export default function AboutUsSection() {
     try {
       const { data, error } = await supabase
         .from('about_us_content')
-        .select('content_en, content_th')
+        .select('content')
         .single();
 
       if (error) throw error;
       if (data) {
-        setContent(data);
+        setContent(data.content);
       }
     } catch (error) {
       console.error('Error fetching about us content:', error);
@@ -88,29 +85,9 @@ export default function AboutUsSection() {
               className="prose prose-base sm:prose-lg text-gray-700 leading-relaxed"
               variants={fadeInVariants}
             >
-              <p className="text-sm sm:text-base">
-                {content.content_en}
+              <p className="text-sm sm:text-base whitespace-pre-wrap">
+                {content}
               </p>
-            </motion.div>
-
-            {/* Thai Content */}
-            <motion.div
-              className="space-y-4 sm:space-y-6 mt-8 sm:mt-12"
-              variants={fadeInVariants}
-            >
-              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
-                ธุรกิจของ <span className="text-green-600">CK <span className="text-gray-900">CARBON</span></span>
-              </h3>
-
-              {content.content_th && (
-                <div className="text-gray-700 leading-relaxed space-y-3 sm:space-y-4">
-                  <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border-l-4 border-green-500">
-                    <p className="text-sm sm:text-base">
-                      {content.content_th}
-                    </p>
-                  </div>
-                </div>
-              )}
             </motion.div>
 
             {/* Stats */}

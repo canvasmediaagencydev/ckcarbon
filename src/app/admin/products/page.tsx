@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaArrowUp, FaArrowDown, FaImage } from 'react-icons/fa'
 import Image from 'next/image'
+import ImageUpload from '@/components/ImageUpload'
 
 interface Product {
   id: string
@@ -275,38 +276,16 @@ export default function ProductsPage() {
             <div className="space-y-4">
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Image URL
+                  Product Image
                 </label>
-                <input
-                  type="text"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="/image/products/product.jpg"
+                <ImageUpload
+                  currentImageUrl={formData.image_url}
+                  onImageUploaded={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="products"
+                  aspectRatio="4/3"
+                  maxSizeMB={2}
                 />
-                <p className="text-xs text-gray-500 mt-1">Enter image path or URL</p>
               </div>
-
-              {/* Image Preview */}
-              {formData.image_url && (
-                <div className="border border-gray-300 rounded-lg p-4">
-                  <label className="block text-sm font-medium text-gray-700 mb-2">
-                    Preview
-                  </label>
-                  <div className="relative h-48 bg-gray-100 rounded-lg overflow-hidden">
-                    <Image
-                      src={formData.image_url}
-                      alt="Preview"
-                      fill
-                      className="object-cover"
-                      onError={(e) => {
-                        const target = e.target as HTMLImageElement;
-                        target.style.display = 'none';
-                      }}
-                    />
-                  </div>
-                </div>
-              )}
             </div>
           </div>
 

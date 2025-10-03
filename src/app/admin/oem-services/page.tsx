@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaArrowUp, FaArrowDown } from 'react-icons/fa'
+import ImageUpload from '@/components/ImageUpload'
 
 interface OEMService {
   id: string
@@ -223,37 +224,16 @@ export default function OEMServicesPage() {
 
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Image URL
+                Company Logo
               </label>
-              <input
-                type="text"
-                value={formData.image_url}
-                onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="/image/oem/company-logo.png"
+              <ImageUpload
+                currentImageUrl={formData.image_url}
+                onImageUploaded={(url) => setFormData({ ...formData, image_url: url })}
+                folder="oem"
+                aspectRatio="1/1"
+                maxSizeMB={1}
               />
-              <p className="text-xs text-gray-500 mt-1">Enter image path or URL (recommended size: 200x200px)</p>
             </div>
-
-            {/* Image Preview */}
-            {formData.image_url && (
-              <div className="border border-gray-300 rounded-lg p-4">
-                <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Preview
-                </label>
-                <div className="relative h-32 w-32 bg-gray-100 rounded-lg overflow-hidden mx-auto">
-                  <img
-                    src={formData.image_url}
-                    alt="Preview"
-                    className="w-full h-full object-contain"
-                    onError={(e) => {
-                      const target = e.target as HTMLImageElement;
-                      target.style.display = 'none';
-                    }}
-                  />
-                </div>
-              </div>
-            )}
 
             <div className="flex space-x-2 pt-4">
               <button

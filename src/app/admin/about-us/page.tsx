@@ -6,8 +6,7 @@ import { FaSave } from 'react-icons/fa'
 
 interface AboutUsContent {
   id: string
-  content_en: string
-  content_th: string
+  content: string
 }
 
 export default function AboutUsPage() {
@@ -49,8 +48,7 @@ export default function AboutUsPage() {
       const { error } = await supabase
         .from('about_us_content')
         .update({
-          content_en: content.content_en,
-          content_th: content.content_th
+          content: content.content
         })
         .eq('id', content.id)
 
@@ -107,32 +105,21 @@ export default function AboutUsPage() {
       {/* Content Form */}
       <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
         <div className="space-y-6">
-          {/* English Content */}
+          {/* Content */}
           <div>
             <label className="block text-sm font-medium text-gray-700 mb-2">
-              English Content
+              About Us Content
             </label>
             <textarea
-              value={content.content_en}
-              onChange={(e) => setContent({ ...content, content_en: e.target.value })}
-              rows={6}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent font-sans"
-              placeholder="Enter English content..."
-            />
-          </div>
-
-          {/* Thai Content */}
-          <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
-              Thai Content (ภาษาไทย)
-            </label>
-            <textarea
-              value={content.content_th || ''}
-              onChange={(e) => setContent({ ...content, content_th: e.target.value })}
-              rows={6}
+              value={content.content}
+              onChange={(e) => setContent({ ...content, content: e.target.value })}
+              rows={10}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-              placeholder="กรอกเนื้อหาภาษาไทย..."
+              placeholder="Enter about us content..."
             />
+            <p className="text-xs text-gray-500 mt-1">
+              Enter your about us content in any language
+            </p>
           </div>
         </div>
       </div>
@@ -140,20 +127,7 @@ export default function AboutUsPage() {
       {/* Preview */}
       <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
         <h2 className="text-xl font-semibold text-gray-900 mb-4">Preview</h2>
-
-        <div className="space-y-4">
-          <div>
-            <h3 className="text-sm font-semibold text-gray-700 mb-2">English:</h3>
-            <p className="text-gray-700 leading-relaxed">{content.content_en}</p>
-          </div>
-
-          {content.content_th && (
-            <div>
-              <h3 className="text-sm font-semibold text-gray-700 mb-2">ภาษาไทย:</h3>
-              <p className="text-gray-700 leading-relaxed">{content.content_th}</p>
-            </div>
-          )}
-        </div>
+        <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{content.content}</p>
       </div>
 
       {/* Save Button */}
