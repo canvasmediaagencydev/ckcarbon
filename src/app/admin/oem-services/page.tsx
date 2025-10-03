@@ -272,16 +272,16 @@ export default function OEMServicesPage() {
                   <div className="flex items-center space-x-4">
                     <span className="text-gray-400 font-mono">#{service.display_order}</span>
                     {/* Service Image */}
-                    <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0">
-                      <img
-                        src={service.image_url}
-                        alt={service.title}
-                        className="w-full h-full object-contain"
-                        onError={(e) => {
-                          const target = e.target as HTMLImageElement;
-                          target.style.display = 'none';
-                        }}
-                      />
+                    <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+                      {service.image_url ? (
+                        <img
+                          src={service.image_url}
+                          alt={service.title}
+                          className="w-full h-full object-contain"
+                        />
+                      ) : (
+                        <span className="text-gray-400 text-xs text-center">No image</span>
+                      )}
                     </div>
                     <div>
                       <h3 className="font-semibold text-gray-900">{service.title}</h3>

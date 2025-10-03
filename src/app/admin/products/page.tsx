@@ -324,13 +324,17 @@ export default function ProductsPage() {
                   className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   {/* Product Image */}
-                  <div className="relative h-48 bg-gray-100">
-                    <Image
-                      src={product.image_url}
-                      alt={product.name}
-                      fill
-                      className="object-cover"
-                    />
+                  <div className="relative h-48 bg-gray-100 flex items-center justify-center">
+                    {product.image_url ? (
+                      <Image
+                        src={product.image_url}
+                        alt={product.name}
+                        fill
+                        className="object-cover"
+                      />
+                    ) : (
+                      <span className="text-gray-400 text-sm">No image</span>
+                    )}
                     <div className="absolute top-2 left-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
                       #{product.display_order}
                     </div>

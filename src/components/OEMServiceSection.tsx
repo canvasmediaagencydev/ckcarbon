@@ -115,14 +115,18 @@ export default function OEMServiceSection() {
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="relative w-full h-full p-2">
-                        <Image
-                          src={service.image_url}
-                          alt={service.title}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
+                      {service.image_url ? (
+                        <div className="relative w-full h-full p-2">
+                          <Image
+                            src={service.image_url}
+                            alt={service.title}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <span className="text-gray-400 text-xs">No image</span>
+                      )}
                     </motion.div>
 
                     {/* Service Info */}
@@ -182,14 +186,18 @@ export default function OEMServiceSection() {
                       whileHover={{ scale: 1.1 }}
                       transition={{ duration: 0.3 }}
                     >
-                      <div className="relative w-full h-full p-2">
-                        <Image
-                          src={service.image_url}
-                          alt={service.title}
-                          fill
-                          className="object-contain"
-                        />
-                      </div>
+                      {service.image_url ? (
+                        <div className="relative w-full h-full p-2">
+                          <Image
+                            src={service.image_url}
+                            alt={service.title}
+                            fill
+                            className="object-contain"
+                          />
+                        </div>
+                      ) : (
+                        <span className="text-gray-400 text-sm">No image</span>
+                      )}
                     </motion.div>
 
                     {/* Service Info */}

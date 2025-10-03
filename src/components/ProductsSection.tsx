@@ -116,17 +116,21 @@ export default function ProductsSection() {
 
                 {/* Product Image */}
                 <motion.div
-                  className="relative h-48 sm:h-56 lg:h-64 mb-6 sm:mb-8 rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50"
+                  className="relative h-48 sm:h-56 lg:h-64 mb-6 sm:mb-8 rounded-xl sm:rounded-2xl overflow-hidden bg-gray-50 flex items-center justify-center"
                   whileHover={{ scale: 1.05 }}
                   transition={{ duration: 0.4 }}
                 >
-                  <Image
-                    src={product.image_url}
-                    alt={product.name}
-                    fill
-                    className="object-cover group-hover:scale-110 transition-transform duration-500"
-                    sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
-                  />
+                  {product.image_url ? (
+                    <Image
+                      src={product.image_url}
+                      alt={product.name}
+                      fill
+                      className="object-cover group-hover:scale-110 transition-transform duration-500"
+                      sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
+                    />
+                  ) : (
+                    <span className="text-gray-400">No image</span>
+                  )}
 
                   {/* Overlay Badge */}
                   <div className="absolute top-3 sm:top-4 right-3 sm:right-4 bg-green-600 text-white px-2.5 sm:px-3 py-1 rounded-full text-[10px] sm:text-xs font-semibold">
