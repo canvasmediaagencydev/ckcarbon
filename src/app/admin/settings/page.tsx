@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { FaSave, FaImage, FaFont } from 'react-icons/fa'
+import ImageUpload from '@/components/ImageUpload'
 
 interface NavbarLogoSettings {
   type: 'text' | 'image'
@@ -191,20 +192,19 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* Image URL Input */}
+          {/* Image Upload */}
           {navbarLogo.type === 'image' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Logo Image URL
+                Logo Image
               </label>
-              <input
-                type="text"
-                value={navbarLogo.image_url || ''}
-                onChange={(e) => setNavbarLogo({ ...navbarLogo, image_url: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="/images/logo.png"
+              <ImageUpload
+                currentImageUrl={navbarLogo.image_url || ''}
+                onImageUploaded={(url) => setNavbarLogo({ ...navbarLogo, image_url: url })}
+                folder="logos"
+                aspectRatio="auto"
+                maxSizeMB={1}
               />
-              <p className="text-xs text-gray-500 mt-1">Enter image path or URL</p>
             </div>
           )}
         </div>
@@ -264,20 +264,19 @@ export default function SettingsPage() {
             </div>
           )}
 
-          {/* Image URL Input */}
+          {/* Image Upload */}
           {heroSection.logo_type === 'image' && (
             <div>
               <label className="block text-sm font-medium text-gray-700 mb-2">
-                Logo Image URL
+                Logo Image
               </label>
-              <input
-                type="text"
-                value={heroSection.logo_image_url || ''}
-                onChange={(e) => setHeroSection({ ...heroSection, logo_image_url: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                placeholder="/images/hero-logo.png"
+              <ImageUpload
+                currentImageUrl={heroSection.logo_image_url || ''}
+                onImageUploaded={(url) => setHeroSection({ ...heroSection, logo_image_url: url })}
+                folder="logos"
+                aspectRatio="auto"
+                maxSizeMB={1}
               />
-              <p className="text-xs text-gray-500 mt-1">Enter image path or URL</p>
             </div>
           )}
 

@@ -6,6 +6,7 @@ import { BlogService, CategoryService, Category, Blog } from '@/lib/blog'
 import TipTapEditor from '@/components/TipTapEditor'
 import { FaSave, FaEye, FaArrowLeft } from 'react-icons/fa'
 import Link from 'next/link'
+import ImageUpload from '@/components/ImageUpload'
 
 export default function EditBlogPage() {
   const router = useRouter()
@@ -258,31 +259,13 @@ export default function EditBlogPage() {
           {/* Featured Image */}
           <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
             <h3 className="text-lg font-medium text-gray-900 mb-4">Featured Image</h3>
-            <div>
-              <label htmlFor="featured_image" className="block text-sm font-medium text-gray-700 mb-2">
-                Image URL
-              </label>
-              <input
-                type="url"
-                id="featured_image"
-                value={formData.featured_image}
-                onChange={(e) => setFormData(prev => ({ ...prev, featured_image: e.target.value }))}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
-                placeholder="https://example.com/image.jpg"
-              />
-              {formData.featured_image && (
-                <div className="mt-2">
-                  <img
-                    src={formData.featured_image}
-                    alt="Featured"
-                    className="w-full h-32 object-cover rounded-lg"
-                    onError={(e) => {
-                      e.currentTarget.style.display = 'none'
-                    }}
-                  />
-                </div>
-              )}
-            </div>
+            <ImageUpload
+              currentImageUrl={formData.featured_image}
+              onImageUploaded={(url) => setFormData(prev => ({ ...prev, featured_image: url }))}
+              folder="blogs"
+              aspectRatio="16/9"
+              maxSizeMB={2}
+            />
           </div>
 
           {/* Categories */}

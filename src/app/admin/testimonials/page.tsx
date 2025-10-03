@@ -3,6 +3,7 @@
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
 import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaArrowUp, FaArrowDown, FaStar } from 'react-icons/fa'
+import ImageUpload from '@/components/ImageUpload'
 
 interface Testimonial {
   id: string
@@ -321,14 +322,14 @@ export default function TestimonialsPage() {
 
               <div>
                 <label className="block text-sm font-medium text-gray-700 mb-2">
-                  Image URL (Optional)
+                  Author Image (Optional)
                 </label>
-                <input
-                  type="text"
-                  value={formData.image_url}
-                  onChange={(e) => setFormData({ ...formData, image_url: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
-                  placeholder="/images/customer.jpg"
+                <ImageUpload
+                  currentImageUrl={formData.image_url}
+                  onImageUploaded={(url) => setFormData({ ...formData, image_url: url })}
+                  folder="testimonials"
+                  aspectRatio="1/1"
+                  maxSizeMB={1}
                 />
               </div>
             </div>
