@@ -164,7 +164,7 @@ export default function VisionCommitmentSection() {
                   }}
                   style={{
                     marginLeft: index > 0 ? '-40px' : '0',
-                    zIndex: commitments.length - index
+                    zIndex: index + 1
                   }}
                 >
                   <div className="w-72 h-72 rounded-full border-2 border-green-400 bg-gray-800/80 backdrop-blur-sm flex flex-col relative overflow-hidden">
@@ -248,50 +248,73 @@ export default function VisionCommitmentSection() {
               ))}
             </div>
 
-            {/* Mobile Layout - Stacked Cards */}
-            <div className="lg:hidden space-y-8">
+            {/* Mobile Layout - Vertical Overlapping Circles */}
+            <div className="lg:hidden flex flex-col items-center justify-center relative py-16">
               {commitments.map((commitment, index) => (
                 <motion.div
                   key={index}
-                  className="bg-gray-800/50 backdrop-blur-sm rounded-2xl p-6 border border-green-400/30"
+                  className="relative"
                   initial={{
                     opacity: 0,
                     scale: 0,
-                    x: -100,
-                    rotate: -10
+                    y: 100,
+                    rotate: -180
                   }}
                   animate={isInView ? {
                     opacity: 1,
                     scale: 1,
-                    x: 0,
+                    y: 0,
                     rotate: 0
                   } : {
                     opacity: 0,
                     scale: 0,
-                    x: -100,
-                    rotate: -10
+                    y: 100,
+                    rotate: -180
                   }}
                   transition={{
-                    duration: 0.7,
-                    delay: index * 0.3,
+                    duration: 0.8,
+                    delay: index * 0.4,
                     ease: "easeOut",
                     type: "spring",
-                    stiffness: 120,
-                    damping: 15
+                    stiffness: 100,
+                    damping: 12
                   }}
                   whileHover={{
-                    scale: 1.05,
-                    rotate: 2,
-                    transition: { duration: 0.2 }
+                    scale: 1.08,
+                    rotate: 5,
+                    transition: { duration: 0.3 }
+                  }}
+                  style={{
+                    marginTop: index > 0 ? '-40px' : '0',
+                    zIndex: index + 1
                   }}
                 >
-                  <div className="text-center">
+                  <div className="w-64 h-64 sm:w-72 sm:h-72 rounded-full border-2 border-green-400 bg-gray-800/80 backdrop-blur-sm flex flex-col relative overflow-hidden">
+                    {/* Circle Background Effect */}
+                    <div className="absolute inset-0 bg-gradient-to-br from-green-500/5 to-transparent rounded-full" />
+
+                    {/* Pulse Effect */}
                     <motion.div
-                      className="text-3xl font-bold text-green-400 mb-4"
+                      className="absolute inset-0 rounded-full border-2 border-green-400/30"
+                      animate={{
+                        scale: [1, 1.1, 1],
+                        opacity: [0.5, 0.2, 0.5]
+                      }}
+                      transition={{
+                        duration: 2,
+                        repeat: Infinity,
+                        ease: "easeInOut",
+                        delay: index * 0.4 + 1
+                      }}
+                    />
+
+                    {/* Number - Animated */}
+                    <motion.div
+                      className="absolute top-12 left-0 right-0 text-center text-4xl sm:text-5xl font-bold text-green-400 z-10"
                       initial={{
                         opacity: 0,
                         scale: 0,
-                        rotate: -180
+                        rotate: -90
                       }}
                       animate={isInView ? {
                         opacity: 1,
@@ -300,39 +323,48 @@ export default function VisionCommitmentSection() {
                       } : {
                         opacity: 0,
                         scale: 0,
-                        rotate: -180
+                        rotate: -90
                       }}
                       transition={{
                         duration: 0.6,
-                        delay: index * 0.3 + 0.2,
+                        delay: index * 0.4 + 0.3,
                         ease: "backOut",
                         type: "spring",
-                        stiffness: 150
+                        stiffness: 200
                       }}
                     >
                       {commitment.number}
                     </motion.div>
+
+                    {/* Content - Animated */}
                     <motion.div
-                      className="text-white leading-relaxed"
+                      className="absolute top-20 left-0 right-0 text-center text-white leading-snug z-10 text-sm sm:text-base px-4"
                       initial={{
                         opacity: 0,
-                        y: 15
+                        y: 20
                       }}
                       animate={isInView ? {
                         opacity: 1,
                         y: 0
                       } : {
                         opacity: 0,
-                        y: 15
+                        y: 20
                       }}
                       transition={{
-                        duration: 0.5,
-                        delay: index * 0.3 + 0.4,
+                        duration: 0.6,
+                        delay: index * 0.4 + 0.6,
                         ease: "easeOut"
                       }}
                     >
                       {commitment.title}
                     </motion.div>
+
+                    {/* Hover Effect */}
+                    <motion.div
+                      className="absolute inset-0 bg-green-500/10 rounded-full opacity-0"
+                      whileHover={{ opacity: 1 }}
+                      transition={{ duration: 0.3 }}
+                    />
                   </div>
                 </motion.div>
               ))}
