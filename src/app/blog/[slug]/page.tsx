@@ -3,7 +3,6 @@ import Link from 'next/link';
 import { Metadata } from 'next';
 import { FaClock, FaUser, FaArrowLeft, FaTag } from 'react-icons/fa';
 import { BlogService, Blog } from '@/lib/blog';
-import Navbar from '@/components/Navbar';
 import ShareButtons from '@/components/ShareButtons';
 
 type Props = {
@@ -61,7 +60,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
   let blog: Blog | null = null;
-  let loading = false;
   let error: string | null = null;
 
   try {
@@ -105,24 +103,9 @@ export default async function BlogPostPage({ params }: Props) {
     return text.trim();
   };
 
-  if (loading) {
-    return (
-      <div className="min-h-screen bg-gray-50">
-        <Navbar />
-        <div className="pt-24 flex items-center justify-center min-h-screen">
-          <div className="text-center">
-            <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
-            <p className="text-gray-500 mt-4">Loading blog post...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   if (error || !blog) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
         <div className="pt-24 flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="text-6xl text-gray-300 mb-4">📄</div>
@@ -143,8 +126,6 @@ export default async function BlogPostPage({ params }: Props) {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
       {/* Hero Section */}
       <div className="relative pt-20 sm:pt-32 pb-16 sm:pb-24 bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white overflow-hidden">
         {/* Background Pattern */}

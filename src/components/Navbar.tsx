@@ -106,30 +106,32 @@ export default function Navbar() {
             transition={{ duration: 0.6, delay: 0.3 }}
           >
             <div className="ml-10 flex items-baseline space-x-8">
-              <motion.a
-                href="#about"
-                className={`px-3 py-2 text-lg font-semibold transition-colors ${
-                  isScrolled
-                    ? 'text-gray-700 hover:text-green-600'
-                    : 'text-white hover:text-green-200'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                About Us
-              </motion.a>
-              <motion.a
-                href="#oem"
-                className={`px-3 py-2 text-lg font-semibold transition-colors ${
-                  isScrolled
-                    ? 'text-gray-700 hover:text-green-600'
-                    : 'text-white hover:text-green-200'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                OEM Service
-              </motion.a>
+              <Link href="/#about">
+                <motion.div
+                  className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
+                    isScrolled
+                      ? 'text-gray-700 hover:text-green-600'
+                      : 'text-white hover:text-green-200'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  About Us
+                </motion.div>
+              </Link>
+              <Link href="/#oem">
+                <motion.div
+                  className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
+                    isScrolled
+                      ? 'text-gray-700 hover:text-green-600'
+                      : 'text-white hover:text-green-200'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  OEM Service
+                </motion.div>
+              </Link>
               <Link href="/products">
                 <motion.div
                   className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
@@ -143,18 +145,19 @@ export default function Navbar() {
                   Products
                 </motion.div>
               </Link>
-              <motion.a
-                href="#testimonials"
-                className={`px-3 py-2 text-lg font-semibold transition-colors ${
-                  isScrolled
-                    ? 'text-gray-700 hover:text-green-600'
-                    : 'text-white hover:text-green-200'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Customer Testimonials
-              </motion.a>
+              <Link href="/#testimonials">
+                <motion.div
+                  className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
+                    isScrolled
+                      ? 'text-gray-700 hover:text-green-600'
+                      : 'text-white hover:text-green-200'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Customer Testimonials
+                </motion.div>
+              </Link>
               <Link href="/blog">
                 <motion.div
                   className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
@@ -221,28 +224,30 @@ export default function Navbar() {
               transition={{ duration: 0.3 }}
             >
               <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-white rounded-2xl">
-                <motion.a
-                  href="#about"
-                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.1 }}
-                  whileHover={{ x: 10 }}
-                >
-                  About Us
-                </motion.a>
-                <motion.a
-                  href="#oem"
-                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.2 }}
-                  whileHover={{ x: 10 }}
-                >
-                  OEM Service
-                </motion.a>
+                <Link href="/#about">
+                  <motion.div
+                    className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
+                    onClick={() => setIsMenuOpen(false)}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.1 }}
+                    whileHover={{ x: 10 }}
+                  >
+                    About Us
+                  </motion.div>
+                </Link>
+                <Link href="/#oem">
+                  <motion.div
+                    className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
+                    onClick={() => setIsMenuOpen(false)}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.2 }}
+                    whileHover={{ x: 10 }}
+                  >
+                    OEM Service
+                  </motion.div>
+                </Link>
                 <Link href="/products">
                   <motion.div
                     className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
@@ -255,17 +260,18 @@ export default function Navbar() {
                     Products
                   </motion.div>
                 </Link>
-                <motion.a
-                  href="#testimonials"
-                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.4 }}
-                  whileHover={{ x: 10 }}
-                >
-                  Customer Testimonials
-                </motion.a>
+                <Link href="/#testimonials">
+                  <motion.div
+                    className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
+                    onClick={() => setIsMenuOpen(false)}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.4 }}
+                    whileHover={{ x: 10 }}
+                  >
+                    Customer Testimonials
+                  </motion.div>
+                </Link>
                 <Link href="/blog">
                   <motion.div
                     className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"

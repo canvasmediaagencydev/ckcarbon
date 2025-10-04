@@ -1,12 +1,11 @@
 "use client";
 
-import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaClock, FaUser, FaTag, FaSearch, FaArrowRight } from 'react-icons/fa';
 import { BlogService, CategoryService, Blog, Category } from '@/lib/blog';
-import Navbar from '@/components/Navbar';
 
 export default function BlogPage() {
   const ref = useRef(null);
@@ -99,8 +98,6 @@ export default function BlogPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
-
       {/* Hero Section */}
       <motion.section
         ref={ref}

@@ -2,12 +2,11 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { supabase } from '@/lib/supabase'
 import { FaShoppingCart, FaSearch, FaBox, FaArrowRight } from 'react-icons/fa'
 import Image from 'next/image'
-import { motion } from 'framer-motion'
-import Navbar from '@/components/Navbar'
 import Link from 'next/link'
+import { motion } from 'framer-motion'
+import { supabase } from '@/lib/supabase'
 
 interface Product {
   id: string
@@ -57,7 +56,6 @@ export default function ProductsPage() {
   if (loading) {
     return (
       <div className="min-h-screen bg-gray-50">
-        <Navbar />
         <div className="pt-24 flex items-center justify-center min-h-screen">
           <div className="text-center">
             <div className="animate-spin rounded-full h-12 w-12 border-b-2 border-green-600 mx-auto"></div>
@@ -70,7 +68,6 @@ export default function ProductsPage() {
 
   return (
     <div className="min-h-screen bg-gray-50">
-      <Navbar />
 
       {/* Hero Section */}
       <div className="relative pt-20 sm:pt-32 pb-16 sm:pb-24 bg-gradient-to-br from-green-600 via-green-700 to-green-800 text-white overflow-hidden">
