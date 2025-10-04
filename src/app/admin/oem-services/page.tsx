@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { supabase } from '@/lib/supabase'
-import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaArrowUp, FaArrowDown } from 'react-icons/fa'
+import { FaPlus, FaEdit, FaTrash, FaSave, FaTimes, FaArrowUp, FaArrowDown, FaUser } from 'react-icons/fa'
 import ImageUpload from '@/components/ImageUpload'
 
 interface OEMService {
@@ -280,7 +280,7 @@ export default function OEMServicesPage() {
                           className="w-full h-full object-contain"
                         />
                       ) : (
-                        <span className="text-gray-400 text-xs text-center">No image</span>
+                        <FaUser className="text-gray-400 text-2xl" />
                       )}
                     </div>
                     <div>

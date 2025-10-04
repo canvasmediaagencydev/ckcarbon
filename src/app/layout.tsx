@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 import "./globals.css";
-import Footer from "../components/Footer"
+import LayoutWrapper from "../components/LayoutWrapper"
 
 export const metadata: Metadata = {
   title: "CKCarbon",
@@ -20,8 +20,9 @@ export default function RootLayout({
         <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Thai:wght@100..900&display=swap" rel="stylesheet" />
       </head>
       <body className="noto-sans-thai">
-        {children}
-      <Footer />
+        <LayoutWrapper>
+          {children}
+        </LayoutWrapper>
       </body>
     </html>
   );
