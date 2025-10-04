@@ -88,6 +88,32 @@ export default function AboutUsSection() {
               <p className="text-sm sm:text-base whitespace-pre-wrap">
                 {content}
               </p>
+               <motion.div
+              className="space-y-4 sm:space-y-6 mt-8 sm:mt-12"
+              variants={fadeInVariants}
+            >
+              <h3 className="text-xl sm:text-2xl lg:text-3xl font-bold text-gray-900">
+                ธุรกิจของ <span className="text-green-600">CK <span className="text-gray-900">CARBON</span></span>
+              </h3>
+
+              <div className="text-gray-700 leading-relaxed space-y-3 sm:space-y-4">
+                <p className="text-sm sm:text-base">
+                  เริ่มต้นจากรากฐานครอบครัวที่เคยทำธุรกิจเกี่ยวกับมะพร้าว คุณพ่อของเรามองเห็นคุณค่าและโอกาสในการต่อยอดจาก
+                </p>
+
+                <div className="bg-white p-4 sm:p-6 rounded-xl shadow-sm border-l-4 border-green-500">
+                  <p className="text-base sm:text-lg">
+                    <span className="font-semibold">"กะลามะพร้าว"</span>{" "}
+                    <span className="text-green-600 font-semibold">สู่การผลิตถ่านกัมมันต์</span>{" "}
+                    <span className="text-gray-600 md:inline block">(Activated Carbon)</span>
+                  </p>
+
+                  <p className="mt-3 sm:mt-4 text-gray-700 text-sm sm:text-base">
+                    ตั้งแต่ปี 2004 เป็นต้นมา ก่อนจะก่อตั้ง หจก. ซีเคคาร์บอน อย่างเป็นทางการ เพื่อดำเนินธุรกิจด้านการผลิตและจัดจำหน่ายสารกรองน้ำคุณภาพสูง ที่ตอบโจทย์ทั้งภาคครัวเรือนและอุตสาหกรรม
+                  </p>
+                </div>
+              </div>
+            </motion.div>
             </motion.div>
 
             {/* Stats */}
