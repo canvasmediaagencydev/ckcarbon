@@ -14,6 +14,24 @@ export type Database = {
   }
   public: {
     Tables: {
+      about_us_content: {
+        Row: {
+          content: string
+          id: string
+          updated_at: string | null
+        }
+        Insert: {
+          content: string
+          id?: string
+          updated_at?: string | null
+        }
+        Update: {
+          content?: string
+          id?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
       blog_categories: {
         Row: {
           blog_id: string
@@ -116,6 +134,138 @@ export type Database = {
           id?: string
           name?: string
           slug?: string
+        }
+        Relationships: []
+      }
+      oem_services: {
+        Row: {
+          created_at: string | null
+          display_order: number | null
+          icon: string | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          title: string
+          updated_at: string | null
+        }
+        Insert: {
+          created_at?: string | null
+          display_order?: number | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          title: string
+          updated_at?: string | null
+        }
+        Update: {
+          created_at?: string | null
+          display_order?: number | null
+          icon?: string | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          title?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      products: {
+        Row: {
+          button_text: string | null
+          created_at: string | null
+          description: string | null
+          display_order: number | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          name: string
+          updated_at: string | null
+        }
+        Insert: {
+          button_text?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name: string
+          updated_at?: string | null
+        }
+        Update: {
+          button_text?: string | null
+          created_at?: string | null
+          description?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          name?: string
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      site_settings: {
+        Row: {
+          id: string
+          setting_key: string
+          setting_value: Json
+          updated_at: string | null
+        }
+        Insert: {
+          id?: string
+          setting_key: string
+          setting_value: Json
+          updated_at?: string | null
+        }
+        Update: {
+          id?: string
+          setting_key?: string
+          setting_value?: Json
+          updated_at?: string | null
+        }
+        Relationships: []
+      }
+      testimonials: {
+        Row: {
+          author_company: string
+          author_name: string
+          author_position: string
+          content: string
+          created_at: string | null
+          display_order: number | null
+          id: string
+          image_url: string | null
+          is_active: boolean | null
+          rating: number | null
+          updated_at: string | null
+        }
+        Insert: {
+          author_company: string
+          author_name: string
+          author_position: string
+          content: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          rating?: number | null
+          updated_at?: string | null
+        }
+        Update: {
+          author_company?: string
+          author_name?: string
+          author_position?: string
+          content?: string
+          created_at?: string | null
+          display_order?: number | null
+          id?: string
+          image_url?: string | null
+          is_active?: boolean | null
+          rating?: number | null
+          updated_at?: string | null
         }
         Relationships: []
       }

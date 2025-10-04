@@ -5,6 +5,7 @@ import { useRef, useState, useEffect } from 'react';
 import { FaShoppingCart } from 'react-icons/fa';
 import Image from 'next/image';
 import { supabase } from '@/lib/supabase';
+import { useRouter } from 'next/navigation';
 
 interface Product {
   id: string
@@ -19,6 +20,7 @@ export default function ProductsSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [products, setProducts] = useState<Product[]>([]);
+  const router = useRouter();
 
   useEffect(() => {
     fetchProducts();
@@ -101,7 +103,7 @@ export default function ProductsSection() {
             {products.map((product, index) => (
               <motion.div
                 key={product.id}
-                className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden"
+                className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer"
                 initial={{ opacity: 0, y: 50 }}
                 animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 50 }}
                 transition={{
@@ -110,6 +112,7 @@ export default function ProductsSection() {
                   ease: "easeOut"
                 }}
                 whileHover={{ y: -10, scale: 1.02 }}
+                onClick={() => router.push(`/products/${product.id}`)}
               >
                 {/* Background Gradient */}
                 <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-blue-50/50 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
@@ -144,34 +147,30 @@ export default function ProductsSection() {
                     <h3 className="text-lg sm:text-xl font-bold text-gray-900 mb-3 group-hover:text-green-700 transition-colors">
                       {product.name}
                     </h3>
-
-                    {/* Price Badge */}
-                    <div className="inline-flex items-center bg-green-100 text-green-700 px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium">
-                      <span>{product.description}</span>
-                      <svg className="w-3 h-3 sm:w-4 sm:h-4 ml-2" fill="currentColor" viewBox="0 0 20 20">
-                        <path fillRule="evenodd" d="M5.293 7.293a1 1 0 011.414 0L10 10.586l3.293-3.293a1 1 0 111.414 1.414l-4 4a1 1 0 01-1.414 0l-4-4a1 1 0 010-1.414z" clipRule="evenodd" />
-                      </svg>
-                    </div>
                   </div>
 
-                  {/* Order Button */}
-                  <motion.button
-                    className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg hover:shadow-xl text-sm sm:text-base"
-                    whileHover={{
-                      scale: 1.02,
-                      boxShadow: "0 20px 40px rgba(34, 197, 94, 0.4)"
-                    }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <FaShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-                    <span className="text-base sm:text-lg">{product.button_text}</span>
-                    <motion.div
-                      animate={{ x: [0, 5, 0] }}
-                      transition={{ duration: 1.5, repeat: Infinity }}
-                    >
-                      →
-                    </motion.div>
-                  </motion.button>
+                   {/* Order Button */}
+                   <motion.button
+                     className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg hover:shadow-xl text-sm sm:text-base"
+                     whileHover={{
+                       scale: 1.02,
+                       boxShadow: "0 20px 40px rgba(34, 197, 94, 0.4)"
+                     }}
+                     whileTap={{ scale: 0.98 }}
+                     onClick={(e) => {
+                       e.stopPropagation();
+                       router.push(`/products/${product.id}`);
+                     }}
+                   >
+                     <FaShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
+                     <span className="text-base sm:text-lg">{product.button_text}</span>
+                     <motion.div
+                       animate={{ x: [0, 5, 0] }}
+                       transition={{ duration: 1.5, repeat: Infinity }}
+                     >
+                       →
+                     </motion.div>
+                   </motion.button>
                 </div>
 
                 {/* Decorative Elements */}
