@@ -1,11 +1,12 @@
 "use client";
 
-import { motion, useInView } from 'framer-motion';
 import { useRef, useState, useEffect } from 'react';
+import { motion, useInView } from 'framer-motion';
 import { FaShoppingCart } from 'react-icons/fa';
 import Image from 'next/image';
-import { supabase } from '@/lib/supabase';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { supabase } from '@/lib/supabase';
 
 interface Product {
   id: string
@@ -52,6 +53,8 @@ export default function ProductsSection() {
     }
   };
 
+  const limitedProducts = products.slice(0, 3);
+  const hasProducts = limitedProducts.length > 0;
 
   return (
     <motion.section
@@ -100,7 +103,7 @@ export default function ProductsSection() {
           variants={fadeInVariants}
         >
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 sm:gap-8">
-            {products.map((product, index) => (
+            {limitedProducts.map((product, index) => (
               <motion.div
                 key={product.id}
                 className="group relative bg-white rounded-2xl sm:rounded-3xl p-6 sm:p-8 shadow-lg hover:shadow-2xl transition-all duration-500 overflow-hidden cursor-pointer"
@@ -189,7 +192,26 @@ export default function ProductsSection() {
               </motion.div>
             ))}
           </div>
-
+          {hasProducts && (
+            <div className="mt-10 flex justify-center">
+              <Link href="/products">
+                <motion.button
+                  className="inline-flex items-center gap-3 rounded-full bg-white/80 px-6 py-3 text-sm font-semibold text-green-700 shadow-lg ring-1 ring-green-100 transition-colors hover:bg-green-600 hover:text-white sm:text-base"
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.97 }}
+                >
+                  View More Products
+                  <motion.span
+                    aria-hidden
+                    animate={{ x: [0, 6, 0] }}
+                    transition={{ duration: 1.8, repeat: Infinity }}
+                  >
+                    →
+                  </motion.span>
+                </motion.button>
+              </Link>
+            </div>
+          )}
         </motion.div>
       </div>
     </motion.section>

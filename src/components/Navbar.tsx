@@ -130,18 +130,19 @@ export default function Navbar() {
               >
                 OEM Service
               </motion.a>
-              <motion.a
-                href="#products"
-                className={`px-3 py-2 text-lg font-semibold transition-colors ${
-                  isScrolled
-                    ? 'text-gray-700 hover:text-green-600'
-                    : 'text-white hover:text-green-200'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-              >
-                Products
-              </motion.a>
+              <Link href="/products">
+                <motion.div
+                  className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
+                    isScrolled
+                      ? 'text-gray-700 hover:text-green-600'
+                      : 'text-white hover:text-green-200'
+                  }`}
+                  whileHover={{ scale: 1.05 }}
+                  whileTap={{ scale: 0.95 }}
+                >
+                  Products
+                </motion.div>
+              </Link>
               <motion.a
                 href="#testimonials"
                 className={`px-3 py-2 text-lg font-semibold transition-colors ${
@@ -242,17 +243,18 @@ export default function Navbar() {
                 >
                   OEM Service
                 </motion.a>
-                <motion.a
-                  href="#products"
-                  className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
-                  onClick={() => setIsMenuOpen(false)}
-                  initial={{ x: -20, opacity: 0 }}
-                  animate={{ x: 0, opacity: 1 }}
-                  transition={{ delay: 0.3 }}
-                  whileHover={{ x: 10 }}
-                >
-                  Products
-                </motion.a>
+                <Link href="/products">
+                  <motion.div
+                    className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
+                    onClick={() => setIsMenuOpen(false)}
+                    initial={{ x: -20, opacity: 0 }}
+                    animate={{ x: 0, opacity: 1 }}
+                    transition={{ delay: 0.3 }}
+                    whileHover={{ x: 10 }}
+                  >
+                    Products
+                  </motion.div>
+                </Link>
                 <motion.a
                   href="#testimonials"
                   className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors"
