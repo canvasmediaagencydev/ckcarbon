@@ -1,44 +1,50 @@
 "use client";
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { FaComments, FaTimes, FaPhone, FaFacebookMessenger } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
+import { createClient } from '@/lib/supabase-client';
+import type { Tables } from '@/database.types';
 
 export default function ContactWidget() {
   const [isOpen, setIsOpen] = useState(false);
+  const [contactOptions, setContactOptions] = useState<Tables<'contact_channels'>[]>([]);
+
+  useEffect(() => {
+    const fetchContactChannels = async () => {
+      const supabase = createClient();
+      const { data } = await supabase
+        .from('contact_channels')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order');
+
+      if (data) {
+        setContactOptions(data);
+      }
+    };
+
+    fetchContactChannels();
+  }, []);
 
   const toggleWidget = () => {
     setIsOpen(!isOpen);
     console.log('Widget toggled:', !isOpen); // Debug log
   };
 
-  const contactOptions = [
-    {
-      id: 'line',
-      icon: SiLine,
-      label: 'Line',
-      color: 'bg-green-500',
-      hoverColor: 'hover:bg-green-600',
-      href: 'https://line.me/ti/p/@yourline'
-    },
-    {
-      id: 'messenger',
-      icon: FaFacebookMessenger,
-      label: 'Messenger',
-      color: 'bg-blue-500',
-      hoverColor: 'hover:bg-blue-600',
-      href: 'https://m.me/yourpage'
-    },
-    {
-      id: 'phone',
-      icon: FaPhone,
-      label: 'Phone',
-      color: 'bg-purple-500',
-      hoverColor: 'hover:bg-purple-600',
-      href: 'tel:+1234567890'
-    },
-  ];
+  const getIconComponent = (iconName: string | null) => {
+    switch (iconName) {
+      case 'SiLine':
+        return SiLine;
+      case 'FaFacebookMessenger':
+        return FaFacebookMessenger;
+      case 'FaPhone':
+        return FaPhone;
+      default:
+        return FaComments;
+    }
+  };
 
   return (
     <div className="fixed right-4 sm:right-6 bottom-4 sm:bottom-6" style={{ zIndex: 9999 }}>
@@ -46,31 +52,34 @@ export default function ContactWidget() {
       <AnimatePresence>
         {isOpen && (
           <div className="absolute bottom-16 sm:bottom-20 right-0 flex flex-col space-y-2 sm:space-y-3">
-            {contactOptions.map((option, index) => (
-              <motion.a
-                key={option.id}
-                href={option.href}
-                target={option.href.startsWith('http') ? '_blank' : '_self'}
-                rel={option.href.startsWith('http') ? 'noopener noreferrer' : undefined}
-                className={`flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full text-white shadow-lg transition-all duration-300 ${option.color} ${option.hoverColor}`}
-                initial={{ opacity: 0, x: 50, scale: 0 }}
-                animate={{ opacity: 1, x: 0, scale: 1 }}
-                exit={{ opacity: 0, x: 50, scale: 0 }}
-                transition={{
-                  duration: 0.4,
-                  delay: index * 0.1,
-                  ease: "easeOut"
-                }}
-                whileHover={{
-                  scale: 1.1,
-                  boxShadow: "0 8px 25px rgba(0,0,0,0.3)"
-                }}
-                whileTap={{ scale: 0.95 }}
-                title={option.label}
-              >
-                <option.icon className="w-5 h-5 sm:w-6 sm:h-6" />
-              </motion.a>
-            ))}
+            {contactOptions.map((option, index) => {
+              const IconComponent = getIconComponent(option.icon_name);
+              return (
+                <motion.a
+                  key={option.id}
+                  href={option.url}
+                  target={option.url.startsWith('http') ? '_blank' : '_self'}
+                  rel={option.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+                  className={`flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full text-white shadow-lg transition-all duration-300 ${option.color} ${option.hover_color}`}
+                  initial={{ opacity: 0, x: 50, scale: 0 }}
+                  animate={{ opacity: 1, x: 0, scale: 1 }}
+                  exit={{ opacity: 0, x: 50, scale: 0 }}
+                  transition={{
+                    duration: 0.4,
+                    delay: index * 0.1,
+                    ease: "easeOut"
+                  }}
+                  whileHover={{
+                    scale: 1.1,
+                    boxShadow: "0 8px 25px rgba(0,0,0,0.3)"
+                  }}
+                  whileTap={{ scale: 0.95 }}
+                  title={option.label}
+                >
+                  <IconComponent className="w-5 h-5 sm:w-6 sm:h-6" />
+                </motion.a>
+              );
+            })}
           </div>
         )}
       </AnimatePresence>

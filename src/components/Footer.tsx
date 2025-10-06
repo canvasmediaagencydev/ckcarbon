@@ -1,9 +1,67 @@
 "use client";
 
+import { useEffect, useState } from 'react';
 import { motion } from 'framer-motion';
 import { FaFacebook, FaInstagram, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
+import { createClient } from '@/lib/supabase-client';
+import type { Tables } from '@/database.types';
+
+interface FooterCompanyInfo {
+  company_name: string;
+  logo_text: string;
+  address: string;
+  copyright: string;
+}
 
 export default function Footer() {
+  const [contactInfo, setContactInfo] = useState<Tables<'contact_info'>[]>([]);
+  const [socialMedia, setSocialMedia] = useState<Tables<'social_media'>[]>([]);
+  const [footerLinks, setFooterLinks] = useState<Tables<'footer_links'>[]>([]);
+  const [companyInfo, setCompanyInfo] = useState<FooterCompanyInfo | null>(null);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const supabase = createClient();
+
+      // Fetch contact info
+      const { data: contacts } = await supabase
+        .from('contact_info')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order');
+
+      // Fetch social media
+      const { data: social } = await supabase
+        .from('social_media')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order');
+
+      // Fetch footer links
+      const { data: links } = await supabase
+        .from('footer_links')
+        .select('*')
+        .eq('is_active', true)
+        .order('display_order');
+
+      // Fetch company info from site_settings
+      const { data: settings } = await supabase
+        .from('site_settings')
+        .select('*')
+        .eq('setting_key', 'footer_company_info')
+        .single();
+
+      if (contacts) setContactInfo(contacts);
+      if (social) setSocialMedia(social);
+      if (links) setFooterLinks(links);
+      if (settings?.setting_value) {
+        setCompanyInfo(settings.setting_value as FooterCompanyInfo);
+      }
+    };
+
+    fetchData();
+  }, []);
+
   const fadeInVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: {
@@ -12,6 +70,20 @@ export default function Footer() {
       transition: { duration: 0.8 }
     }
   };
+
+  const getIconComponent = (iconName: string | null) => {
+    switch (iconName) {
+      case 'FaFacebook':
+        return FaFacebook;
+      case 'FaInstagram':
+        return FaInstagram;
+      default:
+        return FaFacebook;
+    }
+  };
+
+  const phones = contactInfo.filter(c => c.contact_type === 'phone');
+  const emails = contactInfo.filter(c => c.contact_type === 'email');
 
   return (
     <motion.footer
@@ -40,41 +112,39 @@ export default function Footer() {
                 whileHover={{ scale: 1.05 }}
               >
                 <div className="text-2xl sm:text-3xl font-bold">
-                  <span className="text-gray-400">LOGO</span>
+                  <span className="text-gray-400">{companyInfo?.logo_text || 'LOGO'}</span>
                   <br />
-                  <span className="text-green-400">CK CARBON</span>
+                  <span className="text-green-400">{companyInfo?.company_name || 'CK CARBON'}</span>
                 </div>
               </motion.div>
 
               <p className="text-gray-300 leading-relaxed mb-4 sm:mb-6 max-w-md text-sm sm:text-base">
-                ธ/1 ถ.บางแตด อ.บ้อง จังหวัดใหม่
+                {companyInfo?.address || 'ธ/1 ถ.บางแตด อ.บ้อง จังหวัดใหม่'}
               </p>
 
               {/* Contact Info */}
               <div className="space-y-3 sm:space-y-4">
-                <motion.div
-                  className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
-                  whileHover={{ x: 5, color: "#10b981" }}
-                >
-                  <FaPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
-                  <span>083-5794224</span>
-                </motion.div>
+                {phones.map((phone) => (
+                  <motion.div
+                    key={phone.id}
+                    className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
+                    whileHover={{ x: 5, color: "#10b981" }}
+                  >
+                    <FaPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
+                    <span>{phone.value}</span>
+                  </motion.div>
+                ))}
 
-                <motion.div
-                  className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
-                  whileHover={{ x: 5, color: "#10b981" }}
-                >
-                  <FaPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
-                  <span>053-447172</span>
-                </motion.div>
-
-                <motion.div
-                  className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
-                  whileHover={{ x: 5, color: "#10b981" }}
-                >
-                  <FaEnvelope className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
-                  <span className="break-all">ckcarbonservice@gmail.com</span>
-                </motion.div>
+                {emails.map((email) => (
+                  <motion.div
+                    key={email.id}
+                    className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
+                    whileHover={{ x: 5, color: "#10b981" }}
+                  >
+                    <FaEnvelope className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
+                    <span className="break-all">{email.value}</span>
+                  </motion.div>
+                ))}
               </div>
             </div>
           </motion.div>
@@ -83,24 +153,30 @@ export default function Footer() {
           <motion.div variants={fadeInVariants}>
             <h3 className="text-lg sm:text-xl font-bold text-green-400 mb-4 sm:mb-6">Contact Us</h3>
             <div className="space-y-3 sm:space-y-4">
-              <motion.div
-                className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
-                whileHover={{ x: 5 }}
-              >
-                <FaPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
-                <div className="text-sm sm:text-base">
-                  <div>083-5794224</div>
-                  <div>053-447172</div>
-                </div>
-              </motion.div>
+              {phones.length > 0 && (
+                <motion.div
+                  className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
+                  whileHover={{ x: 5 }}
+                >
+                  <FaPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
+                  <div className="text-sm sm:text-base">
+                    {phones.map((phone) => (
+                      <div key={phone.id}>{phone.value}</div>
+                    ))}
+                  </div>
+                </motion.div>
+              )}
 
-              <motion.div
-                className="flex items-start space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
-                whileHover={{ x: 5 }}
-              >
-                <FaEnvelope className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 mt-1 flex-shrink-0" />
-                <span className="break-all">ckcarbonservice@gmail.com</span>
-              </motion.div>
+              {emails.map((email) => (
+                <motion.div
+                  key={email.id}
+                  className="flex items-start space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
+                  whileHover={{ x: 5 }}
+                >
+                  <FaEnvelope className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 mt-1 flex-shrink-0" />
+                  <span className="break-all">{email.value}</span>
+                </motion.div>
+              ))}
             </div>
           </motion.div>
 
@@ -108,23 +184,25 @@ export default function Footer() {
           <motion.div variants={fadeInVariants}>
             <h3 className="text-lg sm:text-xl font-bold text-green-400 mb-4 sm:mb-6">Social Media</h3>
             <div className="flex space-x-3 sm:space-x-4">
-              <motion.a
-                href="#"
-                className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-blue-600 transition-colors"
-                whileHover={{ scale: 1.1, rotate: 10 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FaFacebook className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.a>
+              {socialMedia.map((social) => {
+                const IconComponent = getIconComponent(social.icon_name);
+                const hoverColor = social.platform === 'facebook' ? 'hover:bg-blue-600' : 'hover:bg-pink-600';
+                const rotate = social.platform === 'facebook' ? 10 : -10;
 
-              <motion.a
-                href="#"
-                className="w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-full flex items-center justify-center hover:bg-pink-600 transition-colors"
-                whileHover={{ scale: 1.1, rotate: -10 }}
-                whileTap={{ scale: 0.9 }}
-              >
-                <FaInstagram className="w-4 h-4 sm:w-5 sm:h-5" />
-              </motion.a>
+                return (
+                  <motion.a
+                    key={social.id}
+                    href={social.url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`w-10 h-10 sm:w-12 sm:h-12 bg-gray-800 rounded-full flex items-center justify-center ${hoverColor} transition-colors`}
+                    whileHover={{ scale: 1.1, rotate }}
+                    whileTap={{ scale: 0.9 }}
+                  >
+                    <IconComponent className="w-4 h-4 sm:w-5 sm:h-5" />
+                  </motion.a>
+                );
+              })}
             </div>
           </motion.div>
         </div>
@@ -136,19 +214,20 @@ export default function Footer() {
         >
           <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
             <div className="text-gray-400 text-xs sm:text-sm text-center md:text-left">
-              © 2024 CK Carbon Partnership. All rights reserved.
+              {companyInfo?.copyright || '© 2024 CK Carbon Partnership. All rights reserved.'}
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-4 sm:gap-6 text-xs sm:text-sm text-gray-400">
-              <motion.a href="#" className="hover:text-green-400 transition-colors" whileHover={{ scale: 1.05 }}>
-                Privacy Policy
-              </motion.a>
-              <motion.a href="#" className="hover:text-green-400 transition-colors" whileHover={{ scale: 1.05 }}>
-                Terms of Service
-              </motion.a>
-              <motion.a href="#" className="hover:text-green-400 transition-colors" whileHover={{ scale: 1.05 }}>
-                Sitemap
-              </motion.a>
+              {footerLinks.map((link) => (
+                <motion.a
+                  key={link.id}
+                  href={link.url}
+                  className="hover:text-green-400 transition-colors"
+                  whileHover={{ scale: 1.05 }}
+                >
+                  {link.label}
+                </motion.a>
+              ))}
             </div>
           </div>
         </motion.div>

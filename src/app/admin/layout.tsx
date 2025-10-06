@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { usePathname, useRouter } from 'next/navigation'
-import { FaBlog, FaPlus, FaFlask, FaCog, FaInfoCircle, FaIndustry, FaBox, FaComments, FaHome, FaSignOutAlt, FaUser } from 'react-icons/fa'
+import { FaBlog, FaPlus, FaFlask, FaCog, FaInfoCircle, FaIndustry, FaBox, FaComments, FaHome, FaSignOutAlt, FaUser, FaEnvelope } from 'react-icons/fa'
 import { createClient } from '@/lib/supabase-client'
 
 export default function AdminLayout({
@@ -178,6 +178,18 @@ export default function AdminLayout({
                 >
                   <FaComments size={18} />
                   <span className="font-medium">Testimonials</span>
+                </Link>
+              </li>
+              <li>
+                <Link
+                  href="/admin/footer-contact"
+                  className={`flex items-center space-x-3 p-3 rounded-xl transition-all duration-200 ${isActive('/admin/footer-contact')
+                    ? 'bg-gradient-to-r from-green-500 to-green-600 text-white shadow-lg'
+                    : 'text-gray-700 hover:bg-green-50 hover:text-green-700'
+                    }`}
+                >
+                  <FaEnvelope size={18} />
+                  <span className="font-medium">Footer & Contact</span>
                 </Link>
               </li>
 

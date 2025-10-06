@@ -24,30 +24,42 @@ export default function BlogSection() {
   };
 
   // Fallback blog posts if no data from CMS
-  const fallbackBlogPosts = [
+  const fallbackBlogPosts: Blog[] = [
     {
       id: '1',
       title: "The Future of Water Purification",
+      slug: "future-of-water-purification",
       excerpt: "Exploring innovative carbon filtration technologies that are revolutionizing water treatment across industries.",
+      content: {},
       featured_image: "/image/blog/1da17c29368f288d871238be12d2be2862e4b92c.jpg",
+      status: 'published',
       created_at: "2024-03-15T00:00:00Z",
-      categories: [{ id: '1', name: "Technology", slug: "technology", created_at: "" }]
+      updated_at: "2024-03-15T00:00:00Z",
+      tags: ['Technology', 'Innovation']
     },
     {
       id: '2',
       title: "Sustainable Carbon Production",
+      slug: "sustainable-carbon-production",
       excerpt: "How we transform coconut shells into premium activated carbon while maintaining environmental responsibility.",
+      content: {},
       featured_image: "/image/blog/7e79429c236b192dd6e6f2a778f9deeb5a070773.jpg",
+      status: 'published',
       created_at: "2024-03-12T00:00:00Z",
-      categories: [{ id: '2', name: "Environment", slug: "environment", created_at: "" }]
+      updated_at: "2024-03-12T00:00:00Z",
+      tags: ['Environment', 'Sustainability']
     },
     {
       id: '3',
       title: "Industrial Water Solutions",
+      slug: "industrial-water-solutions",
       excerpt: "Case studies showing how our activated carbon improves industrial water treatment efficiency and cost-effectiveness.",
+      content: {},
       featured_image: "/image/blog/8611762b17e5240e4d4ec414f8c251ba80b1821d.jpg",
+      status: 'published',
       created_at: "2024-03-08T00:00:00Z",
-      categories: [{ id: '3', name: "Industry", slug: "industry", created_at: "" }]
+      updated_at: "2024-03-08T00:00:00Z",
+      tags: ['Industry', 'Case Study']
     }
   ];
 
@@ -64,12 +76,12 @@ export default function BlogSection() {
         setBlogPosts(publishedBlogs);
       } else {
         // Use fallback data if no published blogs
-        setBlogPosts(fallbackBlogPosts as Blog[]);
+        setBlogPosts(fallbackBlogPosts);
       }
     } catch (error) {
       console.error('Error fetching blogs:', error);
       // Use fallback data on error
-      setBlogPosts(fallbackBlogPosts as Blog[]);
+      setBlogPosts(fallbackBlogPosts);
     } finally {
       setLoading(false);
     }
@@ -152,9 +164,9 @@ export default function BlogSection() {
                         />
 
                         {/* Category Badge */}
-                        {post.categories && post.categories.length > 0 && (
+                        {post.tags && post.tags.length > 0 && (
                           <div className="absolute top-3 left-3 bg-green-600 text-white px-2 py-1 rounded-lg text-xs font-semibold">
-                            {post.categories[0].name}
+                            {post.tags[0]}
                           </div>
                         )}
                       </motion.div>
