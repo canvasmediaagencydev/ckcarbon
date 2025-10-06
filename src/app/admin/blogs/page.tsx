@@ -3,7 +3,7 @@
 import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { BlogService, Blog } from '@/lib/blog'
-import { FaPlus, FaEdit, FaTrash, FaEye } from 'react-icons/fa'
+import { FaPlus, FaEdit, FaTrash, FaEye, FaBlog } from 'react-icons/fa'
 
 export default function BlogsListPage() {
   const [blogs, setBlogs] = useState<Blog[]>([])
@@ -56,123 +56,136 @@ export default function BlogsListPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="flex justify-between items-center">
-        <div>
-          <h1 className="text-3xl font-bold text-gray-900">Blog Posts</h1>
-          <p className="text-gray-600 mt-2">Manage your blog content</p>
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <div className="flex justify-between items-center">
+          <div>
+            <h1 className="text-3xl font-bold text-slate-900">Blog Posts</h1>
+            <p className="text-slate-600 mt-2">Manage and organize your blog content</p>
+          </div>
+          <Link
+            href="/admin/blogs/new"
+            className="flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
+          >
+            <FaPlus size={16} />
+            <span>New Blog Post</span>
+          </Link>
         </div>
-        <Link
-          href="/admin/blogs/new"
-          className="flex items-center space-x-2 bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700"
-        >
-          <FaPlus size={16} />
-          <span>New Blog Post</span>
-        </Link>
       </div>
 
       {/* Filters */}
-      <div className="flex space-x-4">
-        {(['all', 'published', 'draft', 'archived'] as const).map((status) => (
-          <button
-            key={status}
-            onClick={() => setFilter(status)}
-            className={`px-4 py-2 rounded-lg text-sm font-medium ${
-              filter === status
-                ? 'bg-green-600 text-white'
-                : 'bg-white text-gray-700 border border-gray-300 hover:bg-gray-50'
-            }`}
-          >
-            {status.charAt(0).toUpperCase() + status.slice(1)}
-          </button>
-        ))}
+      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+        <div className="flex flex-wrap gap-2">
+          {(['all', 'published', 'draft', 'archived'] as const).map((status) => (
+            <button
+              key={status}
+              onClick={() => setFilter(status)}
+              className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
+                filter === status
+                  ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
+                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+              }`}
+            >
+              {status.charAt(0).toUpperCase() + status.slice(1)}
+            </button>
+          ))}
+        </div>
       </div>
 
       {/* Blog List */}
-      <div className="bg-white rounded-lg shadow border border-gray-200">
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
         {loading ? (
-          <div className="p-8 text-center">
-            <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600 mx-auto"></div>
-            <p className="text-gray-500 mt-2">Loading...</p>
+          <div className="p-12 text-center">
+            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-600 mx-auto"></div>
+            <p className="text-slate-500 mt-4 font-medium">Loading blog posts...</p>
           </div>
         ) : blogs.length === 0 ? (
-          <div className="p-8 text-center">
-            <p className="text-gray-500">No blog posts found.</p>
+          <div className="p-12 text-center">
+            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+              <FaBlog className="text-slate-400" size={32} />
+            </div>
+            <h3 className="text-xl font-semibold text-slate-900 mb-2">No blog posts found</h3>
+            <p className="text-slate-600 mb-6">Get started by creating your first blog post</p>
             <Link
               href="/admin/blogs/new"
-              className="text-green-600 hover:text-green-800 mt-2 inline-block"
+              className="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
             >
-              Create your first blog post
+              <FaPlus size={16} />
+              <span>Create Blog Post</span>
             </Link>
           </div>
         ) : (
           <div className="overflow-x-auto">
-            <table className="min-w-full divide-y divide-gray-200">
-              <thead className="bg-gray-50">
+            <table className="min-w-full">
+              <thead className="bg-slate-50 border-b border-slate-200">
                 <tr>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Title
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    Blog Post
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Created
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                    Created Date
                   </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-gray-200">
+              <tbody className="divide-y divide-slate-200">
                 {blogs.map((blog) => (
-                  <tr key={blog.id} className="hover:bg-gray-50">
-                    <td className="px-6 py-4 whitespace-nowrap">
+                  <tr key={blog.id} className="hover:bg-slate-50 transition-colors">
+                    <td className="px-6 py-4">
                       <div>
-                        <div className="text-sm font-medium text-gray-900">
+                        <div className="text-sm font-semibold text-slate-900">
                           {blog.title}
                         </div>
-                        <div className="text-sm text-gray-500">
+                        <div className="text-sm text-slate-500 font-mono">
                           /{blog.slug}
                         </div>
                       </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap">
                       <span
-                        className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full ${getStatusColor(
+                        className={`inline-flex px-3 py-1 text-xs font-semibold rounded-full ${getStatusColor(
                           blog.status
                         )}`}
                       >
                         {blog.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                      {new Date(blog.created_at).toLocaleDateString()}
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                      {new Date(blog.created_at).toLocaleDateString('en-US', {
+                        year: 'numeric',
+                        month: 'short',
+                        day: 'numeric'
+                      })}
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                      <div className="flex space-x-2">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm">
+                      <div className="flex items-center justify-end space-x-2">
                         {blog.status === 'published' && (
                           <button
-                            className="text-gray-600 hover:text-gray-900"
+                            className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
                             title="View"
                           >
-                            <FaEye size={16} />
+                            <FaEye size={14} />
                           </button>
                         )}
                         <Link
                           href={`/admin/blogs/${blog.id}/edit`}
-                          className="text-green-600 hover:text-blue-900"
+                          className="p-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
                           title="Edit"
                         >
-                          <FaEdit size={16} />
+                          <FaEdit size={14} />
                         </Link>
                         <button
                           onClick={() => handleDelete(blog.id)}
-                          className="text-red-600 hover:text-red-900"
+                          className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
                           title="Delete"
                         >
-                          <FaTrash size={16} />
+                          <FaTrash size={14} />
                         </button>
                       </div>
                     </td>

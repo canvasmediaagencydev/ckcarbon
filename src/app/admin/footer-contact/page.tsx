@@ -235,340 +235,423 @@ export default function FooterContactAdmin() {
   };
 
   return (
-    <div className="p-6">
-      <h1 className="text-3xl font-bold mb-6">จัดการ Footer และ Contact</h1>
+    <div className="space-y-8">
+      {/* Header */}
+      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+        <h1 className="text-3xl font-bold text-slate-900">Footer & Contact Management</h1>
+        <p className="text-slate-600 mt-2">Manage your website footer and contact information</p>
+      </div>
 
+      {/* Success Message */}
       {message && (
-        <div className="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded mb-4">
+        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-6 py-4 rounded-xl font-medium">
           {message}
         </div>
       )}
 
-      {/* Tabs */}
-      <div className="flex space-x-4 mb-6 border-b">
-        <button
-          onClick={() => setActiveTab('contact')}
-          className={`pb-2 px-4 ${activeTab === 'contact' ? 'border-b-2 border-green-500 font-bold' : ''}`}
-        >
-          ข้อมูลติดต่อ
-        </button>
-        <button
-          onClick={() => setActiveTab('social')}
-          className={`pb-2 px-4 ${activeTab === 'social' ? 'border-b-2 border-green-500 font-bold' : ''}`}
-        >
-          Social Media
-        </button>
-        <button
-          onClick={() => setActiveTab('channels')}
-          className={`pb-2 px-4 ${activeTab === 'channels' ? 'border-b-2 border-green-500 font-bold' : ''}`}
-        >
-          ช่องทางติดต่อ (Widget)
-        </button>
-        <button
-          onClick={() => setActiveTab('links')}
-          className={`pb-2 px-4 ${activeTab === 'links' ? 'border-b-2 border-green-500 font-bold' : ''}`}
-        >
-          Footer Links
-        </button>
-        <button
-          onClick={() => setActiveTab('company')}
-          className={`pb-2 px-4 ${activeTab === 'company' ? 'border-b-2 border-green-500 font-bold' : ''}`}
-        >
-          ข้อมูลบริษัท
-        </button>
+      {/* Modern Tabs */}
+      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+        <div className="flex flex-wrap border-b border-slate-200">
+          {[
+            { id: 'contact', label: 'Contact Info', icon: '📞' },
+            { id: 'social', label: 'Social Media', icon: '📱' },
+            { id: 'channels', label: 'Contact Widgets', icon: '💬' },
+            { id: 'links', label: 'Footer Links', icon: '🔗' },
+            { id: 'company', label: 'Company Info', icon: '🏢' },
+          ].map((tab) => (
+            <button
+              key={tab.id}
+              onClick={() => setActiveTab(tab.id as any)}
+              className={`flex items-center space-x-2 px-6 py-4 font-medium transition-all duration-200 border-b-2 ${
+                activeTab === tab.id
+                  ? 'border-emerald-600 text-emerald-600 bg-emerald-50'
+                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+              }`}
+            >
+              <span className="text-lg">{tab.icon}</span>
+              <span>{tab.label}</span>
+            </button>
+          ))}
+        </div>
+
+        <div className="p-8">
+          {/* Contact Info Tab */}
+          {activeTab === 'contact' && (
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Contact Information</h2>
+                <p className="text-slate-600">Add and manage your contact details</p>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add New Contact</h3>
+                <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Contact Type</label>
+                    <select
+                      value={newContact.type}
+                      onChange={(e) => setNewContact({ ...newContact, type: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    >
+                      <option value="phone">Phone</option>
+                      <option value="email">Email</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Label (Optional)</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Main Office"
+                      value={newContact.label}
+                      onChange={(e) => setNewContact({ ...newContact, label: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Value</label>
+                    <input
+                      type="text"
+                      placeholder={newContact.type === 'phone' ? 'Phone number' : 'Email address'}
+                      value={newContact.value}
+                      onChange={(e) => setNewContact({ ...newContact, value: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={addContactInfo}
+                  className="mt-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-2.5 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
+                >
+                  Add Contact
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {contactInfo.map((contact) => (
+                  <div key={contact.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
+                        <span className="text-emerald-600 font-bold">
+                          {contact.contact_type === 'phone' ? '📞' : '✉️'}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-slate-900">
+                          {contact.contact_type === 'phone' ? 'Phone' : 'Email'}
+                        </div>
+                        <div className="text-slate-600">{contact.value}</div>
+                        {contact.label && (
+                          <div className="text-sm text-slate-500">{contact.label}</div>
+                        )}
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => deleteContactInfo(contact.id)}
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Social Media Tab */}
+          {activeTab === 'social' && (
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Social Media</h2>
+                <p className="text-slate-600">Manage your social media profiles</p>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add Social Media</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Platform</label>
+                    <select
+                      value={newSocial.platform}
+                      onChange={(e) => {
+                        const icon = e.target.value === 'facebook' ? 'FaFacebook' : 'FaInstagram';
+                        setNewSocial({ ...newSocial, platform: e.target.value, icon });
+                      }}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    >
+                      <option value="facebook">Facebook</option>
+                      <option value="instagram">Instagram</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">URL</label>
+                    <input
+                      type="text"
+                      placeholder="https://facebook.com/yourpage"
+                      value={newSocial.url}
+                      onChange={(e) => setNewSocial({ ...newSocial, url: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={addSocialMedia}
+                  className="mt-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-2.5 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
+                >
+                  Add Social Media
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {socialMedia.map((social) => (
+                  <div key={social.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
+                        <span className="text-blue-600 font-bold">
+                          {social.platform === 'facebook' ? '📘' : '📷'}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-slate-900 capitalize">{social.platform}</div>
+                        <div className="text-slate-600">{social.url}</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => deleteSocialMedia(social.id)}
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Contact Channels Tab */}
+          {activeTab === 'channels' && (
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Contact Widgets</h2>
+                <p className="text-slate-600">Sticky contact widgets for your website</p>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add Contact Widget</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Widget Type</label>
+                    <select
+                      value={newChannel.type}
+                      onChange={(e) => {
+                        let icon = 'SiLine';
+                        let color = 'bg-green-500';
+                        let hoverColor = 'hover:bg-green-600';
+
+                        if (e.target.value === 'messenger') {
+                          icon = 'FaFacebookMessenger';
+                          color = 'bg-blue-500';
+                          hoverColor = 'hover:bg-blue-600';
+                        } else if (e.target.value === 'phone') {
+                          icon = 'FaPhone';
+                          color = 'bg-purple-500';
+                          hoverColor = 'hover:bg-purple-600';
+                        }
+
+                        setNewChannel({ ...newChannel, type: e.target.value, icon, color, hoverColor });
+                      }}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    >
+                      <option value="line">Line</option>
+                      <option value="messenger">Messenger</option>
+                      <option value="phone">Phone</option>
+                    </select>
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Label</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Chat with us"
+                      value={newChannel.label}
+                      onChange={(e) => setNewChannel({ ...newChannel, label: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+                  <div className="md:col-span-2">
+                    <label className="block text-sm font-medium text-slate-700 mb-2">URL</label>
+                    <input
+                      type="text"
+                      placeholder="Contact URL"
+                      value={newChannel.url}
+                      onChange={(e) => setNewChannel({ ...newChannel, url: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={addContactChannel}
+                  className="mt-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-2.5 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
+                >
+                  Add Widget
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {contactChannels.map((channel) => (
+                  <div key={channel.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                    <div className="flex items-center space-x-4">
+                      <div className={`w-10 h-10 ${channel.color} rounded-lg flex items-center justify-center`}>
+                        <span className="text-white font-bold">
+                          {channel.channel_type === 'line' ? '💬' : channel.channel_type === 'messenger' ? '🔵' : '📞'}
+                        </span>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-slate-900">{channel.label}</div>
+                        <div className="text-slate-600">{channel.url}</div>
+                        <div className="text-sm text-slate-500 capitalize">{channel.channel_type}</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => deleteContactChannel(channel.id)}
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Footer Links Tab */}
+          {activeTab === 'links' && (
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Footer Links</h2>
+                <p className="text-slate-600">Manage links in your website footer</p>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add Footer Link</h3>
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Link Label</label>
+                    <input
+                      type="text"
+                      placeholder="e.g., Privacy Policy"
+                      value={newLink.label}
+                      onChange={(e) => setNewLink({ ...newLink, label: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">URL</label>
+                    <input
+                      type="text"
+                      placeholder="https://example.com/privacy"
+                      value={newLink.url}
+                      onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+                </div>
+                <button
+                  onClick={addFooterLink}
+                  className="mt-4 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-2.5 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
+                >
+                  Add Link
+                </button>
+              </div>
+
+              <div className="space-y-3">
+                {footerLinks.map((link) => (
+                  <div key={link.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                    <div className="flex items-center space-x-4">
+                      <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
+                        <span className="text-slate-600 font-bold">🔗</span>
+                      </div>
+                      <div>
+                        <div className="font-semibold text-slate-900">{link.label}</div>
+                        <div className="text-slate-600">{link.url}</div>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => deleteFooterLink(link.id)}
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                    >
+                      Delete
+                    </button>
+                  </div>
+                ))}
+              </div>
+            </div>
+          )}
+
+          {/* Company Info Tab */}
+          {activeTab === 'company' && (
+            <div className="space-y-8">
+              <div>
+                <h2 className="text-2xl font-bold text-slate-900 mb-2">Company Information</h2>
+                <p className="text-slate-600">Update your company details and branding</p>
+              </div>
+
+              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+                <div className="space-y-6">
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Logo Text</label>
+                    <input
+                      type="text"
+                      placeholder="Your company logo text"
+                      value={companyInfo.logo_text}
+                      onChange={(e) => setCompanyInfo({ ...companyInfo, logo_text: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Company Name</label>
+                    <input
+                      type="text"
+                      placeholder="Your company name"
+                      value={companyInfo.company_name}
+                      onChange={(e) => setCompanyInfo({ ...companyInfo, company_name: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Address</label>
+                    <textarea
+                      placeholder="Your company address"
+                      value={companyInfo.address}
+                      onChange={(e) => setCompanyInfo({ ...companyInfo, address: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      rows={3}
+                    />
+                  </div>
+
+                  <div>
+                    <label className="block text-sm font-medium text-slate-700 mb-2">Copyright Text</label>
+                    <input
+                      type="text"
+                      placeholder="© 2024 Your Company. All rights reserved."
+                      value={companyInfo.copyright}
+                      onChange={(e) => setCompanyInfo({ ...companyInfo, copyright: e.target.value })}
+                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                    />
+                  </div>
+
+                  <button
+                    onClick={updateCompanyInfo}
+                    className="bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-8 py-3 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
+                  >
+                    Save Company Information
+                  </button>
+                </div>
+              </div>
+            </div>
+          )}
+        </div>
       </div>
-
-      {/* Contact Info Tab */}
-      {activeTab === 'contact' && (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">ข้อมูลติดต่อ</h2>
-
-          <div className="bg-white p-4 rounded shadow mb-6">
-            <h3 className="font-bold mb-3">เพิ่มข้อมูลติดต่อใหม่</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <select
-                value={newContact.type}
-                onChange={(e) => setNewContact({ ...newContact, type: e.target.value })}
-                className="border p-2 rounded"
-              >
-                <option value="phone">โทรศัพท์</option>
-                <option value="email">อีเมล</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Label (optional)"
-                value={newContact.label}
-                onChange={(e) => setNewContact({ ...newContact, label: e.target.value })}
-                className="border p-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder={newContact.type === 'phone' ? 'เบอร์โทรศัพท์' : 'อีเมล'}
-                value={newContact.value}
-                onChange={(e) => setNewContact({ ...newContact, value: e.target.value })}
-                className="border p-2 rounded"
-              />
-            </div>
-            <button
-              onClick={addContactInfo}
-              className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              เพิ่ม
-            </button>
-          </div>
-
-          <div className="space-y-2">
-            {contactInfo.map((contact) => (
-              <div key={contact.id} className="bg-white p-3 rounded shadow flex justify-between items-center">
-                <div>
-                  <span className="font-bold">{contact.contact_type}:</span> {contact.value}
-                  {contact.label && <span className="text-gray-500 ml-2">({contact.label})</span>}
-                </div>
-                <button
-                  onClick={() => deleteContactInfo(contact.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  ลบ
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Social Media Tab */}
-      {activeTab === 'social' && (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Social Media</h2>
-
-          <div className="bg-white p-4 rounded shadow mb-6">
-            <h3 className="font-bold mb-3">เพิ่ม Social Media ใหม่</h3>
-            <div className="grid grid-cols-3 gap-4">
-              <select
-                value={newSocial.platform}
-                onChange={(e) => {
-                  const icon = e.target.value === 'facebook' ? 'FaFacebook' : 'FaInstagram';
-                  setNewSocial({ ...newSocial, platform: e.target.value, icon });
-                }}
-                className="border p-2 rounded"
-              >
-                <option value="facebook">Facebook</option>
-                <option value="instagram">Instagram</option>
-              </select>
-              <input
-                type="text"
-                placeholder="URL"
-                value={newSocial.url}
-                onChange={(e) => setNewSocial({ ...newSocial, url: e.target.value })}
-                className="border p-2 rounded col-span-2"
-              />
-            </div>
-            <button
-              onClick={addSocialMedia}
-              className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              เพิ่ม
-            </button>
-          </div>
-
-          <div className="space-y-2">
-            {socialMedia.map((social) => (
-              <div key={social.id} className="bg-white p-3 rounded shadow flex justify-between items-center">
-                <div>
-                  <span className="font-bold">{social.platform}:</span> {social.url}
-                </div>
-                <button
-                  onClick={() => deleteSocialMedia(social.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  ลบ
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Contact Channels Tab */}
-      {activeTab === 'channels' && (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">ช่องทางติดต่อ (Sticky Widget)</h2>
-
-          <div className="bg-white p-4 rounded shadow mb-6">
-            <h3 className="font-bold mb-3">เพิ่มช่องทางติดต่อใหม่</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <select
-                value={newChannel.type}
-                onChange={(e) => {
-                  let icon = 'SiLine';
-                  let color = 'bg-green-500';
-                  let hoverColor = 'hover:bg-green-600';
-
-                  if (e.target.value === 'messenger') {
-                    icon = 'FaFacebookMessenger';
-                    color = 'bg-blue-500';
-                    hoverColor = 'hover:bg-blue-600';
-                  } else if (e.target.value === 'phone') {
-                    icon = 'FaPhone';
-                    color = 'bg-purple-500';
-                    hoverColor = 'hover:bg-purple-600';
-                  }
-
-                  setNewChannel({ ...newChannel, type: e.target.value, icon, color, hoverColor });
-                }}
-                className="border p-2 rounded"
-              >
-                <option value="line">Line</option>
-                <option value="messenger">Messenger</option>
-                <option value="phone">Phone</option>
-              </select>
-              <input
-                type="text"
-                placeholder="Label"
-                value={newChannel.label}
-                onChange={(e) => setNewChannel({ ...newChannel, label: e.target.value })}
-                className="border p-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="URL"
-                value={newChannel.url}
-                onChange={(e) => setNewChannel({ ...newChannel, url: e.target.value })}
-                className="border p-2 rounded col-span-2"
-              />
-            </div>
-            <button
-              onClick={addContactChannel}
-              className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              เพิ่ม
-            </button>
-          </div>
-
-          <div className="space-y-2">
-            {contactChannels.map((channel) => (
-              <div key={channel.id} className="bg-white p-3 rounded shadow flex justify-between items-center">
-                <div>
-                  <span className="font-bold">{channel.label} ({channel.channel_type}):</span> {channel.url}
-                </div>
-                <button
-                  onClick={() => deleteContactChannel(channel.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  ลบ
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Footer Links Tab */}
-      {activeTab === 'links' && (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">Footer Links</h2>
-
-          <div className="bg-white p-4 rounded shadow mb-6">
-            <h3 className="font-bold mb-3">เพิ่ม Footer Link ใหม่</h3>
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                type="text"
-                placeholder="Label"
-                value={newLink.label}
-                onChange={(e) => setNewLink({ ...newLink, label: e.target.value })}
-                className="border p-2 rounded"
-              />
-              <input
-                type="text"
-                placeholder="URL"
-                value={newLink.url}
-                onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-                className="border p-2 rounded"
-              />
-            </div>
-            <button
-              onClick={addFooterLink}
-              className="mt-3 bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600"
-            >
-              เพิ่ม
-            </button>
-          </div>
-
-          <div className="space-y-2">
-            {footerLinks.map((link) => (
-              <div key={link.id} className="bg-white p-3 rounded shadow flex justify-between items-center">
-                <div>
-                  <span className="font-bold">{link.label}:</span> {link.url}
-                </div>
-                <button
-                  onClick={() => deleteFooterLink(link.id)}
-                  className="bg-red-500 text-white px-3 py-1 rounded hover:bg-red-600"
-                >
-                  ลบ
-                </button>
-              </div>
-            ))}
-          </div>
-        </div>
-      )}
-
-      {/* Company Info Tab */}
-      {activeTab === 'company' && (
-        <div>
-          <h2 className="text-2xl font-bold mb-4">ข้อมูลบริษัท</h2>
-
-          <div className="bg-white p-4 rounded shadow">
-            <div className="space-y-4">
-              <div>
-                <label className="block font-bold mb-2">Logo Text</label>
-                <input
-                  type="text"
-                  value={companyInfo.logo_text}
-                  onChange={(e) => setCompanyInfo({ ...companyInfo, logo_text: e.target.value })}
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold mb-2">ชื่อบริษัท</label>
-                <input
-                  type="text"
-                  value={companyInfo.company_name}
-                  onChange={(e) => setCompanyInfo({ ...companyInfo, company_name: e.target.value })}
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold mb-2">ที่อยู่</label>
-                <textarea
-                  value={companyInfo.address}
-                  onChange={(e) => setCompanyInfo({ ...companyInfo, address: e.target.value })}
-                  className="border p-2 rounded w-full"
-                  rows={3}
-                />
-              </div>
-
-              <div>
-                <label className="block font-bold mb-2">Copyright Text</label>
-                <input
-                  type="text"
-                  value={companyInfo.copyright}
-                  onChange={(e) => setCompanyInfo({ ...companyInfo, copyright: e.target.value })}
-                  className="border p-2 rounded w-full"
-                />
-              </div>
-
-              <button
-                onClick={updateCompanyInfo}
-                className="bg-green-500 text-white px-6 py-2 rounded hover:bg-green-600"
-              >
-                บันทึก
-              </button>
-            </div>
-          </div>
-        </div>
-      )}
     </div>
   );
 }
