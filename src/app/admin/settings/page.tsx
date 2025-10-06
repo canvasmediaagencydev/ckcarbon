@@ -122,10 +122,10 @@ export default function SettingsPage() {
   }
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-8">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+      <div>
+        <h1 className="text-3xl font-bold text-gray-900">
           Site Settings
         </h1>
         <p className="text-gray-600 mt-2">Manage navbar logo and hero section content</p>
@@ -133,29 +133,28 @@ export default function SettingsPage() {
 
       {/* Message Alert */}
       {message && (
-        <div className={`p-4 rounded-xl shadow-lg border ${
+        <div className={`p-4 rounded-lg border ${
           message.type === 'success'
-            ? 'bg-green-50 text-green-800 border-green-200'
-            : 'bg-red-50 text-red-800 border-red-200'
+            ? 'bg-green-50 text-green-700 border-green-300'
+            : 'bg-red-50 text-red-700 border-red-300'
         }`}>
-          {message.text}
+          <p className="text-sm font-medium">{message.text}</p>
         </div>
       )}
 
       {/* Navbar Logo Settings */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-          <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 className="text-lg font-semibold text-gray-900 mb-6 pb-3 border-b border-gray-200">
           Navbar Logo
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Logo Type Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
               Logo Type
             </label>
-            <div className="flex space-x-4">
+            <div className="flex gap-3">
               <button
                 type="button"
                 onClick={() => setNavbarLogo({ ...navbarLogo, type: 'text' })}
@@ -186,7 +185,7 @@ export default function SettingsPage() {
           {/* Text Input */}
           {navbarLogo.type === 'text' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
                 Logo Text (use \n for line break)
               </label>
               <textarea
@@ -202,14 +201,14 @@ export default function SettingsPage() {
           {/* Image Upload */}
           {navbarLogo.type === 'image' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
                 Logo Image
               </label>
               <ImageUpload
                 currentImageUrl={navbarLogo.image_url || ''}
                 onImageUploaded={(url) => setNavbarLogo({ ...navbarLogo, image_url: url })}
                 folder="logos"
-                aspectRatio="auto"
+                aspectRatio="16/9"
                 maxSizeMB={1}
               />
             </div>
@@ -218,19 +217,18 @@ export default function SettingsPage() {
       </div>
 
       {/* Hero Section Settings */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
-          <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
+      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200">
           Hero Section
         </h2>
 
-        <div className="space-y-4">
+        <div className="space-y-6">
           {/* Logo Type Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
               Logo Type
             </label>
-            <div className="flex space-x-4">
+            <div className="flex gap-3">
               <button
                 type="button"
                 onClick={() => setHeroSection({ ...heroSection, logo_type: 'text' })}
@@ -261,7 +259,7 @@ export default function SettingsPage() {
           {/* Text Input */}
           {heroSection.logo_type === 'text' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
                 Logo Text (use \n for line break)
               </label>
               <textarea
@@ -277,14 +275,14 @@ export default function SettingsPage() {
           {/* Image Upload */}
           {heroSection.logo_type === 'image' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 mb-3">
                 Logo Image
               </label>
               <ImageUpload
                 currentImageUrl={heroSection.logo_image_url || ''}
                 onImageUploaded={(url) => setHeroSection({ ...heroSection, logo_image_url: url })}
                 folder="logos"
-                aspectRatio="auto"
+                aspectRatio="16/9"
                 maxSizeMB={1}
               />
             </div>
@@ -292,7 +290,7 @@ export default function SettingsPage() {
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 mb-3">
               Description
             </label>
             <textarea
@@ -307,14 +305,14 @@ export default function SettingsPage() {
       </div>
 
       {/* Save Button */}
-      <div className="flex justify-end sticky bottom-6">
+      <div className="flex justify-end pt-4">
         <button
           onClick={saveSettings}
           disabled={saving}
-          className="flex items-center space-x-2 bg-gradient-to-r from-green-600 to-green-700 text-white px-8 py-4 rounded-xl shadow-lg hover:shadow-xl hover:scale-105 transition-all duration-200 disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:scale-100"
+          className="flex items-center space-x-2 bg-green-600 hover:bg-green-700 text-white px-6 py-3 rounded-lg transition-colors disabled:opacity-50 disabled:cursor-not-allowed disabled:hover:bg-green-600"
         >
-          <FaSave className="text-lg" />
-          <span className="font-semibold">{saving ? 'Saving...' : 'Save Settings'}</span>
+          <FaSave />
+          <span className="font-medium">{saving ? 'Saving...' : 'Save Settings'}</span>
         </button>
       </div>
     </div>

@@ -1,8 +1,10 @@
 'use client'
 
+import { useState, useEffect } from 'react'
 import Link from 'next/link'
-import { usePathname } from 'next/navigation'
-import { FaBlog, FaList, FaPlus, FaTags, FaFlask, FaCog, FaInfoCircle, FaIndustry, FaBox, FaComments, FaHome } from 'react-icons/fa'
+import { usePathname, useRouter } from 'next/navigation'
+import { FaBlog, FaList, FaPlus, FaTags, FaFlask, FaCog, FaInfoCircle, FaIndustry, FaBox, FaComments, FaHome, FaSignOutAlt, FaUser } from 'react-icons/fa'
+import { createClient } from '@/lib/supabase-client'
 
 export default function AdminLayout({
   children,
@@ -10,9 +12,47 @@ export default function AdminLayout({
   children: React.ReactNode
 }) {
   const pathname = usePathname()
+  const router = useRouter()
+  const supabase = createClient()
+  const [userEmail, setUserEmail] = useState<string | null>(null)
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const getUser = async () => {
+      const { data: { user } } = await supabase.auth.getUser()
+      setUserEmail(user?.email || null)
+    }
+    getUser()
+
+    // Listen for auth changes
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      setUserEmail(session?.user?.email || null)
+      setLoading(false)
+    })
+
+    return () => subscription.unsubscribe()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  const handleLogout = async () => {
+    try {
+      setLoading(true)
+      await supabase.auth.signOut()
+      router.push('/admin/login')
+      router.refresh()
+    } catch (error) {
+      console.error('Logout error:', error)
+      setLoading(false)
+    }
+  }
 
   const isActive = (path: string) => {
     return pathname === path
+  }
+
+  // If on login page, don't show the admin layout
+  if (pathname === '/admin/login') {
+    return <>{children}</>
   }
 
   return (
@@ -47,6 +87,25 @@ export default function AdminLayout({
                 <FaPlus size={16} />
                 <span className="hidden sm:inline">New Blog</span>
               </Link>
+
+              {/* User info and logout */}
+              <div className="flex items-center space-x-3 border-l border-gray-300 pl-3">
+                {userEmail && (
+                  <div className="flex items-center space-x-2 text-gray-700 px-3 py-2 bg-gray-100 rounded-lg">
+                    <FaUser size={14} />
+                    <span className="text-sm hidden md:inline">{userEmail}</span>
+                  </div>
+                )}
+                <button
+                  type="button"
+                  onClick={handleLogout}
+                  disabled={loading}
+                  className="flex items-center space-x-2 text-red-600 hover:text-red-700 transition-colors px-3 py-2 rounded-lg hover:bg-red-50 disabled:opacity-50 cursor-pointer disabled:cursor-not-allowed"
+                >
+                  <FaSignOutAlt size={16} />
+                  <span className="hidden sm:inline">{loading ? 'Logging out...' : 'Logout'}</span>
+                </button>
+              </div>
             </nav>
           </div>
         </div>

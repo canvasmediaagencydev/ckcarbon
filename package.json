@@ -8,6 +8,7 @@
     "start": "next start"
   },
   "dependencies": {
+    "@supabase/ssr": "^0.7.0",
     "@supabase/supabase-js": "^2.57.4",
     "@tiptap/extension-character-count": "^3.5.0",
     "@tiptap/extension-image": "^3.5.0",

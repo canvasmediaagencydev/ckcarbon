@@ -124,16 +124,18 @@ export default function ImageUpload({
       ) : (
         /* Upload area */
         <div
-          className="relative w-full bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 transition-colors cursor-pointer"
+          className="relative w-full bg-gray-50 border-2 border-dashed border-gray-300 rounded-lg hover:border-green-500 hover:bg-green-50 transition-all cursor-pointer min-h-[200px]"
           style={{ aspectRatio }}
           onClick={() => fileInputRef.current?.click()}
         >
-          <div className="absolute inset-0 flex flex-col items-center justify-center p-4">
-            <FaUpload className="w-12 h-12 text-gray-400 mb-4" />
-            <p className="text-sm text-gray-600 text-center">
+          <div className="absolute inset-0 flex flex-col items-center justify-center p-6">
+            <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center mb-4 shadow-sm">
+              <FaUpload className="w-7 h-7 text-green-600" />
+            </div>
+            <p className="text-sm font-medium text-gray-700 text-center mb-1">
               Click to upload image
             </p>
-            <p className="text-xs text-gray-500 mt-2">
+            <p className="text-xs text-gray-500">
               Max {maxSizeMB}MB • JPG, PNG, WebP
             </p>
           </div>
@@ -156,7 +158,7 @@ export default function ImageUpload({
           type="button"
           onClick={() => fileInputRef.current?.click()}
           disabled={uploading}
-          className="w-full flex items-center justify-center space-x-2 bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700 transition-colors disabled:bg-gray-400"
+          className="w-full flex items-center justify-center space-x-2 bg-green-600 text-white px-4 py-3 rounded-lg hover:bg-green-700 transition-colors disabled:bg-gray-400 disabled:cursor-not-allowed"
         >
           {uploading ? (
             <>
@@ -174,13 +176,13 @@ export default function ImageUpload({
 
       {/* Error message */}
       {error && (
-        <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded">
-          {error}
+        <div className="bg-red-50 border border-red-300 text-red-700 px-4 py-3 rounded-lg">
+          <p className="text-sm">{error}</p>
         </div>
       )}
 
       {/* Info */}
-      <p className="text-xs text-gray-500">
+      <p className="text-xs text-gray-500 italic">
         Images are stored in Supabase Storage and automatically optimized.
       </p>
     </div>
