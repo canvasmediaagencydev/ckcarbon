@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter } from 'next/navigation'
-import { BlogService, CategoryService, Category } from '@/lib/blog'
+import { BlogService } from '@/lib/blog'
 import TipTapEditor from '@/components/TipTapEditor'
 import { LocalImage, LocalDraftManager } from '@/lib/local-draft'
 import { StorageService } from '@/lib/storage'
@@ -11,7 +11,6 @@ import ImageUpload from '@/components/ImageUpload'
 
 export default function NewBlogPage() {
   const router = useRouter()
-  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(false)
   const [localImages, setLocalImages] = useState<LocalImage[]>([])
   const [uploadingImages, setUploadingImages] = useState(false)
@@ -24,23 +23,9 @@ export default function NewBlogPage() {
     status: 'draft' as 'draft' | 'published' | 'archived',
     meta_title: '',
     meta_description: '',
-    tags: [] as string[],
-    category_ids: [] as string[]
+    tags: [] as string[]
   })
   const [tagInput, setTagInput] = useState('')
-
-  useEffect(() => {
-    fetchCategories()
-  }, [])
-
-  const fetchCategories = async () => {
-    try {
-      const data = await CategoryService.getAllCategories()
-      setCategories(data)
-    } catch (error) {
-      console.error('Error fetching categories:', error)
-    }
-  }
 
   const handleTitleChange = (title: string) => {
     const slug = BlogService.generateSlug(title)
@@ -61,15 +46,6 @@ export default function NewBlogPage() {
     setFormData(prev => ({
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }))
-  }
-
-  const handleCategoryChange = (categoryId: string, checked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      category_ids: checked
-        ? [...prev.category_ids, categoryId]
-        : prev.category_ids.filter(id => id !== categoryId)
     }))
   }
 
@@ -256,24 +232,6 @@ export default function NewBlogPage() {
               aspectRatio="16/9"
               maxSizeMB={2}
             />
-          </div>
-
-          {/* Categories */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Categories</h3>
-            <div className="space-y-2">
-              {categories.map((category) => (
-                <label key={category.id} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.category_ids.includes(category.id)}
-                    onChange={(e) => handleCategoryChange(category.id, e.target.checked)}
-                    className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">{category.name}</span>
-                </label>
-              ))}
-            </div>
           </div>
 
           {/* Tags */}

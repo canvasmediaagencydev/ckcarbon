@@ -5,16 +5,14 @@ import { motion, useInView } from 'framer-motion';
 import Image from 'next/image';
 import Link from 'next/link';
 import { FaClock, FaUser, FaTag, FaSearch, FaArrowRight } from 'react-icons/fa';
-import { BlogService, CategoryService, Blog, Category } from '@/lib/blog';
+import { BlogService, Blog } from '@/lib/blog';
 
 export default function BlogPage() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
   const [blogPosts, setBlogPosts] = useState<Blog[]>([]);
-  const [categories, setCategories] = useState<Category[]>([]);
   const [loading, setLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState<string>('');
   const [currentPage, setCurrentPage] = useState(1);
   const postsPerPage = 6;
 
@@ -53,13 +51,8 @@ export default function BlogPage() {
   const fetchData = async () => {
     try {
       setLoading(true);
-      const [blogData, categoryData] = await Promise.all([
-        BlogService.getAllBlogs('published'),
-        CategoryService.getAllCategories()
-      ]);
-
+      const blogData = await BlogService.getAllBlogs('published');
       setBlogPosts(blogData);
-      setCategories(categoryData);
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {
@@ -67,13 +60,10 @@ export default function BlogPage() {
     }
   };
 
-  // Filter blogs based on search and category
+  // Filter blogs based on search
   const filteredBlogs = blogPosts.filter(blog => {
-    const matchesSearch = blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         blog.excerpt?.toLowerCase().includes(searchTerm.toLowerCase());
-    const matchesCategory = !selectedCategory ||
-                           blog.categories?.some(cat => cat.id === selectedCategory);
-    return matchesSearch && matchesCategory;
+    return blog.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+           blog.excerpt?.toLowerCase().includes(searchTerm.toLowerCase());
   });
 
   // Pagination
@@ -92,7 +82,6 @@ export default function BlogPage() {
 
   const resetFilters = () => {
     setSearchTerm('');
-    setSelectedCategory('');
     setCurrentPage(1);
   };
 
@@ -147,8 +136,8 @@ export default function BlogPage() {
                 <div className="text-green-100 text-xs sm:text-sm uppercase tracking-wide">Articles</div>
               </motion.div>
               <motion.div className="text-center" variants={cardVariants}>
-                <div className="text-2xl sm:text-3xl font-bold text-green-200 mb-1">{categories.length}</div>
-                <div className="text-green-100 text-xs sm:text-sm uppercase tracking-wide">Categories</div>
+                <div className="text-2xl sm:text-3xl font-bold text-green-200 mb-1">100+</div>
+                <div className="text-green-100 text-xs sm:text-sm uppercase tracking-wide">Readers</div>
               </motion.div>
               <motion.div className="text-center" variants={cardVariants}>
                 <div className="text-2xl sm:text-3xl font-bold text-green-200 mb-1">5+</div>
@@ -184,33 +173,17 @@ export default function BlogPage() {
                 />
               </div>
 
-              {/* Category Filter */}
-              <div className="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 sm:gap-4 w-full lg:w-auto">
-                <select
-                  value={selectedCategory}
-                  onChange={(e) => {
-                    setSelectedCategory(e.target.value);
-                    setCurrentPage(1);
-                  }}
-                  className="px-4 sm:px-6 py-3 sm:py-4 border-0 rounded-xl sm:rounded-2xl bg-white shadow-md focus:ring-2 focus:ring-green-500 focus:shadow-lg outline-none transition-all text-base sm:text-lg"
-                >
-                  <option value="">All Categories</option>
-                  {categories.map(category => (
-                    <option key={category.id} value={category.id}>
-                      {category.name}
-                    </option>
-                  ))}
-                </select>
-
-                {(searchTerm || selectedCategory) && (
+              {/* Clear Filter Button */}
+              {searchTerm && (
+                <div className="w-full lg:w-auto">
                   <button
                     onClick={resetFilters}
-                    className="px-4 sm:px-6 py-3 sm:py-4 text-green-600 hover:text-white hover:bg-green-600 rounded-xl sm:rounded-2xl border border-green-200 hover:border-green-600 transition-all duration-300 font-medium text-sm sm:text-base"
+                    className="w-full px-4 sm:px-6 py-3 sm:py-4 text-green-600 hover:text-white hover:bg-green-600 rounded-xl sm:rounded-2xl border border-green-200 hover:border-green-600 transition-all duration-300 font-medium text-sm sm:text-base"
                   >
-                    Clear Filters
+                    Clear Search
                   </button>
-                )}
-              </div>
+                </div>
+              )}
             </div>
 
             {/* Results Info */}
@@ -218,7 +191,6 @@ export default function BlogPage() {
               <span className="text-2xl font-bold text-green-600">{filteredBlogs.length}</span>
               <span className="ml-2">article{filteredBlogs.length !== 1 ? 's' : ''} found</span>
               {searchTerm && <span className="ml-1">matching "{searchTerm}"</span>}
-              {selectedCategory && <span className="ml-1">in {categories.find(c => c.id === selectedCategory)?.name}</span>}
             </div>
           </motion.div>
         </div>
@@ -257,13 +229,6 @@ export default function BlogPage() {
                             className="object-cover group-hover:scale-110 transition-transform duration-700"
                             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
                           />
-
-                          {/* Category Badge */}
-                          {post.categories && post.categories.length > 0 && (
-                            <div className="absolute top-4 left-4 bg-green-600 text-white px-4 py-2 rounded-full text-sm font-semibold shadow-lg">
-                              {post.categories[0].name}
-                            </div>
-                          )}
 
                           {/* Gradient Overlay */}
                           <div className="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
@@ -369,16 +334,16 @@ export default function BlogPage() {
               <div className="text-8xl text-gray-300 mb-6">📝</div>
               <h3 className="text-3xl font-bold text-gray-900 mb-4">No Articles Found</h3>
               <p className="text-gray-600 mb-8 text-xl max-w-md mx-auto">
-                {searchTerm || selectedCategory
-                  ? "Try adjusting your search or filters to find what you're looking for."
+                {searchTerm
+                  ? "Try adjusting your search to find what you're looking for."
                   : "We're working on creating amazing content for you. Check back soon!"}
               </p>
-              {(searchTerm || selectedCategory) && (
+              {searchTerm && (
                 <button
                   onClick={resetFilters}
                   className="px-8 py-4 bg-green-600 text-white rounded-2xl hover:bg-green-700 transition-colors font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1"
                 >
-                  Clear All Filters
+                  Clear Search
                 </button>
               )}
             </motion.div>

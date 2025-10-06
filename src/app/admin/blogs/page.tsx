@@ -118,9 +118,6 @@ export default function BlogsListPage() {
                     Status
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                    Categories
-                  </th>
-                  <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                     Created
                   </th>
                   <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
@@ -149,18 +146,6 @@ export default function BlogsListPage() {
                       >
                         {blog.status}
                       </span>
-                    </td>
-                    <td className="px-6 py-4 whitespace-nowrap">
-                      <div className="flex flex-wrap gap-1">
-                        {blog.categories?.map((category) => (
-                          <span
-                            key={category.id}
-                            className="inline-flex px-2 py-1 text-xs bg-green-100 text-green-800 rounded"
-                          >
-                            {category.name}
-                          </span>
-                        ))}
-                      </div>
                     </td>
                     <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                       {new Date(blog.created_at).toLocaleDateString()}

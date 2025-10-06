@@ -148,22 +148,6 @@ export default async function BlogPostPage({ params }: Props) {
           </div>
 
           <div className="text-center max-w-4xl mx-auto">
-            {/* Categories */}
-            {blog.categories && blog.categories.length > 0 && (
-              <div className="mb-4 sm:mb-6">
-                <div className="flex flex-wrap justify-center gap-2 sm:gap-3">
-                  {blog.categories.map((category) => (
-                    <span
-                      key={category.id}
-                      className="px-3 sm:px-4 py-1.5 sm:py-2 bg-green-500/80 backdrop-blur-sm text-white rounded-full text-xs sm:text-sm font-semibold shadow-lg"
-                    >
-                      {category.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            )}
-
             {/* Title */}
             <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-7xl font-bold mb-4 sm:mb-6 leading-tight px-2">
               {blog.title}

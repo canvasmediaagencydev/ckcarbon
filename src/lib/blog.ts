@@ -16,15 +16,6 @@ export type Blog = {
   meta_title?: string
   meta_description?: string
   tags: string[]
-  categories?: Category[]
-}
-
-export type Category = {
-  id: string
-  name: string
-  slug: string
-  description?: string
-  created_at: string
 }
 
 export type CreateBlogData = {
@@ -38,7 +29,6 @@ export type CreateBlogData = {
   meta_title?: string
   meta_description?: string
   tags?: string[]
-  category_ids?: string[]
 }
 
 export type UpdateBlogData = Partial<CreateBlogData>
@@ -48,12 +38,7 @@ export class BlogService {
   static async getAllBlogs(status?: 'draft' | 'published' | 'archived') {
     let query = supabase
       .from('blogs')
-      .select(`
-        *,
-        categories:blog_categories(
-          category:categories(*)
-        )
-      `)
+      .select('*')
       .order('created_at', { ascending: false })
 
     if (status) {
@@ -63,164 +48,59 @@ export class BlogService {
     const { data, error } = await query
     if (error) throw error
 
-    if (!data) return []
-
-    return data.map((blog: any) => ({
-      id: blog.id,
-      title: blog.title,
-      slug: blog.slug,
-      excerpt: blog.excerpt,
-      content: blog.content,
-      featured_image: blog.featured_image,
-      status: blog.status,
-      published_at: blog.published_at,
-      created_at: blog.created_at,
-      updated_at: blog.updated_at,
-      author_id: blog.author_id,
-      meta_title: blog.meta_title,
-      meta_description: blog.meta_description,
-      tags: blog.tags,
-      categories: blog.categories?.map((bc: any) => bc.category) || []
-    })) as Blog[]
+    return (data || []) as Blog[]
   }
 
   static async getBlogBySlug(slug: string) {
     const { data, error } = await supabase
       .from('blogs')
-      .select(`
-        *,
-        categories:blog_categories(
-          category:categories(*)
-        )
-      `)
+      .select('*')
       .eq('slug', slug)
       .single()
 
     if (error) throw error
-
-    return {
-      id: (data as any).id,
-      title: (data as any).title,
-      slug: (data as any).slug,
-      excerpt: (data as any).excerpt,
-      content: (data as any).content,
-      featured_image: (data as any).featured_image,
-      status: (data as any).status,
-      published_at: (data as any).published_at,
-      created_at: (data as any).created_at,
-      updated_at: (data as any).updated_at,
-      author_id: (data as any).author_id,
-      meta_title: (data as any).meta_title,
-      meta_description: (data as any).meta_description,
-      tags: (data as any).tags,
-      categories: (data as any).categories?.map((bc: any) => bc.category) || []
-    } as Blog
+    return data as Blog
   }
 
   static async getBlogById(id: string) {
     const { data, error } = await supabase
       .from('blogs')
-      .select(`
-        *,
-        categories:blog_categories(
-          category:categories(*)
-        )
-      `)
+      .select('*')
       .eq('id', id)
       .single()
 
     if (error) throw error
-
-    return {
-      id: (data as any).id,
-      title: (data as any).title,
-      slug: (data as any).slug,
-      excerpt: (data as any).excerpt,
-      content: (data as any).content,
-      featured_image: (data as any).featured_image,
-      status: (data as any).status,
-      published_at: (data as any).published_at,
-      created_at: (data as any).created_at,
-      updated_at: (data as any).updated_at,
-      author_id: (data as any).author_id,
-      meta_title: (data as any).meta_title,
-      meta_description: (data as any).meta_description,
-      tags: (data as any).tags,
-      categories: (data as any).categories?.map((bc: any) => bc.category) || []
-    } as Blog
+    return data as Blog
   }
 
   static async createBlog(blogData: CreateBlogData) {
-    const { category_ids, ...blogFields } = blogData
-
-    // Insert blog
     const { data: blog, error: blogError } = await supabase
       .from('blogs')
       .insert([{
-        ...blogFields,
+        ...blogData,
         published_at: blogData.status === 'published' ? new Date().toISOString() : null
       }])
       .select()
       .single()
 
     if (blogError) throw blogError
-
-    // Insert blog-category relationships
-    if (category_ids && category_ids.length > 0) {
-      const { error: relationError } = await supabase
-        .from('blog_categories')
-        .insert(
-          category_ids.map(category_id => ({
-            blog_id: blog.id,
-            category_id
-          }))        )
-
-      if (relationError) throw relationError
-    }
-
     return blog as Blog
   }
 
   static async updateBlog(id: string, updateData: UpdateBlogData) {
-    const { category_ids, ...blogFields } = updateData
-
     // Update published_at when changing to published status
     if (updateData.status === 'published' && !updateData.published_at) {
-      blogFields.published_at = new Date().toISOString()
+      updateData.published_at = new Date().toISOString()
     }
 
-    // Update blog
     const { data: blog, error: blogError } = await supabase
       .from('blogs')
-      .update(blogFields as any)
+      .update(updateData as any)
       .eq('id', id)
       .select()
       .single()
 
     if (blogError) throw blogError
-
-    // Update blog-category relationships if provided
-    if (category_ids !== undefined) {
-      // Delete existing relationships
-      await supabase
-        .from('blog_categories')
-        .delete()
-        .eq('blog_id', id)
-
-      // Insert new relationships
-      if (category_ids.length > 0) {
-        const { error: relationError } = await supabase
-          .from('blog_categories')
-          .insert(
-            category_ids.map(category_id => ({
-              blog_id: id,
-              category_id
-            }))          )
-
-        if (relationError) throw relationError
-      }
-    }
-
     return blog as Blog
   }
 
@@ -279,51 +159,5 @@ export class BlogService {
 
     if (error) throw error
     return data.length === 0
-  }
-}
-
-// Category operations
-export class CategoryService {
-  static async getAllCategories() {
-    const { data, error } = await supabase
-      .from('categories')
-      .select('*')
-      .order('name')
-
-    if (error) throw error
-    return data as Category[]
-  }
-
-  static async createCategory(name: string, slug: string, description?: string) {
-    const { data, error } = await supabase
-      .from('categories')
-      .insert([{ name, slug, description } as any])
-      .select()
-      .single()
-
-    if (error) throw error
-    return data as Category
-  }
-
-  static async updateCategory(id: string, name: string, slug: string, description?: string) {
-    const { data, error } = await supabase
-      .from('categories')
-      .update({ name, slug, description } as any)
-      .eq('id', id)
-      .select()
-      .single()
-
-    if (error) throw error
-    return data as Category
-  }
-
-  static async deleteCategory(id: string) {
-    const { error } = await supabase
-      .from('categories')
-      .delete()
-      .eq('id', id)
-
-    if (error) throw error
-    return true
   }
 }

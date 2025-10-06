@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import { useRouter, useParams } from 'next/navigation'
-import { BlogService, CategoryService, Category, Blog } from '@/lib/blog'
+import { BlogService, Blog } from '@/lib/blog'
 import TipTapEditor from '@/components/TipTapEditor'
 import { FaSave, FaEye, FaArrowLeft } from 'react-icons/fa'
 import Link from 'next/link'
@@ -14,7 +14,6 @@ export default function EditBlogPage() {
   const blogId = params.id as string
 
   const [blog, setBlog] = useState<Blog | null>(null)
-  const [categories, setCategories] = useState<Category[]>([])
   const [loading, setLoading] = useState(true)
   const [saving, setSaving] = useState(false)
   const [formData, setFormData] = useState({
@@ -26,26 +25,20 @@ export default function EditBlogPage() {
     status: 'draft' as 'draft' | 'published' | 'archived',
     meta_title: '',
     meta_description: '',
-    tags: [] as string[],
-    category_ids: [] as string[]
+    tags: [] as string[]
   })
   const [tagInput, setTagInput] = useState('')
 
   useEffect(() => {
-    fetchBlogAndCategories()
+    fetchBlog()
   }, [blogId])
 
-  const fetchBlogAndCategories = async () => {
+  const fetchBlog = async () => {
     try {
       setLoading(true)
-      const [blogData, categoriesData] = await Promise.all([
-        BlogService.getBlogById(blogId),
-        CategoryService.getAllCategories()
-      ])
+      const blogData = await BlogService.getBlogById(blogId)
 
       setBlog(blogData)
-      setCategories(categoriesData)
-
       setFormData({
         title: blogData.title,
         slug: blogData.slug,
@@ -55,8 +48,7 @@ export default function EditBlogPage() {
         status: blogData.status,
         meta_title: blogData.meta_title || '',
         meta_description: blogData.meta_description || '',
-        tags: blogData.tags || [],
-        category_ids: blogData.categories?.map(cat => cat.id) || []
+        tags: blogData.tags || []
       })
     } catch (error) {
       console.error('Error fetching blog:', error)
@@ -84,15 +76,6 @@ export default function EditBlogPage() {
     setFormData(prev => ({
       ...prev,
       tags: prev.tags.filter(tag => tag !== tagToRemove)
-    }))
-  }
-
-  const handleCategoryChange = (categoryId: string, checked: boolean) => {
-    setFormData(prev => ({
-      ...prev,
-      category_ids: checked
-        ? [...prev.category_ids, categoryId]
-        : prev.category_ids.filter(id => id !== categoryId)
     }))
   }
 
@@ -266,24 +249,6 @@ export default function EditBlogPage() {
               aspectRatio="16/9"
               maxSizeMB={2}
             />
-          </div>
-
-          {/* Categories */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Categories</h3>
-            <div className="space-y-2">
-              {categories.map((category) => (
-                <label key={category.id} className="flex items-center">
-                  <input
-                    type="checkbox"
-                    checked={formData.category_ids.includes(category.id)}
-                    onChange={(e) => handleCategoryChange(category.id, e.target.checked)}
-                    className="rounded border-gray-300 text-green-600 focus:ring-green-500"
-                  />
-                  <span className="ml-2 text-sm text-gray-700">{category.name}</span>
-                </label>
-              ))}
-            </div>
           </div>
 
           {/* Tags */}
