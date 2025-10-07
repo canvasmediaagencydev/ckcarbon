@@ -170,7 +170,7 @@ export default function OEMServicesPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600">Loading services...</div>
+        <div className="text-gray-600 dark:text-gray-400">Loading services...</div>
       </div>
     )
   }
@@ -178,10 +178,10 @@ export default function OEMServicesPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100 flex justify-between items-center">
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl p-8 border border-green-100 dark:border-green-800 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">OEM Services</h1>
-          <p className="text-gray-600 mt-2">Manage OEM service providers</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent dark:text-white">OEM Services</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage OEM service providers</p>
         </div>
         <button
           onClick={startAdd}
@@ -195,7 +195,7 @@ export default function OEMServicesPage() {
       {/* Message Alert */}
       {message && (
         <div className={`p-4 rounded-xl shadow-lg border ${
-          message.type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 'bg-red-50 text-red-800 border-red-200'
+          message.type === 'success' ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800' : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
         }`}>
           {message.text}
         </div>
@@ -203,27 +203,27 @@ export default function OEMServicesPage() {
 
       {/* Add/Edit Form */}
       {(isAdding || editingId) && (
-        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             {isAdding ? 'Add New Service' : 'Edit Service'}
           </h2>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Service Name
               </label>
               <input
                 type="text"
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                 placeholder="บจก. ชื่อบริษัท"
               />
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Company Logo
               </label>
               <ImageUpload
@@ -245,7 +245,7 @@ export default function OEMServicesPage() {
               </button>
               <button
                 onClick={cancelEdit}
-                className="flex items-center space-x-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                className="flex items-center space-x-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-700 transition-colors"
               >
                 <FaTimes />
                 <span>Cancel</span>
@@ -256,23 +256,23 @@ export default function OEMServicesPage() {
       )}
 
       {/* Services List */}
-      <div className="bg-white rounded-lg shadow border border-gray-200">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700">
         <div className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Services List</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Services List</h2>
 
           {services.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No services found. Add your first service!</p>
+            <p className="text-gray-500 dark:text-gray-400 text-center py-8">No services found. Add your first service!</p>
           ) : (
             <div className="space-y-2">
               {services.map((service, index) => (
                 <div
                   key={service.id}
-                  className="flex items-center justify-between p-4 border border-gray-200 rounded-lg hover:bg-gray-50"
+                  className="flex items-center justify-between p-4 border border-gray-200 dark:border-slate-700 rounded-lg hover:bg-gray-50 dark:hover:bg-slate-700"
                 >
                   <div className="flex items-center space-x-4">
-                    <span className="text-gray-400 font-mono">#{service.display_order}</span>
+                    <span className="text-gray-400 dark:text-gray-500 font-mono">#{service.display_order}</span>
                     {/* Service Image */}
-                    <div className="w-16 h-16 bg-gray-100 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
+                    <div className="w-16 h-16 bg-gray-100 dark:bg-gray-800 rounded-lg overflow-hidden flex-shrink-0 flex items-center justify-center">
                       {service.image_url ? (
                         <img
                           src={service.image_url}
@@ -284,8 +284,8 @@ export default function OEMServicesPage() {
                       )}
                     </div>
                     <div>
-                      <h3 className="font-semibold text-gray-900">{service.title}</h3>
-                      <p className="text-sm text-gray-500 truncate max-w-xs">{service.image_url}</p>
+                      <h3 className="font-semibold text-gray-900 dark:text-white">{service.title}</h3>
+                      <p className="text-sm text-gray-500 dark:text-gray-400 truncate max-w-xs">{service.image_url}</p>
                     </div>
                   </div>
 
@@ -294,7 +294,7 @@ export default function OEMServicesPage() {
                     <button
                       onClick={() => moveService(service.id, 'up')}
                       disabled={index === 0}
-                      className="p-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                       title="Move up"
                     >
                       <FaArrowUp />
@@ -304,7 +304,7 @@ export default function OEMServicesPage() {
                     <button
                       onClick={() => moveService(service.id, 'down')}
                       disabled={index === services.length - 1}
-                      className="p-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                      className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                       title="Move down"
                     >
                       <FaArrowDown />
@@ -313,7 +313,7 @@ export default function OEMServicesPage() {
                     {/* Edit */}
                     <button
                       onClick={() => startEdit(service)}
-                      className="p-2 text-green-600 hover:bg-green-100 rounded"
+                      className="p-2 text-green-600 hover:bg-green-100 dark:hover:bg-green-900/20 rounded"
                       title="Edit"
                     >
                       <FaEdit />
@@ -322,7 +322,7 @@ export default function OEMServicesPage() {
                     {/* Delete */}
                     <button
                       onClick={() => deleteService(service.id)}
-                      className="p-2 text-red-600 hover:bg-red-100 rounded"
+                      className="p-2 text-red-600 hover:bg-red-100 dark:hover:bg-red-900/20 rounded"
                       title="Delete"
                     >
                       <FaTrash />

@@ -72,7 +72,7 @@ export default function AboutUsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600">Loading content...</div>
+        <div className="text-gray-600 dark:text-gray-400">Loading content...</div>
       </div>
     )
   }
@@ -80,7 +80,7 @@ export default function AboutUsPage() {
   if (!content) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-red-600">No content found. Please run the migration SQL.</div>
+        <div className="text-red-600 dark:text-red-400">No content found. Please run the migration SQL.</div>
       </div>
     )
   }
@@ -88,40 +88,40 @@ export default function AboutUsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100">
-        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl p-8 border border-green-100 dark:border-green-800">
+        <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent dark:text-white">
           About Us Content
         </h1>
-        <p className="text-gray-600 mt-2">Manage the content displayed in the About Us section</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage the content displayed in the About Us section</p>
       </div>
 
       {/* Message Alert */}
       {message && (
         <div className={`p-4 rounded-xl shadow-lg border ${
           message.type === 'success'
-            ? 'bg-green-50 text-green-800 border-green-200'
-            : 'bg-red-50 text-red-800 border-red-200'
+            ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-300 border-green-200 dark:border-green-800'
+            : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-300 border-red-200 dark:border-red-800'
         }`}>
           {message.text}
         </div>
       )}
 
       {/* Content Form */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
+      <div className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700 p-8 hover:shadow-xl transition-shadow">
         <div className="space-y-6">
           {/* Content */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
               About Us Content
             </label>
             <textarea
               value={content.content}
               onChange={(e) => setContent({ ...content, content: e.target.value })}
               rows={10}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
               placeholder="Enter about us content..."
             />
-            <p className="text-xs text-gray-500 mt-1">
+            <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
               Enter your about us content in any language
             </p>
           </div>
@@ -129,13 +129,13 @@ export default function AboutUsPage() {
       </div>
 
       {/* Preview */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+      <div className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700 p-8 hover:shadow-xl transition-shadow">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
           <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
           Preview
         </h2>
-        <div className="bg-gradient-to-br from-gray-50 to-green-50/30 rounded-xl p-6">
-          <p className="text-gray-700 leading-relaxed whitespace-pre-wrap">{content.content}</p>
+        <div className="bg-gradient-to-br from-gray-50 to-green-50/30 dark:from-gray-800 dark:to-green-900/10 rounded-xl p-6">
+          <p className="text-gray-700 dark:text-gray-300 leading-relaxed whitespace-pre-wrap">{content.content}</p>
         </div>
       </div>
 

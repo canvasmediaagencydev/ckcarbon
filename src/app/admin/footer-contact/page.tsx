@@ -237,21 +237,21 @@ export default function FooterContactAdmin() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
-        <h1 className="text-3xl font-bold text-slate-900">Footer & Contact Management</h1>
-        <p className="text-slate-600 mt-2">Manage your website footer and contact information</p>
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
+        <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Footer & Contact Management</h1>
+        <p className="text-slate-600 dark:text-slate-400 mt-2">Manage your website footer and contact information</p>
       </div>
 
       {/* Success Message */}
       {message && (
-        <div className="bg-emerald-50 border border-emerald-200 text-emerald-800 px-6 py-4 rounded-xl font-medium">
+        <div className="bg-emerald-50 dark:bg-emerald-900/20 border border-emerald-200 dark:border-emerald-800 text-emerald-800 dark:text-emerald-300 px-6 py-4 rounded-xl font-medium">
           {message}
         </div>
       )}
 
       {/* Modern Tabs */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
-        <div className="flex flex-wrap border-b border-slate-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
+        <div className="flex flex-wrap border-b border-slate-200 dark:border-slate-700">
           {[
             { id: 'contact', label: 'Contact Info', icon: '📞' },
             { id: 'social', label: 'Social Media', icon: '📱' },
@@ -264,8 +264,8 @@ export default function FooterContactAdmin() {
               onClick={() => setActiveTab(tab.id as any)}
               className={`flex items-center space-x-2 px-6 py-4 font-medium transition-all duration-200 border-b-2 ${
                 activeTab === tab.id
-                  ? 'border-emerald-600 text-emerald-600 bg-emerald-50'
-                  : 'border-transparent text-slate-600 hover:text-slate-900 hover:bg-slate-50'
+                  ? 'border-emerald-600 text-emerald-600 dark:text-emerald-400 bg-emerald-50 dark:bg-emerald-900/20'
+                  : 'border-transparent text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-50 dark:hover:bg-slate-700'
               }`}
             >
               <span className="text-lg">{tab.icon}</span>
@@ -279,42 +279,42 @@ export default function FooterContactAdmin() {
           {activeTab === 'contact' && (
             <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Contact Information</h2>
-                <p className="text-slate-600">Add and manage your contact details</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Contact Information</h2>
+                <p className="text-slate-600 dark:text-slate-400">Add and manage your contact details</p>
               </div>
 
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add New Contact</h3>
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Add New Contact</h3>
                 <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Contact Type</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Contact Type</label>
                     <select
                       value={newContact.type}
                       onChange={(e) => setNewContact({ ...newContact, type: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     >
                       <option value="phone">Phone</option>
                       <option value="email">Email</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Label (Optional)</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Label (Optional)</label>
                     <input
                       type="text"
                       placeholder="e.g., Main Office"
                       value={newContact.label}
                       onChange={(e) => setNewContact({ ...newContact, label: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Value</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Value</label>
                     <input
                       type="text"
                       placeholder={newContact.type === 'phone' ? 'Phone number' : 'Email address'}
                       value={newContact.value}
                       onChange={(e) => setNewContact({ ...newContact, value: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
                 </div>
@@ -328,26 +328,26 @@ export default function FooterContactAdmin() {
 
               <div className="space-y-3">
                 {contactInfo.map((contact) => (
-                  <div key={contact.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                  <div key={contact.id} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
                     <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-emerald-100 rounded-lg flex items-center justify-center">
-                        <span className="text-emerald-600 font-bold">
+                      <div className="w-10 h-10 bg-emerald-100 dark:bg-emerald-900/20 rounded-lg flex items-center justify-center">
+                        <span className="text-emerald-600 dark:text-emerald-400 font-bold">
                           {contact.contact_type === 'phone' ? '📞' : '✉️'}
                         </span>
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-900">
+                        <div className="font-semibold text-slate-900 dark:text-white">
                           {contact.contact_type === 'phone' ? 'Phone' : 'Email'}
                         </div>
-                        <div className="text-slate-600">{contact.value}</div>
+                        <div className="text-slate-600 dark:text-slate-400">{contact.value}</div>
                         {contact.label && (
-                          <div className="text-sm text-slate-500">{contact.label}</div>
+                          <div className="text-sm text-slate-500 dark:text-slate-500">{contact.label}</div>
                         )}
                       </div>
                     </div>
                     <button
                       onClick={() => deleteContactInfo(contact.id)}
-                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     >
                       Delete
                     </button>
@@ -361,35 +361,35 @@ export default function FooterContactAdmin() {
           {activeTab === 'social' && (
             <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Social Media</h2>
-                <p className="text-slate-600">Manage your social media profiles</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Social Media</h2>
+                <p className="text-slate-600 dark:text-slate-400">Manage your social media profiles</p>
               </div>
 
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add Social Media</h3>
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Add Social Media</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Platform</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Platform</label>
                     <select
                       value={newSocial.platform}
                       onChange={(e) => {
                         const icon = e.target.value === 'facebook' ? 'FaFacebook' : 'FaInstagram';
                         setNewSocial({ ...newSocial, platform: e.target.value, icon });
                       }}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     >
                       <option value="facebook">Facebook</option>
                       <option value="instagram">Instagram</option>
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">URL</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">URL</label>
                     <input
                       type="text"
                       placeholder="https://facebook.com/yourpage"
                       value={newSocial.url}
                       onChange={(e) => setNewSocial({ ...newSocial, url: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
                 </div>
@@ -403,21 +403,21 @@ export default function FooterContactAdmin() {
 
               <div className="space-y-3">
                 {socialMedia.map((social) => (
-                  <div key={social.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                  <div key={social.id} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
                     <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center">
-                        <span className="text-blue-600 font-bold">
+                      <div className="w-10 h-10 bg-blue-100 dark:bg-blue-900/20 rounded-lg flex items-center justify-center">
+                        <span className="text-blue-600 dark:text-blue-400 font-bold">
                           {social.platform === 'facebook' ? '📘' : '📷'}
                         </span>
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-900 capitalize">{social.platform}</div>
-                        <div className="text-slate-600">{social.url}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white capitalize">{social.platform}</div>
+                        <div className="text-slate-600 dark:text-slate-400">{social.url}</div>
                       </div>
                     </div>
                     <button
                       onClick={() => deleteSocialMedia(social.id)}
-                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     >
                       Delete
                     </button>
@@ -431,15 +431,15 @@ export default function FooterContactAdmin() {
           {activeTab === 'channels' && (
             <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Contact Widgets</h2>
-                <p className="text-slate-600">Sticky contact widgets for your website</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Contact Widgets</h2>
+                <p className="text-slate-600 dark:text-slate-400">Sticky contact widgets for your website</p>
               </div>
 
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add Contact Widget</h3>
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Add Contact Widget</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Widget Type</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Widget Type</label>
                     <select
                       value={newChannel.type}
                       onChange={(e) => {
@@ -459,7 +459,7 @@ export default function FooterContactAdmin() {
 
                         setNewChannel({ ...newChannel, type: e.target.value, icon, color, hoverColor });
                       }}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     >
                       <option value="line">Line</option>
                       <option value="messenger">Messenger</option>
@@ -467,23 +467,23 @@ export default function FooterContactAdmin() {
                     </select>
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Label</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Label</label>
                     <input
                       type="text"
                       placeholder="e.g., Chat with us"
                       value={newChannel.label}
                       onChange={(e) => setNewChannel({ ...newChannel, label: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
                   <div className="md:col-span-2">
-                    <label className="block text-sm font-medium text-slate-700 mb-2">URL</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">URL</label>
                     <input
                       type="text"
                       placeholder="Contact URL"
                       value={newChannel.url}
                       onChange={(e) => setNewChannel({ ...newChannel, url: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
                 </div>
@@ -497,7 +497,7 @@ export default function FooterContactAdmin() {
 
               <div className="space-y-3">
                 {contactChannels.map((channel) => (
-                  <div key={channel.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                  <div key={channel.id} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
                     <div className="flex items-center space-x-4">
                       <div className={`w-10 h-10 ${channel.color} rounded-lg flex items-center justify-center`}>
                         <span className="text-white font-bold">
@@ -505,14 +505,14 @@ export default function FooterContactAdmin() {
                         </span>
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-900">{channel.label}</div>
-                        <div className="text-slate-600">{channel.url}</div>
-                        <div className="text-sm text-slate-500 capitalize">{channel.channel_type}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white">{channel.label}</div>
+                        <div className="text-slate-600 dark:text-slate-400">{channel.url}</div>
+                        <div className="text-sm text-slate-500 dark:text-slate-500 capitalize">{channel.channel_type}</div>
                       </div>
                     </div>
                     <button
                       onClick={() => deleteContactChannel(channel.id)}
-                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     >
                       Delete
                     </button>
@@ -526,31 +526,31 @@ export default function FooterContactAdmin() {
           {activeTab === 'links' && (
             <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Footer Links</h2>
-                <p className="text-slate-600">Manage links in your website footer</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Footer Links</h2>
+                <p className="text-slate-600 dark:text-slate-400">Manage links in your website footer</p>
               </div>
 
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
-                <h3 className="text-lg font-semibold text-slate-900 mb-4">Add Footer Link</h3>
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
+                <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">Add Footer Link</h3>
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Link Label</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Link Label</label>
                     <input
                       type="text"
                       placeholder="e.g., Privacy Policy"
                       value={newLink.label}
                       onChange={(e) => setNewLink({ ...newLink, label: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">URL</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">URL</label>
                     <input
                       type="text"
                       placeholder="https://example.com/privacy"
                       value={newLink.url}
                       onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
                 </div>
@@ -564,19 +564,19 @@ export default function FooterContactAdmin() {
 
               <div className="space-y-3">
                 {footerLinks.map((link) => (
-                  <div key={link.id} className="bg-white rounded-xl border border-slate-200 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
+                  <div key={link.id} className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 flex justify-between items-center hover:shadow-md transition-shadow">
                     <div className="flex items-center space-x-4">
-                      <div className="w-10 h-10 bg-slate-100 rounded-lg flex items-center justify-center">
-                        <span className="text-slate-600 font-bold">🔗</span>
+                      <div className="w-10 h-10 bg-slate-100 dark:bg-slate-700 rounded-lg flex items-center justify-center">
+                        <span className="text-slate-600 dark:text-slate-400 font-bold">🔗</span>
                       </div>
                       <div>
-                        <div className="font-semibold text-slate-900">{link.label}</div>
-                        <div className="text-slate-600">{link.url}</div>
+                        <div className="font-semibold text-slate-900 dark:text-white">{link.label}</div>
+                        <div className="text-slate-600 dark:text-slate-400">{link.url}</div>
                       </div>
                     </div>
                     <button
                       onClick={() => deleteFooterLink(link.id)}
-                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                      className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                     >
                       Delete
                     </button>
@@ -590,53 +590,53 @@ export default function FooterContactAdmin() {
           {activeTab === 'company' && (
             <div className="space-y-8">
               <div>
-                <h2 className="text-2xl font-bold text-slate-900 mb-2">Company Information</h2>
-                <p className="text-slate-600">Update your company details and branding</p>
+                <h2 className="text-2xl font-bold text-slate-900 dark:text-white mb-2">Company Information</h2>
+                <p className="text-slate-600 dark:text-slate-400">Update your company details and branding</p>
               </div>
 
-              <div className="bg-slate-50 rounded-xl p-6 border border-slate-200">
+              <div className="bg-slate-50 dark:bg-slate-900 rounded-xl p-6 border border-slate-200 dark:border-slate-700">
                 <div className="space-y-6">
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Logo Text</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Logo Text</label>
                     <input
                       type="text"
                       placeholder="Your company logo text"
                       value={companyInfo.logo_text}
                       onChange={(e) => setCompanyInfo({ ...companyInfo, logo_text: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Company Name</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Company Name</label>
                     <input
                       type="text"
                       placeholder="Your company name"
                       value={companyInfo.company_name}
                       onChange={(e) => setCompanyInfo({ ...companyInfo, company_name: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Address</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Address</label>
                     <textarea
                       placeholder="Your company address"
                       value={companyInfo.address}
                       onChange={(e) => setCompanyInfo({ ...companyInfo, address: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                       rows={3}
                     />
                   </div>
 
                   <div>
-                    <label className="block text-sm font-medium text-slate-700 mb-2">Copyright Text</label>
+                    <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Copyright Text</label>
                     <input
                       type="text"
                       placeholder="© 2024 Your Company. All rights reserved."
                       value={companyInfo.copyright}
                       onChange={(e) => setCompanyInfo({ ...companyInfo, copyright: e.target.value })}
-                      className="w-full px-4 py-2 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white"
+                      className="w-full px-4 py-2 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 bg-white dark:bg-slate-700 dark:text-white"
                     />
                   </div>
 

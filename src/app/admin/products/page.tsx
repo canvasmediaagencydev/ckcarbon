@@ -193,7 +193,7 @@ export default function ProductsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600">Loading products...</div>
+        <div className="text-gray-600 dark:text-gray-400">Loading products...</div>
       </div>
     )
   }
@@ -201,12 +201,12 @@ export default function ProductsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100 flex justify-between items-center">
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl p-8 border border-green-100 dark:border-green-800 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent dark:text-white">
             Products
           </h1>
-          <p className="text-gray-600 mt-2">Manage product catalog</p>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage product catalog</p>
         </div>
         <button
           onClick={startAdd}
@@ -221,8 +221,8 @@ export default function ProductsPage() {
       {message && (
         <div className={`p-4 rounded-xl shadow-lg border ${
           message.type === 'success'
-            ? 'bg-green-50 text-green-800 border-green-200'
-            : 'bg-red-50 text-red-800 border-red-200'
+            ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400 border-green-200 dark:border-green-800'
+            : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 border-red-200 dark:border-red-800'
         }`}>
           {message.text}
         </div>
@@ -230,8 +230,8 @@ export default function ProductsPage() {
 
       {/* Add/Edit Form */}
       {(isAdding || editingId) && (
-        <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
-          <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+        <div className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700 p-8 hover:shadow-xl transition-shadow">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
             <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
             {isAdding ? 'Add New Product' : 'Edit Product'}
           </h2>
@@ -239,40 +239,40 @@ export default function ProductsPage() {
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Product Name
                 </label>
                 <input
                   type="text"
                   value={formData.name}
                   onChange={(e) => setFormData({ ...formData, name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                   placeholder="Activate carbon ID 900"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Description
                 </label>
                 <input
                   type="text"
                   value={formData.description}
                   onChange={(e) => setFormData({ ...formData, description: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                   placeholder="รายละเอียดสินค้า"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Button Text
                 </label>
                 <input
                   type="text"
                   value={formData.button_text}
                   onChange={(e) => setFormData({ ...formData, button_text: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                   placeholder="สั่งซื้อเลย!"
                 />
               </div>
@@ -280,7 +280,7 @@ export default function ProductsPage() {
 
             <div className="space-y-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Product Image
                 </label>
                 <ImageUpload
@@ -305,7 +305,7 @@ export default function ProductsPage() {
             </button>
             <button
               onClick={cancelEdit}
-              className="flex items-center space-x-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+              className="flex items-center space-x-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-700 transition-colors"
             >
               <FaTimes />
               <span>Cancel</span>
@@ -315,23 +315,23 @@ export default function ProductsPage() {
       )}
 
       {/* Products Grid */}
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 p-8 hover:shadow-xl transition-shadow">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 flex items-center">
+      <div className="bg-white dark:bg-slate-800 backdrop-blur-sm rounded-2xl shadow-lg border border-gray-100 dark:border-slate-700 p-8 hover:shadow-xl transition-shadow">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 flex items-center">
           <span className="w-2 h-8 bg-gradient-to-b from-green-500 to-green-600 rounded-full mr-3"></span>
           Products List
         </h2>
 
           {products.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No products found. Add your first product!</p>
+            <p className="text-gray-500 dark:text-gray-400 text-center py-8">No products found. Add your first product!</p>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {products.map((product, index) => (
                 <div
                   key={product.id}
-                  className="border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
+                  className="border border-gray-200 dark:border-slate-700 rounded-lg overflow-hidden hover:shadow-lg transition-shadow"
                 >
                   {/* Product Image */}
-                  <div className="relative h-48 bg-gray-100 flex items-center justify-center">
+                  <div className="relative h-48 bg-gray-100 dark:bg-gray-800 flex items-center justify-center">
                     {product.image_url ? (
                       <Image
                         src={product.image_url}
@@ -340,7 +340,7 @@ export default function ProductsPage() {
                         className="object-cover"
                       />
                     ) : (
-                      <span className="text-gray-400 text-sm">No image</span>
+                      <span className="text-gray-400 dark:text-gray-500 text-sm">No image</span>
                     )}
                     <div className="absolute top-2 left-2 bg-black bg-opacity-60 text-white text-xs px-2 py-1 rounded">
                       #{product.display_order}
@@ -349,18 +349,18 @@ export default function ProductsPage() {
 
                   {/* Product Info */}
                   <div className="p-4">
-                    <h3 className="font-semibold text-gray-900 mb-1">{product.name}</h3>
-                    <p className="text-sm text-gray-600 mb-2">{product.description}</p>
-                    <p className="text-xs text-green-600 font-medium">{product.button_text}</p>
+                    <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{product.name}</h3>
+                    <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-3">{product.description}</p>
+                    <p className="text-xs text-green-600 dark:text-green-400 font-medium">{product.button_text}</p>
                   </div>
 
                   {/* Action Buttons */}
-                  <div className="flex items-center justify-between p-4 bg-gray-50 border-t border-gray-200">
+                  <div className="flex items-center justify-between p-4 bg-gray-50 dark:bg-slate-900 border-t border-gray-200 dark:border-slate-700">
                     <div className="flex space-x-1">
                       <button
                         onClick={() => moveProduct(product.id, 'up')}
                         disabled={index === 0}
-                        className="p-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Move up"
                       >
                         <FaArrowUp size={12} />
@@ -368,7 +368,7 @@ export default function ProductsPage() {
                       <button
                         onClick={() => moveProduct(product.id, 'down')}
                         disabled={index === products.length - 1}
-                        className="p-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Move down"
                       >
                         <FaArrowDown size={12} />
@@ -378,14 +378,14 @@ export default function ProductsPage() {
                     <div className="flex space-x-1">
                       <button
                         onClick={() => startEdit(product)}
-                        className="p-2 text-green-600 hover:bg-green-100 rounded"
+                        className="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded"
                         title="Edit"
                       >
                         <FaEdit />
                       </button>
                       <button
                         onClick={() => deleteProduct(product.id)}
-                        className="p-2 text-red-600 hover:bg-red-100 rounded"
+                        className="p-2 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded"
                         title="Delete"
                       >
                         <FaTrash />

@@ -116,7 +116,7 @@ export default function SettingsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600">Loading settings...</div>
+        <div className="text-gray-600 dark:text-gray-400">Loading settings...</div>
       </div>
     )
   }
@@ -125,10 +125,10 @@ export default function SettingsPage() {
     <div className="space-y-8">
       {/* Header */}
       <div>
-        <h1 className="text-3xl font-bold text-gray-900">
+        <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Site Settings
         </h1>
-        <p className="text-gray-600 mt-2">Manage navbar logo and hero section content</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage navbar logo and hero section content</p>
       </div>
 
       {/* Message Alert */}
@@ -143,15 +143,15 @@ export default function SettingsPage() {
       )}
 
       {/* Navbar Logo Settings */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-lg font-semibold text-gray-900 mb-6 pb-3 border-b border-gray-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 pb-3 border-b border-gray-200 dark:border-slate-700">
           Navbar Logo
         </h2>
 
         <div className="space-y-6">
           {/* Logo Type Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Logo Type
             </label>
             <div className="flex gap-3">
@@ -160,8 +160,8 @@ export default function SettingsPage() {
                 onClick={() => setNavbarLogo({ ...navbarLogo, type: 'text' })}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
                   navbarLogo.type === 'text'
-                    ? 'border-green-600 bg-green-50 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? 'border-green-600 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
                 <FaFont />
@@ -172,8 +172,8 @@ export default function SettingsPage() {
                 onClick={() => setNavbarLogo({ ...navbarLogo, type: 'image' })}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
                   navbarLogo.type === 'image'
-                    ? 'border-green-600 bg-green-50 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? 'border-green-600 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
                 <FaImage />
@@ -185,14 +185,14 @@ export default function SettingsPage() {
           {/* Text Input */}
           {navbarLogo.type === 'text' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 Logo Text (use \n for line break)
               </label>
               <textarea
                 value={navbarLogo.text}
                 onChange={(e) => setNavbarLogo({ ...navbarLogo, text: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                 placeholder="LOGO\nCK CARBON"
               />
             </div>
@@ -201,7 +201,7 @@ export default function SettingsPage() {
           {/* Image Upload */}
           {navbarLogo.type === 'image' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 Logo Image
               </label>
               <ImageUpload
@@ -217,15 +217,15 @@ export default function SettingsPage() {
       </div>
 
       {/* Hero Section Settings */}
-      <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6">
-        <h2 className="text-xl font-semibold text-gray-900 mb-6 pb-4 border-b border-gray-200">
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+        <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-6 pb-4 border-b border-gray-200 dark:border-slate-700">
           Hero Section
         </h2>
 
         <div className="space-y-6">
           {/* Logo Type Selection */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Logo Type
             </label>
             <div className="flex gap-3">
@@ -234,8 +234,8 @@ export default function SettingsPage() {
                 onClick={() => setHeroSection({ ...heroSection, logo_type: 'text' })}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
                   heroSection.logo_type === 'text'
-                    ? 'border-green-600 bg-green-50 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? 'border-green-600 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
                 <FaFont />
@@ -246,8 +246,8 @@ export default function SettingsPage() {
                 onClick={() => setHeroSection({ ...heroSection, logo_type: 'image' })}
                 className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
                   heroSection.logo_type === 'image'
-                    ? 'border-green-600 bg-green-50 text-green-700'
-                    : 'border-gray-300 text-gray-700 hover:border-gray-400'
+                    ? 'border-green-600 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
                 }`}
               >
                 <FaImage />
@@ -259,14 +259,14 @@ export default function SettingsPage() {
           {/* Text Input */}
           {heroSection.logo_type === 'text' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 Logo Text (use \n for line break)
               </label>
               <textarea
                 value={heroSection.logo_text}
                 onChange={(e) => setHeroSection({ ...heroSection, logo_text: e.target.value })}
                 rows={3}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                 placeholder="LOGO\nCK CARBON"
               />
             </div>
@@ -275,7 +275,7 @@ export default function SettingsPage() {
           {/* Image Upload */}
           {heroSection.logo_type === 'image' && (
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-3">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
                 Logo Image
               </label>
               <ImageUpload
@@ -290,14 +290,14 @@ export default function SettingsPage() {
 
           {/* Description */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-3">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
               Description
             </label>
             <textarea
               value={heroSection.description}
               onChange={(e) => setHeroSection({ ...heroSection, description: e.target.value })}
               rows={4}
-              className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+              className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
               placeholder="Enter hero section description..."
             />
           </div>

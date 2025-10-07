@@ -37,9 +37,9 @@ export default function AdminLoginPage() {
   }
 
   return (
-    <div className="min-h-screen bg-slate-50 flex items-center justify-center p-4">
+    <div className="min-h-screen bg-slate-50 dark:bg-slate-900 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
-        <div className="bg-white rounded-2xl shadow-xl border border-slate-200 overflow-hidden">
+        <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl border border-slate-200 dark:border-slate-700 overflow-hidden">
           {/* Header with gradient background */}
           <div className="bg-gradient-to-br from-emerald-600 to-teal-600 px-8 py-12 text-center">
             <div className="w-20 h-20 bg-white/20 backdrop-blur-sm rounded-2xl flex items-center justify-center shadow-lg mx-auto mb-4">
@@ -53,15 +53,15 @@ export default function AdminLoginPage() {
           <div className="px-8 py-8">
             {/* Error Message */}
             {error && (
-              <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
-                <p className="text-red-600 text-sm font-medium">{error}</p>
+              <div className="mb-6 p-4 bg-red-50 dark:bg-red-900/20 border border-red-200 dark:border-red-800 rounded-lg">
+                <p className="text-red-600 dark:text-red-400 text-sm font-medium">{error}</p>
               </div>
             )}
 
             {/* Login Form */}
             <form onSubmit={handleLogin} className="space-y-6">
               <div>
-                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 mb-2">
+                <label htmlFor="email" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   Email Address
                 </label>
                 <input
@@ -70,14 +70,14 @@ export default function AdminLoginPage() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   required
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-slate-50 focus:bg-white"
+                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-slate-50 dark:bg-slate-700 focus:bg-white dark:focus:bg-slate-600 dark:text-white"
                   placeholder="admin@example.com"
                   disabled={loading}
                 />
               </div>
 
               <div>
-                <label htmlFor="password" className="block text-sm font-semibold text-slate-700 mb-2">
+                <label htmlFor="password" className="block text-sm font-semibold text-slate-700 dark:text-slate-300 mb-2">
                   Password
                 </label>
                 <input
@@ -86,7 +86,7 @@ export default function AdminLoginPage() {
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 border border-slate-300 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-slate-50 focus:bg-white"
+                  className="w-full px-4 py-3 border border-slate-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-emerald-500 focus:border-emerald-500 transition-all duration-200 bg-slate-50 dark:bg-slate-700 focus:bg-white dark:focus:bg-slate-600 dark:text-white"
                   placeholder="••••••••"
                   disabled={loading}
                 />
@@ -102,11 +102,11 @@ export default function AdminLoginPage() {
             </form>
 
             {/* Additional info */}
-            <div className="mt-8 pt-6 border-t border-slate-200">
-              <p className="text-center text-sm text-slate-500">
+            <div className="mt-8 pt-6 border-t border-slate-200 dark:border-slate-700">
+              <p className="text-center text-sm text-slate-500 dark:text-slate-400">
                 CK Carbon Admin Panel
               </p>
-              <p className="text-center text-xs text-slate-400 mt-2">
+              <p className="text-center text-xs text-slate-400 dark:text-slate-500 mt-2">
                 Secure access to content management
               </p>
             </div>

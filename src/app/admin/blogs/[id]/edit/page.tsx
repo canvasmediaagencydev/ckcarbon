@@ -127,13 +127,13 @@ export default function EditBlogPage() {
         <div className="flex items-center space-x-4">
           <Link
             href="/admin/blogs"
-            className="text-gray-600 hover:text-gray-900"
+            className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white"
           >
             <FaArrowLeft size={20} />
           </Link>
           <div>
-            <h1 className="text-3xl font-bold text-gray-900">Edit Blog Post</h1>
-            <p className="text-gray-600 mt-2">Editing: {blog.title}</p>
+            <h1 className="text-3xl font-bold text-gray-900 dark:text-white">Edit Blog Post</h1>
+            <p className="text-gray-600 dark:text-gray-400 mt-2">Editing: {blog.title}</p>
           </div>
         </div>
         <div className="flex space-x-3">
@@ -162,10 +162,10 @@ export default function EditBlogPage() {
         {/* Main Content */}
         <div className="lg:col-span-2 space-y-6">
           {/* Title and Slug */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700 p-6">
             <div className="space-y-4">
               <div>
-                <label htmlFor="title" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Title *
                 </label>
                 <input
@@ -173,13 +173,13 @@ export default function EditBlogPage() {
                   id="title"
                   value={formData.title}
                   onChange={(e) => handleTitleChange(e.target.value)}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Enter blog title"
                 />
               </div>
 
               <div>
-                <label htmlFor="slug" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="slug" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Slug
                 </label>
                 <input
@@ -187,13 +187,13 @@ export default function EditBlogPage() {
                   id="slug"
                   value={formData.slug}
                   onChange={(e) => setFormData(prev => ({ ...prev, slug: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
                   placeholder="blog-post-slug"
                 />
               </div>
 
               <div>
-                <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="excerpt" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Excerpt
                 </label>
                 <textarea
@@ -201,20 +201,20 @@ export default function EditBlogPage() {
                   value={formData.excerpt}
                   onChange={(e) => setFormData(prev => ({ ...prev, excerpt: e.target.value }))}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Brief description of the blog post"
                 />
               </div>
 
               <div>
-                <label htmlFor="status" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="status" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Status
                 </label>
                 <select
                   id="status"
                   value={formData.status}
                   onChange={(e) => setFormData(prev => ({ ...prev, status: e.target.value as any }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
                 >
                   <option value="draft">Draft</option>
                   <option value="published">Published</option>
@@ -225,8 +225,8 @@ export default function EditBlogPage() {
           </div>
 
           {/* Content Editor */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <label className="block text-sm font-medium text-gray-700 mb-4">
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700 p-6">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-4">
               Content *
             </label>
             <TipTapEditor
@@ -240,8 +240,8 @@ export default function EditBlogPage() {
         {/* Sidebar */}
         <div className="space-y-6">
           {/* Featured Image */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Featured Image</h3>
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700 p-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Featured Image</h3>
             <ImageUpload
               currentImageUrl={formData.featured_image}
               onImageUploaded={(url) => setFormData(prev => ({ ...prev, featured_image: url }))}
@@ -252,8 +252,8 @@ export default function EditBlogPage() {
           </div>
 
           {/* Tags */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">Tags</h3>
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700 p-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">Tags</h3>
             <div className="space-y-3">
               <div className="flex space-x-2">
                 <input
@@ -261,7 +261,7 @@ export default function EditBlogPage() {
                   value={tagInput}
                   onChange={(e) => setTagInput(e.target.value)}
                   onKeyPress={(e) => e.key === 'Enter' && (e.preventDefault(), handleAddTag())}
-                  className="flex-1 px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="flex-1 px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
                   placeholder="Add tag"
                 />
                 <button
@@ -276,13 +276,13 @@ export default function EditBlogPage() {
                 {formData.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="inline-flex items-center px-2 py-1 bg-gray-100 text-gray-800 text-sm rounded"
+                    className="inline-flex items-center px-2 py-1 bg-gray-100 dark:bg-gray-700 text-gray-800 dark:text-gray-300 text-sm rounded"
                   >
                     {tag}
                     <button
                       type="button"
                       onClick={() => handleRemoveTag(tag)}
-                      className="ml-1 text-gray-500 hover:text-gray-700"
+                      className="ml-1 text-gray-500 dark:text-gray-400 hover:text-gray-700 dark:hover:text-gray-200"
                     >
                       ×
                     </button>
@@ -293,11 +293,11 @@ export default function EditBlogPage() {
           </div>
 
           {/* SEO */}
-          <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-            <h3 className="text-lg font-medium text-gray-900 mb-4">SEO</h3>
+          <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700 p-6">
+            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-4">SEO</h3>
             <div className="space-y-4">
               <div>
-                <label htmlFor="meta_title" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="meta_title" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Meta Title
                 </label>
                 <input
@@ -305,12 +305,12 @@ export default function EditBlogPage() {
                   id="meta_title"
                   value={formData.meta_title}
                   onChange={(e) => setFormData(prev => ({ ...prev, meta_title: e.target.value }))}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
                   placeholder="SEO title"
                 />
               </div>
               <div>
-                <label htmlFor="meta_description" className="block text-sm font-medium text-gray-700 mb-2">
+                <label htmlFor="meta_description" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Meta Description
                 </label>
                 <textarea
@@ -318,7 +318,7 @@ export default function EditBlogPage() {
                   value={formData.meta_description}
                   onChange={(e) => setFormData(prev => ({ ...prev, meta_description: e.target.value }))}
                   rows={3}
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500"
+                  className="w-full px-3 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-green-500 dark:bg-slate-700 dark:text-white"
                   placeholder="SEO description"
                 />
               </div>

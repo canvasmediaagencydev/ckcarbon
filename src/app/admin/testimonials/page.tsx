@@ -206,7 +206,7 @@ export default function TestimonialsPage() {
   if (loading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <div className="text-gray-600">Loading testimonials...</div>
+        <div className="text-gray-600 dark:text-gray-400">Loading testimonials...</div>
       </div>
     )
   }
@@ -214,10 +214,10 @@ export default function TestimonialsPage() {
   return (
     <div className="space-y-6">
       {/* Header */}
-      <div className="bg-gradient-to-r from-green-50 to-blue-50 rounded-2xl p-8 border border-green-100 flex justify-between items-center">
+      <div className="bg-gradient-to-r from-green-50 to-blue-50 dark:from-green-900/20 dark:to-blue-900/20 rounded-2xl p-8 border border-green-100 dark:border-green-800 flex justify-between items-center">
         <div>
-          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent">Customer Testimonials</h1>
-          <p className="text-gray-600 mt-2">Manage customer reviews and testimonials</p>
+          <h1 className="text-3xl font-bold bg-gradient-to-r from-green-600 to-green-700 bg-clip-text text-transparent dark:text-white">Customer Testimonials</h1>
+          <p className="text-gray-600 dark:text-gray-400 mt-2">Manage customer reviews and testimonials</p>
         </div>
         <button
           onClick={startAdd}
@@ -231,7 +231,7 @@ export default function TestimonialsPage() {
       {/* Message Alert */}
       {message && (
         <div className={`p-4 rounded-xl shadow-lg border ${
-          message.type === 'success' ? 'bg-green-50 text-green-800 border-green-200' : 'bg-red-50 text-red-800 border-red-200'
+          message.type === 'success' ? 'bg-green-50 dark:bg-green-900/20 text-green-800 dark:text-green-400 border-green-200 dark:border-green-800' : 'bg-red-50 dark:bg-red-900/20 text-red-800 dark:text-red-400 border-red-200 dark:border-red-800'
         }`}>
           {message.text}
         </div>
@@ -239,61 +239,61 @@ export default function TestimonialsPage() {
 
       {/* Add/Edit Form */}
       {(isAdding || editingId) && (
-        <div className="bg-white rounded-lg shadow border border-gray-200 p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">
+        <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700 p-6">
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">
             {isAdding ? 'Add New Testimonial' : 'Edit Testimonial'}
           </h2>
 
           <div className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-gray-700 mb-2">
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                 Testimonial Content
               </label>
               <textarea
                 value={formData.content}
                 onChange={(e) => setFormData({ ...formData, content: e.target.value })}
                 rows={4}
-                className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                 placeholder="Enter customer testimonial..."
               />
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Author Name
                 </label>
                 <input
                   type="text"
                   value={formData.author_name}
                   onChange={(e) => setFormData({ ...formData, author_name: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                   placeholder="John Doe"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Position
                 </label>
                 <input
                   type="text"
                   value={formData.author_position}
                   onChange={(e) => setFormData({ ...formData, author_position: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                   placeholder="CEO"
                 />
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Company
                 </label>
                 <input
                   type="text"
                   value={formData.author_company}
                   onChange={(e) => setFormData({ ...formData, author_company: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                   placeholder="Company Name"
                 />
               </div>
@@ -301,13 +301,13 @@ export default function TestimonialsPage() {
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Rating
                 </label>
                 <select
                   value={formData.rating}
                   onChange={(e) => setFormData({ ...formData, rating: parseInt(e.target.value) })}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent"
+                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
                 >
                   {[5, 4, 3, 2, 1].map(num => (
                     <option key={num} value={num}>{num} Star{num > 1 ? 's' : ''}</option>
@@ -321,7 +321,7 @@ export default function TestimonialsPage() {
               </div>
 
               <div>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
                   Author Image (Optional)
                 </label>
                 <ImageUpload
@@ -345,7 +345,7 @@ export default function TestimonialsPage() {
               </button>
               <button
                 onClick={cancelEdit}
-                className="flex items-center space-x-2 bg-gray-300 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-400 transition-colors"
+                className="flex items-center space-x-2 bg-gray-300 dark:bg-gray-600 text-gray-700 dark:text-gray-300 px-4 py-2 rounded-lg hover:bg-gray-400 dark:hover:bg-gray-700 transition-colors"
               >
                 <FaTimes />
                 <span>Cancel</span>
@@ -356,24 +356,24 @@ export default function TestimonialsPage() {
       )}
 
       {/* Testimonials List */}
-      <div className="bg-white rounded-lg shadow border border-gray-200">
+      <div className="bg-white dark:bg-slate-800 rounded-lg shadow border border-gray-200 dark:border-slate-700">
         <div className="p-6">
-          <h2 className="text-xl font-semibold text-gray-900 mb-4">Testimonials List</h2>
+          <h2 className="text-xl font-semibold text-gray-900 dark:text-white mb-4">Testimonials List</h2>
 
           {testimonials.length === 0 ? (
-            <p className="text-gray-500 text-center py-8">No testimonials found. Add your first testimonial!</p>
+            <p className="text-gray-500 dark:text-gray-400 text-center py-8">No testimonials found. Add your first testimonial!</p>
           ) : (
             <div className="space-y-4">
               {testimonials.map((testimonial, index) => (
                 <div
                   key={testimonial.id}
-                  className="border border-gray-200 rounded-lg p-4 hover:shadow-lg transition-shadow"
+                  className="border border-gray-200 dark:border-slate-700 rounded-lg p-4 hover:shadow-lg transition-shadow"
                 >
                   <div className="flex items-start justify-between">
                     {/* Content */}
                     <div className="flex-1">
                       <div className="flex items-center space-x-2 mb-2">
-                        <span className="text-gray-400 font-mono text-sm">#{testimonial.display_order}</span>
+                        <span className="text-gray-400 dark:text-gray-500 font-mono text-sm">#{testimonial.display_order}</span>
                         <div className="flex">
                           {[...Array(testimonial.rating)].map((_, i) => (
                             <FaStar key={i} className="text-yellow-400 text-sm" />
@@ -381,16 +381,16 @@ export default function TestimonialsPage() {
                         </div>
                       </div>
 
-                      <p className="text-gray-700 italic mb-3">"{testimonial.content}"</p>
+                      <p className="text-gray-700 dark:text-gray-300 italic mb-3 line-clamp-2">"{testimonial.content}"</p>
 
                       <div className="flex items-center space-x-2">
                         <div className="w-10 h-10 bg-green-600 rounded-full flex items-center justify-center text-white font-semibold">
                           {testimonial.author_name.charAt(0)}
                         </div>
                         <div>
-                          <p className="font-semibold text-gray-900 text-sm">{testimonial.author_name}</p>
-                          <p className="text-xs text-green-600">{testimonial.author_position}</p>
-                          <p className="text-xs text-gray-500">{testimonial.author_company}</p>
+                          <p className="font-semibold text-gray-900 dark:text-white text-sm">{testimonial.author_name}</p>
+                          <p className="text-xs text-green-600 dark:text-green-400">{testimonial.author_position}</p>
+                          <p className="text-xs text-gray-500 dark:text-gray-400">{testimonial.author_company}</p>
                         </div>
                       </div>
                     </div>
@@ -400,7 +400,7 @@ export default function TestimonialsPage() {
                       <button
                         onClick={() => moveTestimonial(testimonial.id, 'up')}
                         disabled={index === 0}
-                        className="p-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Move up"
                       >
                         <FaArrowUp />
@@ -409,7 +409,7 @@ export default function TestimonialsPage() {
                       <button
                         onClick={() => moveTestimonial(testimonial.id, 'down')}
                         disabled={index === testimonials.length - 1}
-                        className="p-2 text-gray-600 hover:bg-gray-200 rounded disabled:opacity-30 disabled:cursor-not-allowed"
+                        className="p-2 text-gray-600 dark:text-gray-400 hover:bg-gray-200 dark:hover:bg-gray-700 rounded disabled:opacity-30 disabled:cursor-not-allowed"
                         title="Move down"
                       >
                         <FaArrowDown />
@@ -417,7 +417,7 @@ export default function TestimonialsPage() {
 
                       <button
                         onClick={() => startEdit(testimonial)}
-                        className="p-2 text-green-600 hover:bg-green-100 rounded"
+                        className="p-2 text-green-600 dark:text-green-400 hover:bg-green-100 dark:hover:bg-green-900 rounded"
                         title="Edit"
                       >
                         <FaEdit />
@@ -425,7 +425,7 @@ export default function TestimonialsPage() {
 
                       <button
                         onClick={() => deleteTestimonial(testimonial.id)}
-                        className="p-2 text-red-600 hover:bg-red-100 rounded"
+                        className="p-2 text-red-600 dark:text-red-400 hover:bg-red-100 dark:hover:bg-red-900 rounded"
                         title="Delete"
                       >
                         <FaTrash />

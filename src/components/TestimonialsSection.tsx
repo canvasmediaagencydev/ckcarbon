@@ -154,7 +154,7 @@ export default function TestimonialsSection() {
               animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
               transition={{ duration: 0.6, delay: 0.5 }}
             >
-              <Link href="/">
+              <Link href="/testimonials">
                 <motion.button
                   className="inline-flex items-center px-6 sm:px-8 py-2.5 sm:py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl text-sm sm:text-base"
                   whileHover={{ scale: 1.05 }}

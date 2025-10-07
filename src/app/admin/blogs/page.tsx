@@ -58,11 +58,11 @@ export default function BlogsListPage() {
   return (
     <div className="space-y-8">
       {/* Header */}
-      <div className="bg-white rounded-xl border border-slate-200 p-6 shadow-sm">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-6 shadow-sm">
         <div className="flex justify-between items-center">
           <div>
-            <h1 className="text-3xl font-bold text-slate-900">Blog Posts</h1>
-            <p className="text-slate-600 mt-2">Manage and organize your blog content</p>
+            <h1 className="text-3xl font-bold text-slate-900 dark:text-white">Blog Posts</h1>
+            <p className="text-slate-600 dark:text-slate-400 mt-2">Manage and organize your blog content</p>
           </div>
           <Link
             href="/admin/blogs/new"
@@ -75,7 +75,7 @@ export default function BlogsListPage() {
       </div>
 
       {/* Filters */}
-      <div className="bg-white rounded-xl border border-slate-200 p-4 shadow-sm">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 p-4 shadow-sm">
         <div className="flex flex-wrap gap-2">
           {(['all', 'published', 'draft', 'archived'] as const).map((status) => (
             <button
@@ -84,7 +84,7 @@ export default function BlogsListPage() {
               className={`px-5 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 ${
                 filter === status
                   ? 'bg-gradient-to-r from-emerald-600 to-teal-600 text-white shadow-md'
-                  : 'bg-slate-100 text-slate-700 hover:bg-slate-200 border border-slate-200'
+                  : 'bg-slate-100 dark:bg-slate-700 text-slate-700 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-600 border border-slate-200 dark:border-slate-600'
               }`}
             >
               {status.charAt(0).toUpperCase() + status.slice(1)}
@@ -94,19 +94,19 @@ export default function BlogsListPage() {
       </div>
 
       {/* Blog List */}
-      <div className="bg-white rounded-xl border border-slate-200 shadow-sm overflow-hidden">
+      <div className="bg-white dark:bg-slate-800 rounded-xl border border-slate-200 dark:border-slate-700 shadow-sm overflow-hidden">
         {loading ? (
           <div className="p-12 text-center">
             <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-emerald-600 mx-auto"></div>
-            <p className="text-slate-500 mt-4 font-medium">Loading blog posts...</p>
+            <p className="text-slate-500 dark:text-slate-400 mt-4 font-medium">Loading blog posts...</p>
           </div>
         ) : blogs.length === 0 ? (
           <div className="p-12 text-center">
-            <div className="w-20 h-20 bg-slate-100 rounded-full flex items-center justify-center mx-auto mb-4">
+            <div className="w-20 h-20 bg-slate-100 dark:bg-slate-700 rounded-full flex items-center justify-center mx-auto mb-4">
               <FaBlog className="text-slate-400" size={32} />
             </div>
-            <h3 className="text-xl font-semibold text-slate-900 mb-2">No blog posts found</h3>
-            <p className="text-slate-600 mb-6">Get started by creating your first blog post</p>
+            <h3 className="text-xl font-semibold text-slate-900 dark:text-white mb-2">No blog posts found</h3>
+            <p className="text-slate-600 dark:text-slate-400 mb-6">Get started by creating your first blog post</p>
             <Link
               href="/admin/blogs/new"
               className="inline-flex items-center space-x-2 bg-gradient-to-r from-emerald-600 to-teal-600 text-white px-6 py-3 rounded-lg hover:shadow-lg transition-all duration-200 hover:scale-105 font-medium"
@@ -118,31 +118,31 @@ export default function BlogsListPage() {
         ) : (
           <div className="overflow-x-auto">
             <table className="min-w-full">
-              <thead className="bg-slate-50 border-b border-slate-200">
+              <thead className="bg-slate-50 dark:bg-slate-900 border-b border-slate-200 dark:border-slate-700">
                 <tr>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                     Blog Post
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                     Status
                   </th>
-                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-left text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                     Created Date
                   </th>
-                  <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 uppercase tracking-wider">
+                  <th className="px-6 py-4 text-right text-xs font-semibold text-slate-600 dark:text-slate-400 uppercase tracking-wider">
                     Actions
                   </th>
                 </tr>
               </thead>
-              <tbody className="divide-y divide-slate-200">
+              <tbody className="divide-y divide-slate-200 dark:divide-slate-700">
                 {blogs.map((blog) => (
-                  <tr key={blog.id} className="hover:bg-slate-50 transition-colors">
+                  <tr key={blog.id} className="hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                     <td className="px-6 py-4">
                       <div>
-                        <div className="text-sm font-semibold text-slate-900">
+                        <div className="text-sm font-semibold text-slate-900 dark:text-white">
                           {blog.title}
                         </div>
-                        <div className="text-sm text-slate-500 font-mono">
+                        <div className="text-sm text-slate-500 dark:text-slate-400 font-mono">
                           /{blog.slug}
                         </div>
                       </div>
@@ -156,7 +156,7 @@ export default function BlogsListPage() {
                         {blog.status}
                       </span>
                     </td>
-                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600">
+                    <td className="px-6 py-4 whitespace-nowrap text-sm text-slate-600 dark:text-slate-400">
                       {new Date(blog.created_at).toLocaleDateString('en-US', {
                         year: 'numeric',
                         month: 'short',
@@ -167,7 +167,7 @@ export default function BlogsListPage() {
                       <div className="flex items-center justify-end space-x-2">
                         {blog.status === 'published' && (
                           <button
-                            className="p-2 text-slate-600 hover:text-slate-900 hover:bg-slate-100 rounded-lg transition-colors"
+                            className="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-600 rounded-lg transition-colors"
                             title="View"
                           >
                             <FaEye size={14} />
@@ -175,14 +175,14 @@ export default function BlogsListPage() {
                         )}
                         <Link
                           href={`/admin/blogs/${blog.id}/edit`}
-                          className="p-2 text-emerald-600 hover:text-emerald-700 hover:bg-emerald-50 rounded-lg transition-colors"
+                          className="p-2 text-emerald-600 dark:text-emerald-400 hover:text-emerald-700 dark:hover:text-emerald-300 hover:bg-emerald-50 dark:hover:bg-emerald-900/20 rounded-lg transition-colors"
                           title="Edit"
                         >
                           <FaEdit size={14} />
                         </Link>
                         <button
                           onClick={() => handleDelete(blog.id)}
-                          className="p-2 text-red-600 hover:text-red-700 hover:bg-red-50 rounded-lg transition-colors"
+                          className="p-2 text-red-600 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300 hover:bg-red-50 dark:hover:bg-red-900/20 rounded-lg transition-colors"
                           title="Delete"
                         >
                           <FaTrash size={14} />
