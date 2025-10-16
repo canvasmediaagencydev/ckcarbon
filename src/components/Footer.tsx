@@ -1,10 +1,17 @@
 "use client";
 
 import { useEffect, useState } from 'react';
+import Image from 'next/image';
 import { motion } from 'framer-motion';
 import { FaFacebook, FaInstagram, FaPhone, FaEnvelope, FaMapMarkerAlt } from 'react-icons/fa';
 import { createClient } from '@/lib/supabase-client';
 import type { Tables } from '@/database.types';
+
+interface FooterLogoSettings {
+  type: 'text' | 'image';
+  text: string;
+  image_url: string | null;
+}
 
 interface FooterCompanyInfo {
   company_name: string;
@@ -18,6 +25,11 @@ export default function Footer() {
   const [socialMedia, setSocialMedia] = useState<Tables<'social_media'>[]>([]);
   const [footerLinks, setFooterLinks] = useState<Tables<'footer_links'>[]>([]);
   const [companyInfo, setCompanyInfo] = useState<FooterCompanyInfo | null>(null);
+  const [logoSettings, setLogoSettings] = useState<FooterLogoSettings>({
+    type: 'text',
+    text: 'LOGO\nCK CARBON',
+    image_url: null
+  });
 
   useEffect(() => {
     const fetchData = async () => {
@@ -51,11 +63,21 @@ export default function Footer() {
         .eq('setting_key', 'footer_company_info')
         .single();
 
+      // Fetch footer logo from site_settings
+      const { data: logoData } = await supabase
+        .from('site_settings')
+        .select('*')
+        .eq('setting_key', 'footer_logo')
+        .single();
+
       if (contacts) setContactInfo(contacts);
       if (social) setSocialMedia(social);
       if (links) setFooterLinks(links);
       if (settings?.setting_value) {
         setCompanyInfo(settings.setting_value as FooterCompanyInfo);
+      }
+      if (logoData?.setting_value) {
+        setLogoSettings(logoData.setting_value as FooterLogoSettings);
       }
     };
 
@@ -111,11 +133,28 @@ export default function Footer() {
                 className="flex items-center space-x-3 sm:space-x-4 mb-4 sm:mb-6"
                 whileHover={{ scale: 1.05 }}
               >
-                <div className="text-2xl sm:text-3xl font-bold">
-                  <span className="text-gray-400">{companyInfo?.logo_text || 'LOGO'}</span>
-                  <br />
-                  <span className="text-green-400">{companyInfo?.company_name || 'CK CARBON'}</span>
-                </div>
+                {logoSettings.type === 'image' && logoSettings.image_url ? (
+                  <div className="relative h-16 sm:h-20 w-32 sm:w-40">
+                    <Image
+                      src={logoSettings.image_url}
+                      alt="Logo"
+                      fill
+                      className="object-contain"
+                    />
+                  </div>
+                ) : (
+                  <div className="text-2xl sm:text-3xl font-bold">
+                    {logoSettings.text.split('\n').map((line, i) => (
+                      <div key={i}>
+                        {i === 0 ? (
+                          <span className="text-gray-400">{line}</span>
+                        ) : (
+                          <span className="text-green-400">{line}</span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                )}
               </motion.div>
 
               <p className="text-gray-300 leading-relaxed mb-4 sm:mb-6 max-w-md text-sm sm:text-base">

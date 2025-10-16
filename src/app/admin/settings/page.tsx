@@ -11,6 +11,12 @@ interface NavbarLogoSettings {
   image_url: string | null
 }
 
+interface FooterLogoSettings {
+  type: 'text' | 'image'
+  text: string
+  image_url: string | null
+}
+
 interface HeroSectionSettings {
   logo_type: 'text' | 'image'
   logo_text: string
@@ -20,6 +26,12 @@ interface HeroSectionSettings {
 
 export default function SettingsPage() {
   const [navbarLogo, setNavbarLogo] = useState<NavbarLogoSettings>({
+    type: 'text',
+    text: 'LOGO\nCK CARBON',
+    image_url: null
+  })
+
+  const [footerLogo, setFooterLogo] = useState<FooterLogoSettings>({
     type: 'text',
     text: 'LOGO\nCK CARBON',
     image_url: null
@@ -50,11 +62,23 @@ export default function SettingsPage() {
         .from('site_settings')
         .select('setting_value')
         .eq('setting_key', 'navbar_logo')
-        .single()
+        .maybeSingle()
 
-      if (navbarError) throw navbarError
+      if (navbarError && navbarError.code !== 'PGRST116') throw navbarError
       if (navbarData) {
         setNavbarLogo(navbarData.setting_value as NavbarLogoSettings)
+      }
+
+      // Fetch footer logo
+      const { data: footerData, error: footerError } = await supabase
+        .from('site_settings')
+        .select('setting_value')
+        .eq('setting_key', 'footer_logo')
+        .maybeSingle()
+
+      if (footerError && footerError.code !== 'PGRST116') throw footerError
+      if (footerData) {
+        setFooterLogo(footerData.setting_value as FooterLogoSettings)
       }
 
       // Fetch hero section
@@ -62,9 +86,9 @@ export default function SettingsPage() {
         .from('site_settings')
         .select('setting_value')
         .eq('setting_key', 'hero_section')
-        .single()
+        .maybeSingle()
 
-      if (heroError) throw heroError
+      if (heroError && heroError.code !== 'PGRST116') throw heroError
       if (heroData) {
         setHeroSection(heroData.setting_value as HeroSectionSettings)
       }
@@ -82,19 +106,39 @@ export default function SettingsPage() {
       setSaving(true)
       setMessage(null)
 
-      // Update navbar logo
+      // Update navbar logo (upsert if not exists)
       const { error: navbarError } = await supabase
         .from('site_settings')
-        .update({ setting_value: navbarLogo })
-        .eq('setting_key', 'navbar_logo')
+        .upsert({
+          setting_key: 'navbar_logo',
+          setting_value: navbarLogo
+        }, {
+          onConflict: 'setting_key'
+        })
 
       if (navbarError) throw navbarError
 
-      // Update hero section
+      // Update footer logo (upsert if not exists)
+      const { error: footerError } = await supabase
+        .from('site_settings')
+        .upsert({
+          setting_key: 'footer_logo',
+          setting_value: footerLogo
+        }, {
+          onConflict: 'setting_key'
+        })
+
+      if (footerError) throw footerError
+
+      // Update hero section (upsert if not exists)
       const { error: heroError } = await supabase
         .from('site_settings')
-        .update({ setting_value: heroSection })
-        .eq('setting_key', 'hero_section')
+        .upsert({
+          setting_key: 'hero_section',
+          setting_value: heroSection
+        }, {
+          onConflict: 'setting_key'
+        })
 
       if (heroError) throw heroError
 
@@ -128,7 +172,7 @@ export default function SettingsPage() {
         <h1 className="text-3xl font-bold text-gray-900 dark:text-white">
           Site Settings
         </h1>
-        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage navbar logo and hero section content</p>
+        <p className="text-gray-600 dark:text-gray-400 mt-2">Manage navbar logo, footer logo, and hero section content</p>
       </div>
 
       {/* Message Alert */}
@@ -207,6 +251,80 @@ export default function SettingsPage() {
               <ImageUpload
                 currentImageUrl={navbarLogo.image_url || ''}
                 onImageUploaded={(url) => setNavbarLogo({ ...navbarLogo, image_url: url })}
+                folder="logos"
+                aspectRatio="16/9"
+                maxSizeMB={1}
+              />
+            </div>
+          )}
+        </div>
+      </div>
+
+      {/* Footer Logo Settings */}
+      <div className="bg-white dark:bg-slate-800 rounded-xl shadow-sm border border-gray-200 dark:border-slate-700 p-6">
+        <h2 className="text-lg font-semibold text-gray-900 dark:text-white mb-6 pb-3 border-b border-gray-200 dark:border-slate-700">
+          Footer Logo
+        </h2>
+
+        <div className="space-y-6">
+          {/* Logo Type Selection */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+              Logo Type
+            </label>
+            <div className="flex gap-3">
+              <button
+                type="button"
+                onClick={() => setFooterLogo({ ...footerLogo, type: 'text' })}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
+                  footerLogo.type === 'text'
+                    ? 'border-green-600 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
+                }`}
+              >
+                <FaFont />
+                <span>Text</span>
+              </button>
+              <button
+                type="button"
+                onClick={() => setFooterLogo({ ...footerLogo, type: 'image' })}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg border-2 transition-colors ${
+                  footerLogo.type === 'image'
+                    ? 'border-green-600 bg-green-50 dark:bg-green-900/20 text-green-700 dark:text-green-400'
+                    : 'border-gray-300 dark:border-gray-600 text-gray-700 dark:text-gray-300 hover:border-gray-400 dark:hover:border-gray-500'
+                }`}
+              >
+                <FaImage />
+                <span>Image</span>
+              </button>
+            </div>
+          </div>
+
+          {/* Text Input */}
+          {footerLogo.type === 'text' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                Logo Text (use \n for line break)
+              </label>
+              <textarea
+                value={footerLogo.text}
+                onChange={(e) => setFooterLogo({ ...footerLogo, text: e.target.value })}
+                rows={3}
+                className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
+                placeholder="LOGO\nCK CARBON"
+              />
+            </div>
+          )}
+
+          {/* Image Upload */}
+          {footerLogo.type === 'image' && (
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-3">
+                Logo Image
+              </label>
+              <ImageUpload
+                currentImageUrl={footerLogo.image_url || ''}
+                onImageUploaded={(url) => setFooterLogo({ ...footerLogo, image_url: url })}
                 folder="logos"
                 aspectRatio="16/9"
                 maxSizeMB={1}
