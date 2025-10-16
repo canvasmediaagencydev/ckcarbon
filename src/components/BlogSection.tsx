@@ -10,7 +10,6 @@ import { BlogService, Blog } from '@/lib/blog';
 export default function BlogSection() {
   const ref = useRef(null);
   const isInView = useInView(ref, { once: true });
-  const [showAll, setShowAll] = useState(false);
   const [blogPosts, setBlogPosts] = useState<Blog[]>([]);
   const [loading, setLoading] = useState(true);
 
@@ -87,7 +86,7 @@ export default function BlogSection() {
     }
   };
 
-  const displayedBlogPosts = showAll ? blogPosts : blogPosts.slice(0, 3);
+  const displayedBlogPosts = blogPosts.slice(0, 3);
 
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('en-US', {
@@ -211,41 +210,23 @@ export default function BlogSection() {
                   ))}
 
                   {/* View More Button */}
-                  {blogPosts.length > 3 && (
+                  {blogPosts.length > 0 && (
                     <motion.div
                       className="text-center mt-8"
                       initial={{ opacity: 0, y: 20 }}
                       animate={isInView ? { opacity: 1, y: 0 } : { opacity: 0, y: 20 }}
                       transition={{ duration: 0.6, delay: 0.4 }}
                     >
-                      {showAll ? (
+                      <Link href="/blog">
                         <motion.button
-                          onClick={() => setShowAll(false)}
                           className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
                           whileHover={{ scale: 1.05 }}
                           whileTap={{ scale: 0.95 }}
                         >
-                          View Less
-                          <motion.div
-                            className="ml-2"
-                            animate={{ rotate: 180 }}
-                            transition={{ duration: 0.3 }}
-                          >
-                            <FaArrowRight className="w-4 h-4" />
-                          </motion.div>
+                          View More
+                          <FaArrowRight className="ml-2 w-4 h-4" />
                         </motion.button>
-                      ) : (
-                        <Link href="/blog">
-                          <motion.button
-                            className="inline-flex items-center px-8 py-3 bg-green-600 text-white rounded-full hover:bg-green-700 transition-all duration-300 font-medium shadow-lg hover:shadow-xl"
-                            whileHover={{ scale: 1.05 }}
-                            whileTap={{ scale: 0.95 }}
-                          >
-                            View All Posts
-                            <FaArrowRight className="ml-2 w-4 h-4" />
-                          </motion.button>
-                        </Link>
-                      )}
+                      </Link>
                     </motion.div>
                   )}
                 </>
