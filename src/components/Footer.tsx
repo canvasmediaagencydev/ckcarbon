@@ -161,9 +161,15 @@ export default function Footer() {
                 {companyInfo?.address || 'ธ/1 ถ.บางแตด อ.บ้อง จังหวัดใหม่'}
               </p>
 
-              {/* Contact Info */}
-              <div className="space-y-3 sm:space-y-4">
-                {phones.map((phone) => (
+         
+            </div>
+          </motion.div>
+
+          {/* Contact Us */}
+          <motion.div variants={fadeInVariants}>
+            <h3 className="text-lg sm:text-xl font-bold text-green-400 mb-4 sm:mb-6">Contact Us</h3>
+            <div className="space-y-3 sm:space-y-4">
+              {phones.map((phone) => (
                   <motion.div
                     key={phone.id}
                     className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
@@ -173,38 +179,6 @@ export default function Footer() {
                     <span>{phone.value}</span>
                   </motion.div>
                 ))}
-
-                {emails.map((email) => (
-                  <motion.div
-                    key={email.id}
-                    className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
-                    whileHover={{ x: 5, color: "#10b981" }}
-                  >
-                    <FaEnvelope className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
-                    <span className="break-all">{email.value}</span>
-                  </motion.div>
-                ))}
-              </div>
-            </div>
-          </motion.div>
-
-          {/* Contact Us */}
-          <motion.div variants={fadeInVariants}>
-            <h3 className="text-lg sm:text-xl font-bold text-green-400 mb-4 sm:mb-6">Contact Us</h3>
-            <div className="space-y-3 sm:space-y-4">
-              {phones.length > 0 && (
-                <motion.div
-                  className="flex items-center space-x-2 sm:space-x-3 text-gray-300 text-sm sm:text-base"
-                  whileHover={{ x: 5 }}
-                >
-                  <FaPhone className="w-3.5 h-3.5 sm:w-4 sm:h-4 text-green-400 flex-shrink-0" />
-                  <div className="text-sm sm:text-base">
-                    {phones.map((phone) => (
-                      <div key={phone.id}>{phone.value}</div>
-                    ))}
-                  </div>
-                </motion.div>
-              )}
 
               {emails.map((email) => (
                 <motion.div
