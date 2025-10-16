@@ -145,7 +145,7 @@ export default function Navbar() {
                   Products
                 </motion.div>
               </Link>
-              <Link href="/#testimonials">
+              <Link href="/testimonials">
                 <motion.div
                   className={`px-3 py-2 text-lg font-semibold transition-colors cursor-pointer ${
                     isScrolled
@@ -260,7 +260,7 @@ export default function Navbar() {
                     Products
                   </motion.div>
                 </Link>
-                <Link href="/#testimonials">
+                <Link href="/testimonials">
                   <motion.div
                     className="text-gray-800 hover:text-green-600 block px-3 py-2 text-lg font-semibold transition-colors cursor-pointer"
                     onClick={() => setIsMenuOpen(false)}

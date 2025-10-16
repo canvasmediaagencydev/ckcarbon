@@ -71,7 +71,7 @@ export default function TestimonialsPage() {
         <div className="relative z-10 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="text-center max-w-4xl mx-auto">
             {/* Back Button */}
-            <Link href="/#testimonials">
+            <Link href="/">
               <motion.button
                 className="inline-flex items-center px-4 py-2 bg-white/10 backdrop-blur-sm text-white rounded-lg hover:bg-white/20 transition-all duration-300 mb-6"
                 whileHover={{ scale: 1.05 }}
