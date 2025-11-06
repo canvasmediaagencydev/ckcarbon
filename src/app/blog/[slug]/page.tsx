@@ -21,7 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
       };
     }
 
-    const baseUrl = 'https://ckcarbon.vercel.app';
+    const baseUrl = 'https://www.ckcarbon.co.th';
     const url = `${baseUrl}/blog/${slug}`;
 
     return {
@@ -80,7 +80,7 @@ export default async function BlogPostPage({ params }: Props) {
     });
   };
 
-  const shareUrl = `https://ckcarbon.vercel.app/blog/${slug}`;
+  const shareUrl = `https://www.ckcarbon.co.th/blog/${slug}`;
   const shareTitle = blog?.title || '';
 
   // Extract text from TipTap content

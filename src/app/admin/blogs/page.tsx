@@ -166,12 +166,14 @@ export default function BlogsListPage() {
                     <td className="px-6 py-4 whitespace-nowrap text-sm">
                       <div className="flex items-center justify-end space-x-2">
                         {blog.status === 'published' && (
-                          <button
+                          <Link
+                            href={`/blog/${blog.slug}`}
+                            target="_blank"
                             className="p-2 text-slate-600 dark:text-slate-400 hover:text-slate-900 dark:hover:text-white hover:bg-slate-100 dark:hover:bg-slate-600 rounded-lg transition-colors"
                             title="View"
                           >
                             <FaEye size={14} />
-                          </button>
+                          </Link>
                         )}
                         <Link
                           href={`/admin/blogs/${blog.id}/edit`}

@@ -91,7 +91,7 @@ export default function ProductDetailPage() {
     )
   }
 
-  const shareUrl = `https://ckcarbon.vercel.app/products/${params.id}`;
+  const shareUrl = `https://www.ckcarbon.co.th/products/${params.id}`;
   const shareTitle = product?.name || '';
 
   return (
