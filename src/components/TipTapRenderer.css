@@ -1,0 +1,188 @@
+/* TipTap Renderer Styles */
+.tiptap-renderer {
+  outline: none;
+}
+
+.tiptap-renderer p {
+  margin-bottom: 1rem;
+  line-height: 1.75;
+  color: #111827 !important;
+}
+
+.tiptap-renderer h1,
+.tiptap-renderer h2,
+.tiptap-renderer h3,
+.tiptap-renderer h4,
+.tiptap-renderer h5,
+.tiptap-renderer h6 {
+  font-weight: 700;
+  margin-top: 2rem;
+  margin-bottom: 1rem;
+  line-height: 1.25;
+  color: #111827 !important;
+}
+
+.tiptap-renderer h1 {
+  font-size: 2.25rem;
+}
+
+.tiptap-renderer h2 {
+  font-size: 1.875rem;
+}
+
+.tiptap-renderer h3 {
+  font-size: 1.5rem;
+}
+
+.tiptap-renderer ul,
+.tiptap-renderer ol {
+  margin-top: 1rem;
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.tiptap-renderer ul {
+  list-style-type: disc;
+}
+
+.tiptap-renderer ol {
+  list-style-type: decimal;
+}
+
+.tiptap-renderer li {
+  margin-bottom: 0.5rem;
+  line-height: 1.75;
+  color: #111827 !important;
+}
+
+.tiptap-renderer blockquote {
+  border-left: 4px solid #10b981;
+  padding-left: 1rem;
+  margin: 1.5rem 0;
+  font-style: italic;
+  color: #6b7280;
+}
+
+.tiptap-renderer code {
+  background-color: #f3f4f6;
+  padding: 0.125rem 0.25rem;
+  border-radius: 0.25rem;
+  font-size: 0.875em;
+  font-family: 'Courier New', monospace;
+}
+
+.tiptap-renderer pre {
+  background-color: #1f2937;
+  color: #f9fafb;
+  padding: 1rem;
+  border-radius: 0.5rem;
+  overflow-x: auto;
+  margin: 1.5rem 0;
+}
+
+.tiptap-renderer pre code {
+  background-color: transparent;
+  color: inherit;
+  padding: 0;
+}
+
+.tiptap-renderer img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 0.5rem;
+  margin: 1.5rem 0;
+}
+
+.tiptap-renderer a {
+  color: #10b981;
+  text-decoration: underline;
+}
+
+.tiptap-renderer a:hover {
+  color: #059669;
+}
+
+.tiptap-renderer table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 1.5rem 0;
+}
+
+.tiptap-renderer table th,
+.tiptap-renderer table td {
+  border: 1px solid #e5e7eb;
+  padding: 0.75rem;
+  text-align: left;
+}
+
+.tiptap-renderer table th {
+  background-color: #f9fafb;
+  font-weight: 600;
+}
+
+.tiptap-renderer hr {
+  border: none;
+  border-top: 1px solid #e5e7eb;
+  margin: 2rem 0;
+}
+
+.tiptap-renderer strong {
+  font-weight: 700;
+  color: inherit !important;
+}
+
+.tiptap-renderer em {
+  font-style: italic;
+  color: inherit !important;
+}
+
+.tiptap-renderer u {
+  text-decoration: underline;
+  color: inherit !important;
+}
+
+.tiptap-renderer s {
+  text-decoration: line-through;
+  color: inherit !important;
+}
+
+.tiptap-renderer span {
+  color: inherit !important;
+}
+
+.tiptap-renderer div {
+  color: inherit !important;
+}
+
+/* Dark mode support */
+@media (prefers-color-scheme: dark) {
+  .tiptap-renderer p {
+    color: #d1d5db;
+  }
+
+  .tiptap-renderer h1,
+  .tiptap-renderer h2,
+  .tiptap-renderer h3,
+  .tiptap-renderer h4,
+  .tiptap-renderer h5,
+  .tiptap-renderer h6 {
+    color: #f9fafb;
+  }
+
+  .tiptap-renderer blockquote {
+    color: #9ca3af;
+  }
+
+  .tiptap-renderer code {
+    background-color: #374151;
+  }
+
+  .tiptap-renderer table th,
+  .tiptap-renderer table td {
+    border-color: #4b5563;
+  }
+
+  .tiptap-renderer table th {
+    background-color: #1f2937;
+  }
+}

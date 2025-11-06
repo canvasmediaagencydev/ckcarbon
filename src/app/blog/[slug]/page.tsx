@@ -4,6 +4,7 @@ import { Metadata } from 'next';
 import { FaClock, FaUser, FaArrowLeft, FaTag } from 'react-icons/fa';
 import { BlogService, Blog } from '@/lib/blog';
 import ShareButtons from '@/components/ShareButtons';
+import BlogContent from '@/components/BlogContent';
 
 type Props = {
   params: Promise<{ slug: string }>
@@ -208,32 +209,7 @@ export default async function BlogPostPage({ params }: Props) {
                 )}
 
                 {/* Content */}
-                <div className="prose prose-base sm:prose-lg max-w-none">
-                  <div className="space-y-4 sm:space-y-6">
-
-                    {/* ALWAYS show excerpt if available */}
-                    <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                      {blog.excerpt || "Discover our latest insights in sustainable carbon production and water treatment technology."}
-                    </p>
-
-                    {/* ALWAYS show these 3 paragraphs */}
-                    <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                      At CK Carbon, we are committed to providing innovative activated carbon solutions that meet the evolving needs
-                      of various industries while maintaining our dedication to environmental sustainability.
-                    </p>
-
-                    <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                      Our expertise in carbon production and water treatment technology allows us to deliver high-quality products
-                      that exceed industry standards and provide exceptional value to our customers.
-                    </p>
-
-                    <p className="text-gray-700 leading-relaxed text-base sm:text-lg">
-                      Through continuous research and development, we continue to advance the field of activated carbon applications,
-                      ensuring our solutions remain at the forefront of the industry.
-                    </p>
-
-                  </div>
-                </div>
+                <BlogContent content={blog.content} excerpt={blog.excerpt} />
 
                 {/* Tags */}
                 {blog.tags && blog.tags.length > 0 && (
