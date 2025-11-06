@@ -12,7 +12,8 @@ type Props = {
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   try {
     const { slug } = await params
-    const blog = await BlogService.getBlogBySlug(slug);
+    const decodedSlug = decodeURIComponent(slug)
+    const blog = await BlogService.getBlogBySlug(decodedSlug);
 
     if (!blog) {
       return {
@@ -22,7 +23,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     }
 
     const baseUrl = 'https://www.ckcarbon.co.th';
-    const url = `${baseUrl}/blog/${slug}`;
+    const url = `${baseUrl}/blog/${decodedSlug}`;
 
     return {
       title: `${blog.title} | CK Carbon`,
@@ -59,11 +60,12 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 
 export default async function BlogPostPage({ params }: Props) {
   const { slug } = await params
+  const decodedSlug = decodeURIComponent(slug)
   let blog: Blog | null = null;
   let error: string | null = null;
 
   try {
-    blog = await BlogService.getBlogBySlug(slug);
+    blog = await BlogService.getBlogBySlug(decodedSlug);
     if (!blog) {
       error = 'Blog post not found';
     }
@@ -80,7 +82,7 @@ export default async function BlogPostPage({ params }: Props) {
     });
   };
 
-  const shareUrl = `https://www.ckcarbon.co.th/blog/${slug}`;
+  const shareUrl = `https://www.ckcarbon.co.th/blog/${decodedSlug}`;
   const shareTitle = blog?.title || '';
 
   // Extract text from TipTap content

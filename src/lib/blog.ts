@@ -141,8 +141,11 @@ export class BlogService {
   static generateSlug(title: string): string {
     return title
       .toLowerCase()
-      .replace(/[^a-z0-9]+/g, '-')
-      .replace(/(^-|-$)/g, '')
+      .trim()
+      .replace(/\s+/g, '-') // Replace spaces with hyphens
+      .replace(/[^\u0E00-\u0E7Fa-z0-9\-]/g, '') // Keep Thai characters, English letters, numbers, and hyphens
+      .replace(/\-+/g, '-') // Replace multiple hyphens with single hyphen
+      .replace(/(^-|-$)/g, '') // Remove leading/trailing hyphens
   }
 
   static async isSlugUnique(slug: string, excludeId?: string) {
