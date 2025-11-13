@@ -2,7 +2,6 @@
 
 import { useRef, useState, useEffect } from 'react';
 import { motion, useInView } from 'framer-motion';
-import { FaShoppingCart } from 'react-icons/fa';
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
@@ -13,7 +12,6 @@ interface Product {
   name: string
   description: string
   image_url: string
-  button_text: string
   display_order: number
 }
 
@@ -84,7 +82,7 @@ export default function ProductsSection() {
           >
             <div className="h-1 w-12 sm:w-20 bg-gradient-to-r from-transparent to-green-500"></div>
             <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-gray-900">
-              Our <span className="text-green-600">Products</span>
+              ผลิตภัณฑ์<span className="text-green-600">ของเรา</span>
             </h2>
             <div className="h-1 w-12 sm:w-20 bg-gradient-to-l from-transparent to-green-500"></div>
           </motion.div>
@@ -93,7 +91,7 @@ export default function ProductsSection() {
             className="text-base sm:text-lg text-gray-600 max-w-2xl mx-auto px-4"
             variants={fadeInVariants}
           >
-            Premium activated carbon solutions for water filtration and purification
+            ถ่านกัมมันต์คุณภาพพรีเมียมสำหรับการกรองและบำบัดน้ำ
           </motion.p>
         </motion.div>
 
@@ -151,29 +149,6 @@ export default function ProductsSection() {
                       {product.name}
                     </h3>
                   </div>
-
-                   {/* Order Button */}
-                   <motion.button
-                     className="w-full bg-gradient-to-r from-green-600 to-green-700 text-white font-semibold py-3 sm:py-4 px-4 sm:px-6 rounded-xl sm:rounded-2xl hover:from-green-700 hover:to-green-800 transition-all duration-300 flex items-center justify-center space-x-2 sm:space-x-3 shadow-lg hover:shadow-xl text-sm sm:text-base"
-                     whileHover={{
-                       scale: 1.02,
-                       boxShadow: "0 20px 40px rgba(34, 197, 94, 0.4)"
-                     }}
-                     whileTap={{ scale: 0.98 }}
-                     onClick={(e) => {
-                       e.stopPropagation();
-                       router.push(`/products/${product.id}`);
-                     }}
-                   >
-                     <FaShoppingCart className="w-4 h-4 sm:w-5 sm:h-5" />
-                     <span className="text-base sm:text-lg">{product.button_text}</span>
-                     <motion.div
-                       animate={{ x: [0, 5, 0] }}
-                       transition={{ duration: 1.5, repeat: Infinity }}
-                     >
-                       →
-                     </motion.div>
-                   </motion.button>
                 </div>
 
                 {/* Decorative Elements */}

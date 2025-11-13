@@ -174,26 +174,6 @@ export default function ProductDetailPage() {
                     </p>
                   </div>
                 </div>
-
-
-
-                {/* CTA Section */}
-                <div className="mt-8 sm:mt-12 pt-6 sm:pt-8 border-t border-gray-200 text-center">
-                  <h3 className="text-xl sm:text-2xl font-bold text-gray-900 mb-3 sm:mb-4">Ready to Order?</h3>
-                  <p className="text-gray-600 mb-4 sm:mb-6 text-sm sm:text-base">Contact us for bulk pricing and technical specifications.</p>
-                  <motion.button
-                    className="inline-flex items-center px-6 sm:px-8 py-3 sm:py-4 bg-green-600 text-white rounded-xl sm:rounded-2xl hover:bg-green-700 transition-all duration-300 font-semibold shadow-lg hover:shadow-xl transform hover:-translate-y-1 text-sm sm:text-base"
-                    whileHover={{ scale: 1.02 }}
-                    whileTap={{ scale: 0.98 }}
-                  >
-                    <FaShoppingCart className="mr-2 sm:mr-3 w-4 h-4" />
-                    {product.button_text}
-                  </motion.button>
-                  <div className="flex items-center justify-center space-x-6 text-sm text-gray-600 mt-4">
-                    <span>✓ Free Consultation</span>
-                    <span>✓ Bulk Pricing</span>
-                  </div>
-                </div>
               </div>
             </article>
 
@@ -202,9 +182,6 @@ export default function ProductDetailPage() {
               <div className="space-y-4 sm:space-y-6 lg:space-y-8">
                 {/* Share Section */}
                 <ShareButtons url={shareUrl} title={shareTitle} />
-
-
-
                 {/* Company Info CTA */}
                 <div className="bg-gradient-to-br from-green-600 to-green-700 text-white rounded-2xl sm:rounded-3xl p-4 sm:p-6 lg:p-8 shadow-xl">
                   <h3 className="text-xl sm:text-2xl font-bold mb-3 sm:mb-4">About CK Carbon</h3>

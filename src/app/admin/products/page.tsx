@@ -11,7 +11,6 @@ interface Product {
   name: string
   description: string
   image_url: string
-  button_text: string
   display_order: number
   is_active: boolean
 }
@@ -26,8 +25,7 @@ export default function ProductsPage() {
   const [formData, setFormData] = useState({
     name: '',
     description: 'รายละเอียดสินค้า',
-    image_url: '',
-    button_text: 'สั่งซื้อเลย!'
+    image_url: ''
   })
 
   useEffect(() => {
@@ -57,8 +55,7 @@ export default function ProductsPage() {
     setFormData({
       name: '',
       description: 'รายละเอียดสินค้า',
-      image_url: '',
-      button_text: 'สั่งซื้อเลย!'
+      image_url: ''
     })
     setIsAdding(true)
     setEditingId(null)
@@ -68,8 +65,7 @@ export default function ProductsPage() {
     setFormData({
       name: product.name,
       description: product.description,
-      image_url: product.image_url,
-      button_text: product.button_text
+      image_url: product.image_url
     })
     setEditingId(product.id)
     setIsAdding(false)
@@ -79,8 +75,7 @@ export default function ProductsPage() {
     setFormData({
       name: '',
       description: 'รายละเอียดสินค้า',
-      image_url: '',
-      button_text: 'สั่งซื้อเลย!'
+      image_url: ''
     })
     setEditingId(null)
     setIsAdding(false)
@@ -96,7 +91,6 @@ export default function ProductsPage() {
           name: formData.name,
           description: formData.description,
           image_url: formData.image_url,
-          button_text: formData.button_text,
           display_order: maxOrder + 1
         }])
 
@@ -121,8 +115,7 @@ export default function ProductsPage() {
         .update({
           name: formData.name,
           description: formData.description,
-          image_url: formData.image_url,
-          button_text: formData.button_text
+          image_url: formData.image_url
         })
         .eq('id', editingId)
 
@@ -263,19 +256,6 @@ export default function ProductsPage() {
                   placeholder="รายละเอียดสินค้า"
                 />
               </div>
-
-              <div>
-                <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                  Button Text
-                </label>
-                <input
-                  type="text"
-                  value={formData.button_text}
-                  onChange={(e) => setFormData({ ...formData, button_text: e.target.value })}
-                  className="w-full px-4 py-2 border border-gray-300 dark:border-slate-600 rounded-lg focus:ring-2 focus:ring-green-500 focus:border-transparent dark:bg-slate-700 dark:text-white"
-                  placeholder="สั่งซื้อเลย!"
-                />
-              </div>
             </div>
 
             <div className="space-y-4">
@@ -351,7 +331,6 @@ export default function ProductsPage() {
                   <div className="p-4">
                     <h3 className="font-semibold text-gray-900 dark:text-white mb-1">{product.name}</h3>
                     <p className="text-sm text-gray-600 dark:text-gray-400 mb-2 line-clamp-3">{product.description}</p>
-                    <p className="text-xs text-green-600 dark:text-green-400 font-medium">{product.button_text}</p>
                   </div>
 
                   {/* Action Buttons */}
