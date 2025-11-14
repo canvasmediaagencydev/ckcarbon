@@ -78,13 +78,6 @@ export default function OEMServiceSection() {
           >
             <span className="text-green-600">OEM</span> Service
           </motion.h2>
-
-          <motion.p
-            className="text-lg text-gray-700 max-w-4xl mx-auto leading-relaxed"
-            variants={fadeInVariants}
-          >
-            has its roots in a family business that once thrived in the coconut industry. In 2004, our founder envisioned the potential of transforming coconut shells into high-quality activated carbon. From that vision, CK Carbon Partnership was officially established, specializing in the production and supply of premium water filtration media, trusted by both households and industries.
-          </motion.p>
         </motion.div>
 
         {/* Services Carousel */}
