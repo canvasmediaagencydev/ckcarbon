@@ -226,8 +226,11 @@ export default function OEMServiceSection() {
           className="text-center mt-16"
           variants={fadeInVariants}
         >
-          <motion.button
-            className="bg-green-600 text-white font-semibold px-12 py-4 rounded-2xl hover:bg-green-700 transition-all shadow-lg text-lg"
+          <motion.a
+            href="https://m.me/61579905567779"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-block bg-green-600 text-white font-semibold px-12 py-4 rounded-2xl hover:bg-green-700 transition-all shadow-lg text-lg"
             whileHover={{
               scale: 1.05,
               boxShadow: "0 20px 40px rgba(34, 197, 94, 0.4)",
@@ -236,7 +239,7 @@ export default function OEMServiceSection() {
             whileTap={{ scale: 0.95 }}
           >
             ติดต่อสอบถาม
-          </motion.button>
+          </motion.a>
         </motion.div>
       </div>
     </motion.section>

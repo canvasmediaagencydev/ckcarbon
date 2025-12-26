@@ -1,46 +1,52 @@
 "use client";
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { FaComments, FaTimes, FaPhone, FaFacebookMessenger } from 'react-icons/fa';
+import { FaComments, FaTimes, FaFacebook } from 'react-icons/fa';
 import { SiLine } from 'react-icons/si';
-import { createClient } from '@/lib/supabase-client';
-import type { Tables } from '@/database.types';
+
+interface ContactOption {
+  id: string;
+  label: string;
+  url: string;
+  icon: 'facebook' | 'line';
+  color: string;
+  hoverColor: string;
+}
 
 export default function ContactWidget() {
   const [isOpen, setIsOpen] = useState(false);
-  const [contactOptions, setContactOptions] = useState<Tables<'contact_channels'>[]>([]);
 
-  useEffect(() => {
-    const fetchContactChannels = async () => {
-      const supabase = createClient();
-      const { data } = await supabase
-        .from('contact_channels')
-        .select('*')
-        .eq('is_active', true)
-        .order('display_order');
-
-      if (data) {
-        setContactOptions(data);
-      }
-    };
-
-    fetchContactChannels();
-  }, []);
+  const contactOptions: ContactOption[] = [
+    {
+      id: 'facebook',
+      label: 'Facebook Page',
+      url: 'https://www.facebook.com/profile.php?id=61579905567779',
+      icon: 'facebook',
+      color: 'bg-blue-600',
+      hoverColor: 'hover:bg-blue-700'
+    },
+    {
+      id: 'line',
+      label: 'LINE',
+      url: 'https://lin.ee/7CshrfP',
+      icon: 'line',
+      color: 'bg-[#00B900]',
+      hoverColor: 'hover:bg-[#00A000]'
+    }
+  ];
 
   const toggleWidget = () => {
     setIsOpen(!isOpen);
     console.log('Widget toggled:', !isOpen); // Debug log
   };
 
-  const getIconComponent = (iconName: string | null) => {
-    switch (iconName) {
-      case 'SiLine':
+  const getIconComponent = (iconType: 'facebook' | 'line') => {
+    switch (iconType) {
+      case 'line':
         return SiLine;
-      case 'FaFacebookMessenger':
-        return FaFacebookMessenger;
-      case 'FaPhone':
-        return FaPhone;
+      case 'facebook':
+        return FaFacebook;
       default:
         return FaComments;
     }
@@ -53,14 +59,14 @@ export default function ContactWidget() {
         {isOpen && (
           <div className="absolute bottom-16 sm:bottom-20 right-0 flex flex-col space-y-2 sm:space-y-3">
             {contactOptions.map((option, index) => {
-              const IconComponent = getIconComponent(option.icon_name);
+              const IconComponent = getIconComponent(option.icon);
               return (
                 <motion.a
                   key={option.id}
                   href={option.url}
-                  target={option.url.startsWith('http') ? '_blank' : '_self'}
-                  rel={option.url.startsWith('http') ? 'noopener noreferrer' : undefined}
-                  className={`flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full text-white shadow-lg transition-all duration-300 ${option.color} ${option.hover_color}`}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`flex items-center justify-center w-12 h-12 sm:w-14 sm:h-14 rounded-full text-white shadow-lg transition-all duration-300 ${option.color} ${option.hoverColor}`}
                   initial={{ opacity: 0, x: 50, scale: 0 }}
                   animate={{ opacity: 1, x: 0, scale: 1 }}
                   exit={{ opacity: 0, x: 50, scale: 0 }}
